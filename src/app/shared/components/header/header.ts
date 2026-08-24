@@ -1,0 +1,11 @@
+import { Component, EventEmitter, Output } from '@angular/core';
+
+@Component({
+  imports: [],
+  selector: 'app-header',
+  styleUrl: './header.css',
+  templateUrl: './header.html',
+})
+export class Header {
+  @Output() toggleMenu = new EventEmitter<void>();
+}
