@@ -9,6 +9,5 @@ import { RouterModule } from '@angular/router';
   templateUrl: './sidebar.html',
 })
 export class SidebarComponent {
-  @Input() isOpen = false;
-  @Output() closeSidebar = new EventEmitter<void>();
+
 }

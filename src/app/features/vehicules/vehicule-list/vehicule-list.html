@@ -1,1 +1,48 @@
-<p>vehicule-list works!</p>
+<div class="p-5">
+  @for (vehicule of vehicles(); track vehicule.id) {
+    <div>
+      <h2>Véhicule : {{ vehicule.marque }} {{ vehicule.modele }}</h2>
+      <p>ID : {{ vehicule.id }}</p>
+      <p>Immatriculation : {{ vehicule.immatriculation }}</p>
+      <p>Année : {{ vehicule.annee }}</p>
+      <p>Kilométrage : {{ vehicule.kilometrage | number }} km</p>
+      <p>Client Fictif : {{ vehicule.clientFictif ? 'Oui' : 'Non' }}</p>
+      <h3>Dossiers d'interventions</h3>
+
+      @if (vehicule.interventions && vehicule.interventions.length > 0) {
+        <ul>
+          @for (interv of vehicule.interventions; track interv.id) {
+            <li>
+              <p><strong>Intervention ID :</strong> {{ interv.id }}</p>
+              <p><strong>Type :</strong> {{ interv.type }}</p>
+              <p><strong>Statut :</strong> {{ interv.status }}</p>
+              <p><strong>Priorité :</strong> {{ interv.priorite }}</p>
+              <p><strong>Description :</strong> {{ interv.description }}</p>
+              <p><strong>Diagnostic :</strong> {{ interv.diagnostic }}</p>
+              <p><strong>Coût Estimé :</strong> {{ interv.coutEstime | currency:'MAD':'':'1.0-0' }} DH</p>
+              <p><strong>Date de Dépôt :</strong> {{ interv.dateDepot | date:'dd/MM/yyyy HH:mm' }}</p>
+              <p><strong>Date Restitution Prévue :</strong> {{ interv.dateRestitutionPrevue | date:'dd/MM/yyyy HH:mm' }}</p>
+              <p><strong>Date de Clôture :</strong> {{ interv.dateCloture | date:'dd/MM/yyyy HH:mm' }}</p>
+              @if (interv.historiqueInterventionList && interv.historiqueInterventionList.length > 0) {
+                <h4>Historique des statuts</h4>
+                <ul>
+                  @for (log of interv.historiqueInterventionList; track log.id) {
+                    <li>
+                      <p>Changement : {{ log.ancienStatus }} en {{ log.nouveauStatus }}</p>
+                      <p>Commentaire : {{ log.commentaire }}</p>
+                      <p>Auteur : {{ log.auteur }}</p>
+                      <p>Date : {{ log.date | date:'dd/MM/yyyy HH:mm' }}</p>
+                    </li>
+                  }
+                </ul>
+              }
+            </li>
+          }
+        </ul>
+      } @else {
+        <p>Aucune intervention pour ce véhicule.</p>
+      }
+    </div>
+    <hr>
+  }
+</div>
