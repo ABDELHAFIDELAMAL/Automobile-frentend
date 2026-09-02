@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../services/services';
 import { CommonModule } from '@angular/common';
-
+import { AuthService } from '../service/auth-service';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterLink],
   selector: 'app-login',
   styleUrl: './login.css',
   templateUrl: './login.html',
@@ -20,23 +20,30 @@ export class Login implements OnInit {
     ]),
   });
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {}
 
-  onSubmit() {
-    if (this.loginForm.invalid) {
-      this.loginForm.markAllAsTouched();
-      return;
+  Login() {
+    let email: string | null | undefined = this.loginForm.value.email;
+    let password: string | null | undefined = this.loginForm.value.password;
+
+    console.log(this.loginForm.value);
+
+    if (email != null && password != null) {
+      this.authService.login(email, password).subscribe({
+        next: (data) => {
+          console.log(data);
+          this.authService.loadProfile(data);
+          this.router.navigateByUrl('/admin');
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
     }
-
-
-    console.log("Email : " , this.loginForm.value);
-
-    const credentials = {
-      email: this.loginForm.value.email || '',
-      password: this.loginForm.value.password || '',
-    };
-
   }
 }
