@@ -6,6 +6,9 @@
         <label>Email</label>
         <input type="email" formControlName="email" >
       </div>
+      <small *ngIf="loginForm.hasError('invalidCredentials')" class="text-danger" style="color: red;">
+        Email ou mot de passe incorrect.
+      </small>
       <div class="text-red-500" *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid">
         <small *ngIf="loginForm.get('email')?.errors?.['required']">Email is required.</small>
         <small *ngIf="loginForm.get('email')?.errors?.['email']">Invalid email format.</small>

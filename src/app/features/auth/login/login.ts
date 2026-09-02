@@ -40,10 +40,13 @@ export class Login implements OnInit {
           this.authService.loadProfile(data);
           this.router.navigateByUrl('/admin');
         },
-        error: (error) => {
-          console.log(error);
-        },
-      });
+        error: (err) => {
+          console.error(err);
+          if (err.status === 401 || err.status === 400) {
+            this.loginForm.setErrors({ invalidCredentials: true });
+          }
+        }
+      })
     }
   }
 }
