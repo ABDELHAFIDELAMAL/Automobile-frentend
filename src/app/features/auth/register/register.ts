@@ -9,6 +9,7 @@ import {
 import { NgIf } from '@angular/common';
 import { AuthService } from '../service/auth-service';
 import { disabled } from '@angular/forms/signals';
+import { Router } from '@angular/router';
 
 @Component({
   imports: [FormsModule, NgIf, ReactiveFormsModule],
@@ -17,6 +18,8 @@ import { disabled } from '@angular/forms/signals';
   templateUrl: './register.html',
 })
 export class Register implements OnInit {
+  errorMessage: string | null | undefined;
+
   RegisterForm = new FormGroup({
     nom: new FormControl('', [
       Validators.required,
@@ -36,28 +39,32 @@ export class Register implements OnInit {
     ]),
   });
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
-  register(){
+  register() {
     let nom = this.RegisterForm.value.nom;
     let prenom = this.RegisterForm.value.prenom;
     let email = this.RegisterForm.value.email;
     let password = this.RegisterForm.value.password;
 
     if (nom != null && prenom != null && email != null && password != null) {
-        this.authService.register(nom, prenom, email, password).subscribe({
-          next: (value) => {
-            console.log(value);
-          },
-          error: (error) => {
-            console.log(error);
+      this.authService.register(nom, prenom, email, password).subscribe({
+        next: (value) => {
+          console.log(value);
+          this.router.navigateByUrl('/login');
+        },
+        error: (err) => {
+          if (err.status === 400) {
+            const emailControl = this.RegisterForm.get('email');
+            emailControl?.setErrors({ emailExists: true });
           }
-        });
-      }
+        },
+      });
     }
-
-  protected readonly disabled = disabled;
+  }
 }

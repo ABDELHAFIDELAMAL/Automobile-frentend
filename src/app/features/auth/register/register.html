@@ -32,6 +32,11 @@
         <label class="m-2">Email Adress</label>
         <input type="email" formControlName="email" >
       </div>
+      <div>
+        <small *ngIf="RegisterForm.get('email')?.hasError('emailExists')" class="text-red-500">
+          This email is already registered.
+        </small>
+      </div>
       <div class="text-red-500" *ngIf="RegisterForm.get('email')?.touched && RegisterForm.get('email')?.invalid">
         <small *ngIf="RegisterForm.get('email')?.errors?.['required']">Email is required.</small>
         <small *ngIf="RegisterForm.get('email')?.errors?.['email']">Invalid email format.</small>
