@@ -1,22 +1,9 @@
 import { Injectable, inject } from '@angular/core'; // <-- @Injectable à la place de @Service
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Intervention } from '../../interventions/services/intervention';
+import { Mecanicien } from '../../../entities/Mecanicien';
+import { Intervention } from '../../../entities/Interventions';
 
-export enum Specialite {
-  MECANIQUE_GENERALE = 'MECANIQUE_GENERALE',
-  CARROSSERIE = 'CARROSSERIE',
-  ELECTRICITE_ELECTRONIQUE = 'ELECTRICITE_ELECTRONIQUE',
-  DIAGNOSTIC = 'DIAGNOSTIC',
-  PNEUMATIQUE = 'PNEUMATIQUE',
-}
-
-export interface Mecanicien {
-  nom: string;
-  specialite: Specialite;
-  disponible: boolean;
-  interventions?: Intervention[];
-}
 
 @Injectable({
   providedIn: 'root',

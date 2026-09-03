@@ -1,21 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { HistoriqueIntervention } from '../../vehicules/services/vehicule';
+import { Intervention } from '../../../entities/Interventions';
 
-export interface Intervention {
-  id?: number;
-  type: string;
-  description: string;
-  diagnostic?: string;
-  status: string;
-  priorite: string;
-  coutEstime: number;
-  dateDepot: string | Date;
-  dateRestitutionPrevue?: string | Date;
-  dateCloture?: string | Date;
-  historiqueInterventionList?: HistoriqueIntervention[];
-}
 @Injectable({
   providedIn: 'root',
 })

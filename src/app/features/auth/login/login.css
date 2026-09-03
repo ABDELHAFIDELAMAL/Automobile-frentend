@@ -23,9 +23,9 @@ label {
 
 
 input {
-  @apply w-full px-3 py-2 border border-slate-200 rounded-lg shadow-sm text-slate-800 placeholder-slate-400
-  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
-  transition duration-150 ease-in-out bg-slate-50/50;
+  @apply w-full px-4 py-2.5 rounded border border-gray-300 bg-gray-50/50 text-slate-900 text-sm
+  transition-all duration-200 outline-hidden
+  focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-500;
 }
 
 

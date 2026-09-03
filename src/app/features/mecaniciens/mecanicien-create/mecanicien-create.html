@@ -1,1 +1,47 @@
-<p>mecanicien-create works!</p>
+<div>
+  <form [formGroup]="MecanicienForm" (ngSubmit)="createMecanicien()">
+    <div>
+      <h1>Create Mecanicien</h1>
+    </div>
+
+    <div>
+      <div>
+        <label>Nom</label>
+        <input type="text" formControlName="nom" >
+      </div>
+      <div class="text-red-500" *ngIf="MecanicienForm.get('nom')?.touched && MecanicienForm.get('nom')?.invalid">
+        <small *ngIf="MecanicienForm.get('nom')?.errors?.['required']">Name is required.</small>
+      </div>
+    </div>
+
+    <div>
+      <div>
+        <label>Specialty</label>
+        <select formControlName="specialite">
+          <option value="" disabled selected>Select a specialty</option>
+          <option value="MECANIQUE_GENERALE">MECANIQUE GENERALE</option>
+          <option value="CARROSSERIE">CARROSSERIE</option>
+          <option value="ELECTRICITE_ELECTRONIQUE">ELECTRICITE ELECTRONIQUE</option>
+          <option value="DIAGNOSTIC">DIAGNOSTIC</option>
+          <option value="PNEUMATIQUE">PNEUMATIQUE</option>
+        </select>
+      </div>
+      <div class="text-red-500" *ngIf="MecanicienForm.get('specialite')?.touched && MecanicienForm.get('specialite')?.invalid">
+        <small *ngIf="MecanicienForm.get('specialite')?.errors?.['required']">Specialty is required.</small>
+      </div>
+    </div>
+
+    <div>
+      <div>
+        <div>
+          <label>Available for service</label>
+          <input type="checkbox" formControlName="disponible">
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <button type="submit" [disabled]="MecanicienForm.invalid">Save Mecanicien</button>
+    </div>
+  </form>
+</div>

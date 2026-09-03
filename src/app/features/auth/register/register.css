@@ -1,0 +1,96 @@
+@reference "tailwindcss";
+
+.container {
+  @apply min-h-screen flex flex-col items-center justify-center bg-gray-50 p-4 mx-auto;
+}
+
+
+.container h1 {
+  @apply text-2xl sm:text-3xl font-bold text-slate-800 text-center mb-8 tracking-tight;
+}
+
+
+
+.container form {
+  @apply w-full max-w-lg bg-white rounded-xl shadow-xl border border-gray-100 p-6 sm:p-8 flex flex-col gap-5;
+}
+
+.divInput {
+  @apply flex flex-col gap-1;
+}
+
+
+.divInput > label,
+form div > label {
+  @apply text-sm mt-2 font-semibold text-slate-700 tracking-wide block mb-1;
+}
+
+.divInput > div:first-of-type {
+  @apply grid grid-cols-1 sm:grid-cols-2 gap-4;
+}
+
+.divInput > div:first-of-type > div,
+.divInput > div:not(:first-of-type),
+form > div:last-of-type {
+  @apply flex flex-col gap-1;
+}
+
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  @apply w-full px-4 py-2.5 rounded border border-gray-300 bg-gray-50/50 text-slate-900 text-sm
+  transition-all duration-200 outline-hidden
+  focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-500;
+}
+
+
+.text-red-500 {
+  @apply flex flex-col gap-0.5 mt-1;
+}
+
+
+.text-red-500 small,
+div > small.text-red-500 {
+  @apply text-xs font-medium text-red-500 block;
+}
+
+
+button[type="submit"] {
+  @apply w-full mt-1 bg-blue-600 text-white font-semibold text-sm py-3 px-4 rounded shadow-md
+  transition-all duration-200 ease-in-out cursor-pointer
+  hover:bg-blue-700 hover:shadow-lg
+  active:scale-[0.99]
+  disabled:bg-gray-300 disabled:text-gray-500 disabled:shadow-none disabled:cursor-not-allowed disabled:scale-100 ;
+}
+
+section {
+  @apply flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-2;
+}
+
+section > div:first-of-type {
+  @apply flex items-center gap-2 order-2 sm:order-1;
+}
+
+section > div:first-of-type label {
+  @apply text-sm text-slate-600 font-medium cursor-pointer order-2;
+}
+
+section > div:first-of-type input[type="checkbox"] {
+  @apply w-4 h-4 rounded border-gray-300 text-blue-600 bg-gray-50
+  focus:ring-2 focus:ring-blue-500/20 focus:ring-offset-0 transition-all duration-150 cursor-pointer order-1;
+}
+
+section > div:last-of-type {
+  @apply text-sm text-slate-500 font-medium text-center sm:text-right order-1 sm:order-2;
+}
+
+
+section > div:last-of-type span {
+  @apply mr-1;
+}
+
+section > div:last-of-type a {
+  @apply text-blue-600 font-semibold no-underline hover:text-blue-700 hover:underline transition-colors duration-150;
+}
+

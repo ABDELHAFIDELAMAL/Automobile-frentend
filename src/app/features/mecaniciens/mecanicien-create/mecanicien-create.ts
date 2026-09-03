@@ -1,13 +1,24 @@
 import { Component } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Specialite } from '../../../enums/Specialite.enum';
+import { NgIf } from '@angular/common';
 
 @Component({
-  imports: [],
+  imports: [ReactiveFormsModule, NgIf],
   selector: 'app-mecanicien-create',
   styleUrl: './mecanicien-create.css',
   templateUrl: './mecanicien-create.html',
 })
 export class MecanicienCreate {
+  Specialite = Specialite;
 
-  constructor(private MecanicienService : MecanicienCreate) {
+  MecanicienForm = new FormGroup({
+    nom: new FormControl('', [Validators.required]),
+    specialite: new FormControl('', [Validators.required]),
+    disponible: new FormControl(true),
+  });
+
+  createMecanicien() {
+    console.log(this.MecanicienForm.value);
   }
 }

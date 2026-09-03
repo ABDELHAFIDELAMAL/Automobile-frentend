@@ -9,16 +9,15 @@ import {
 import { NgIf } from '@angular/common';
 import { AuthService } from '../service/auth-service';
 import { disabled } from '@angular/forms/signals';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
-  imports: [FormsModule, NgIf, ReactiveFormsModule],
+  imports: [FormsModule, NgIf, ReactiveFormsModule, RouterLink],
   selector: 'app-register',
   styleUrl: './register.css',
   templateUrl: './register.html',
 })
 export class Register implements OnInit {
-  errorMessage: string | null | undefined;
 
   RegisterForm = new FormGroup({
     nom: new FormControl('', [

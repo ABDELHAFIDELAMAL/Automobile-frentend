@@ -1,28 +1,7 @@
-import { Injectable, inject } from '@angular/core'; // <-- Zid 'inject' hna
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { Vehicule } from '../../../entities/Vehicule';
 import { Observable } from 'rxjs';
-import { Intervention } from '../../interventions/services/intervention';
-
-export interface Vehicule {
-  immatriculation: string;
-  marque: string;
-  modele: string;
-  annee: number;
-  kilometrage: number;
-  clientFictif: boolean;
-  interventions?: Intervention[];
-}
-
-
-export interface HistoriqueIntervention {
-  id?: number;
-  ancienStatus: string;
-  nouveauStatus: string;
-  commentaire?: string;
-  date: string | Date;
-  auteur: string;
-}
-
 
 
 @Injectable({
@@ -40,14 +19,13 @@ export class VehicleService {
     return this.http.get<Vehicule>(`${this.baseUrl}/${id}`);
   }
 
-  createVehicule(vehicule: Vehicule): Observable<Vehicule> {
+  createVehicule(vehicule: {}): Observable<Vehicule> {
     return this.http.post<Vehicule>(`${this.baseUrl}/create`, vehicule);
   }
 
   updateVehicule(id: number, vehicule: Vehicule): Observable<Vehicule> {
     return this.http.put<Vehicule>(`${this.baseUrl}/update`, vehicule);
   }
-
 
   deleteVehicule(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/delete/${id}`);
@@ -59,15 +37,15 @@ export class VehicleService {
   }
 
   restituerVehicule(id: number, username: string, userRole: string): Observable<Vehicule> {
-    const params = new HttpParams()
-      .set('username', username)
-      .set('userRole', userRole);
+    const params = new HttpParams().set('username', username).set('userRole', userRole);
     return this.http.patch<Vehicule>(`${this.baseUrl}/restituer/${id}`, null, { params });
   }
 
-
   affecterMecanicien(idVehicle: number, idMechanic: number): Observable<Vehicule> {
-    return this.http.patch<Vehicule>(`${this.baseUrl}/${idVehicle}/affecter/mecanicien/${idMechanic}`, null);
+    return this.http.patch<Vehicule>(
+      `${this.baseUrl}/${idVehicle}/affecter/mecanicien/${idMechanic}`,
+      null,
+    );
   }
 
   getVehicleByStatus(status: string): Observable<Vehicule[]> {
@@ -75,12 +53,8 @@ export class VehicleService {
     return this.http.get<Vehicule[]>(`${this.baseUrl}/by/status`, { params });
   }
 
-
   recherche(text: string): Observable<Vehicule[]> {
     const params = new HttpParams().set('text', text);
     return this.http.get<Vehicule[]>(`${this.baseUrl}/recherche`, { params });
   }
-
-
-
 }
