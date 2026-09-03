@@ -1,3 +1,75 @@
-<div>
+<div class="cont">
+  <form [formGroup]="VehiculeForm" (ngSubmit)="createVehicule()">
+    <div>
+      <h1>Create Vehicule</h1>
+    </div>
+    <div>
+      <div>
+        <label>Immatriculation</label>
+        <input type="text" formControlName="immatriculation">
+      </div>
+      <div class="text-red-500" *ngIf="VehiculeForm.get('immatriculation')?.touched && VehiculeForm.get('immatriculation')?.invalid">
+        <small *ngIf="VehiculeForm.get('immatriculation')?.errors?.['required']">Immatriculation is required.</small>
+        <small *ngIf="VehiculeForm.get('immatriculation')?.errors?.['minlength']">Minimum 4 characters.</small>
+        <small *ngIf="VehiculeForm.get('immatriculation')?.errors?.['maxlength']">Maximum 20 characters.</small>
+      </div>
+    </div>
+    <div>
+      <div>
+        <label>Marque</label>
+        <input type="text" formControlName="marque">
+      </div>
+      <div class="text-red-500" *ngIf="VehiculeForm.get('marque')?.touched && VehiculeForm.get('marque')?.invalid">
+        <small *ngIf="VehiculeForm.get('marque')?.errors?.['required']">Immatriculation is required.</small>
+        <small *ngIf="VehiculeForm.get('marque')?.errors?.['minlength']">Minimum 2 characters.</small>
+        <small *ngIf="VehiculeForm.get('marque')?.errors?.['maxlength']">Maximum 20 characters.</small>
+      </div>
+    </div>
+    <div class="divInput">
+      <label>Modele</label>
+      <input type="text" formControlName="modele" placeholder="e.g., Golf 7, Model 3...">
 
+      <div class="text-red-500" *ngIf="VehiculeForm.get('modele')?.touched && VehiculeForm.get('modele')?.invalid">
+        <small *ngIf="VehiculeForm.get('modele')?.errors?.['required']">Model is required.</small>
+        <small *ngIf="VehiculeForm.get('modele')?.errors?.['maxlength']">Maximum 40 characters.</small>
+        <small *ngIf="VehiculeForm.get('modele')?.errors?.['pattern']">Invalid characters detected.</small>
+      </div>
+    </div>
+    <div class="divInput">
+      <label>Year</label>
+      <input type="date" formControlName="annee" placeholder="JJ/MM/YYYY">
+      <div class="text-red-500" *ngIf="VehiculeForm.get('annee')?.touched && VehiculeForm.get('annee')?.invalid">
+        <small *ngIf="VehiculeForm.get('annee')?.errors?.['required']">Annee is required.</small>
+        <small *ngIf="VehiculeForm.get('annee')?.errors?.['min']">Annee must be 1900 or later.</small>
+        <small *ngIf="VehiculeForm.get('annee')?.errors?.['max']">Annee cannot be in the future.</small>
+      </div>
+    </div>
+    <div>
+      <div>
+        <label>Kilometrage</label>
+        <input type="number" formControlName="kilometrage">
+      </div>
+      <div class="text-red-500" *ngIf="VehiculeForm.get('kilometrage')?.touched && VehiculeForm.get('kilometrage')?.invalid">
+        <small *ngIf="VehiculeForm.get('kilometrage')?.errors?.['required']">kilometrage is required.</small>
+        <small *ngIf="VehiculeForm.get('kilometrage')?.errors?.['minlength']">kilometrage 4 characters.</small>
+        <small *ngIf="VehiculeForm.get('kilometrage')?.errors?.['maxlength']">kilometrage 20 characters.</small>
+      </div>
+    </div>
+    <div>
+      <div>
+        <div>
+          <label>Le client est Fictif</label>
+          <input type="checkbox" formControlName="clientFictif">
+        </div>
+        <div class="text-red-500" *ngIf="VehiculeForm.get('clientFictif')?.touched && VehiculeForm.get('clientFictif')?.invalid">
+          <small *ngIf="VehiculeForm.get('clientFictif')?.errors?.['required']">Immatriculation is required.</small>
+          <small *ngIf="VehiculeForm.get('clientFictif')?.errors?.['minlength']">Minimum 4 characters.</small>
+          <small *ngIf="VehiculeForm.get('clientFictif')?.errors?.['maxlength']">Maximum 20 characters.</small>
+        </div>
+      </div>
+    </div>
+    <div>
+      <button type="submit" [disabled]="VehiculeForm.invalid">Create Vehicule</button>
+    </div>
+  </form>
 </div>

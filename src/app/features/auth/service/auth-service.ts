@@ -40,6 +40,5 @@ export class AuthService {
     let decodedJwt : any = jwtDecode(this.AccessToken);
     this.email = decodedJwt.sub;
     this.roles = decodedJwt.roles;
-
   }
 }

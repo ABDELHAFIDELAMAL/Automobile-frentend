@@ -12,26 +12,16 @@ import { MecanicienCreate } from './features/mecaniciens/mecanicien-create/mecan
 import { VehiculeCreate } from './features/vehicules/vehicule-create/vehicule-create';
 
 export const routes: Routes = [
-  {
-    path: '',
-    component: Dashboard,
-  },
-  {
-    path: 'dashboard',
-    component: Dashboard,
-  },
-  {
-    path: 'login',
-    component: Login,
-  },
+  { path: '', component: Login },
+  { path: 'dashboard', component: Dashboard },
+  { path: 'login', component: Login },
+  { path: 'create/vehicule', component: VehiculeCreate },
+  { path: 'create/mecanicien', component: MecanicienCreate },
+  { path: 'create/intervention', component: InterventionCreate },
   {
     path: 'admin',
     component: Admin,
-    children: [
-      { path: 'create/intervention', component: InterventionCreate },
-      { path: 'create/mecanicien', component: MecanicienCreate },
-      { path: 'create/vehicule', component: VehiculeCreate },
-    ],
+    children: [],
   },
   {
     path: 'register',

@@ -1,5 +1,5 @@
 <div class="p-5">
-  @for (vehicule of vehicles(); track vehicule.id) {
+  @for (vehicule of vehicules(); track vehicule.id) {
     <div>
       <h2>Véhicule : {{ vehicule.marque }} {{ vehicule.modele }}</h2>
       <p>ID : {{ vehicule.id }}</p>
@@ -23,10 +23,10 @@
               <p><strong>Date de Dépôt :</strong> {{ interv.dateDepot | date:'dd/MM/yyyy HH:mm' }}</p>
               <p><strong>Date Restitution Prévue :</strong> {{ interv.dateRestitutionPrevue | date:'dd/MM/yyyy HH:mm' }}</p>
               <p><strong>Date de Clôture :</strong> {{ interv.dateCloture | date:'dd/MM/yyyy HH:mm' }}</p>
-              @if (interv.historiqueInterventionList && interv.historiqueInterventionList.length > 0) {
+              @if (interv.historique && interv.historique.length > 0) {
                 <h4>Historique des statuts</h4>
                 <ul>
-                  @for (log of interv.historiqueInterventionList; track log.id) {
+                  @for (log of interv.historique; track log.id) {
                     <li>
                       <p>Changement : {{ log.ancienStatus }} en {{ log.nouveauStatus }}</p>
                       <p>Commentaire : {{ log.commentaire }}</p>
@@ -42,6 +42,10 @@
       } @else {
         <p>Aucune intervention pour ce véhicule.</p>
       }
+      <div>
+        <button (click)="updateVehicule(vehicule)">Update</button>
+        <button (click)="deleteVehicule(vehicule.id)">Delete</button>
+      </div>
     </div>
     <hr>
   }
