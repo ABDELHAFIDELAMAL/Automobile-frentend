@@ -13,7 +13,11 @@ export class MecanicienCreate {
   Specialite = Specialite;
 
   MecanicienForm = new FormGroup({
-    nom: new FormControl('', [Validators.required]),
+    nom: new FormControl('', [
+      Validators.required ,
+      Validators.minLength(3),
+      Validators.maxLength(50),
+    ]),
     specialite: new FormControl('', [Validators.required]),
     disponible: new FormControl(true),
   });

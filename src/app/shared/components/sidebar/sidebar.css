@@ -1,1 +1,88 @@
+@reference "tailwindcss";
 
+.mobile-topbar {
+  @apply flex items-center justify-between border-b border-black/10 bg-white px-4 py-3 lg:hidden;
+}
+.menu-btn {
+  @apply flex h-9 w-9 items-center justify-center rounded-lg border border-black/10 text-black transition-colors hover:bg-black hover:text-white;
+}
+.mobile-logo {
+  @apply text-sm font-bold tracking-tight text-black;
+}
+
+.overlay {
+  @apply fixed inset-0 z-30 hidden bg-black/50 lg:hidden;
+}
+.overlay-visible {
+  @apply block;
+}
+
+.sidebar {
+  @apply fixed inset-y-0 left-0 z-40 flex w-72 -translate-x-full flex-col
+  border-r border-black/10 bg-black text-white
+  transition-transform duration-300 ease-in-out
+  lg:translate-x-0;
+}
+.sidebar-open {
+  @apply translate-x-0;
+}
+
+.sidebar-header {
+  @apply flex items-center gap-3 border-b border-white/10 px-6 py-6;
+}
+.logo-mark {
+  @apply flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-sm font-extrabold text-black;
+}
+.logo-title {
+  @apply text-base font-bold leading-tight text-white;
+}
+.logo-sub {
+  @apply text-xs text-white/50;
+}
+
+.nav-group {
+  @apply flex flex-col gap-1 px-4 pt-5;
+}
+.nav-label {
+  @apply px-2 pb-2 text-[11px] font-semibold uppercase tracking-wider text-white/35;
+}
+
+.nav-item {
+  @apply flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-white/70
+  transition-colors hover:bg-white/10 hover:text-white cursor-pointer;
+}
+.nav-item-active {
+  @apply bg-white text-black hover:bg-white hover:text-black;
+}
+.nav-icon {
+  @apply h-5 w-5 shrink-0;
+}
+.nav-badge {
+  @apply ml-auto rounded-full bg-white/15 px-2 py-0.5 text-[11px] font-semibold text-white;
+}
+.nav-item-active .nav-badge {
+  @apply bg-black/10 text-black;
+}
+.nav-badge-alert {
+  @apply bg-white text-black;
+}
+
+.sidebar-footer {
+  @apply mt-auto flex flex-col gap-4 border-t border-white/10 px-4 py-5;
+}
+.nav-item-danger {
+  @apply hover:bg-white/10 hover:text-white;
+}
+
+.user-card {
+  @apply flex items-center gap-3 rounded-lg px-2 py-2;
+}
+.user-avatar {
+  @apply flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-xs font-bold text-black;
+}
+.user-name {
+  @apply text-sm font-semibold leading-tight text-white;
+}
+.user-role {
+  @apply text-xs text-white/45;
+}

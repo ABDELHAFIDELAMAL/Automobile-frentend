@@ -38,7 +38,6 @@ export class VehiculeCreate {
     kilometrage: new FormControl('', [
       Validators.required,
       Validators.min(0),
-      Validators.max(9999999),
     ]),
     clientFictif: new FormControl(false),
   });

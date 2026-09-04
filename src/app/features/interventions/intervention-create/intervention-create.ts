@@ -25,7 +25,7 @@ export class InterventionCreate implements OnInit {
       coutEstime: new FormControl(0, [Validators.required, Validators.min(0)]),
       dateDepot: new FormControl('', [Validators.required]),
       dateRestitutionPrevue: new FormControl('', [Validators.required]),
-      dateCloture: new FormControl(''),
+      dateCloture: new FormControl('' , [ Validators.required] ),
     });
   }
 

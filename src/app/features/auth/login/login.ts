@@ -38,7 +38,11 @@ export class Login implements OnInit {
         next: (data) => {
           console.log(data);
           this.authService.loadProfile(data);
-          this.router.navigateByUrl('/admin');
+          this.router.navigateByUrl('/admin').then(success => {
+            if (success) {
+              console.log('Redirection vers le dashboard admin réussie !');
+            }
+          });
         },
         error: (err) => {
           console.error(err);

@@ -1,101 +1,111 @@
 <div class="cont">
   <form [formGroup]="InterventionForm" (ngSubmit)="createIntervention()">
     <div>
-      <h1>Create Intervention</h1>
+      <h1>Créer une Intervention</h1>
     </div>
 
     <div>
-      <label>Vehicle ID</label>
-      <input type="number" formControlName="vehicule" placeholder="e.g., 12">
+      <label>ID du Véhicule</label>
+      <input type="number" formControlName="vehicule" placeholder="ex., 12">
       <div class="text-red-500" *ngIf="InterventionForm.get('vehicule')?.touched && InterventionForm.get('vehicule')?.invalid">
-        <small *ngIf="InterventionForm.get('vehicule')?.errors?.['required']">Vehicle selection is required.</small>
+        <small *ngIf="InterventionForm.get('vehicule')?.errors?.['required']">La sélection du véhicule est obligatoire.</small>
       </div>
     </div>
 
     <div>
-      <label>Intervention Type</label>
+      <label>Type d'Intervention</label>
       <select formControlName="type">
-        <option value="" disabled selected>Select a type</option>
-        <option value="REPARATION">REPARATION</option>
+        <option value="" disabled selected>Sélectionnez un type</option>
+        <option value="REPARATION">RÉPARATION</option>
         <option value="DIAGNOSTIC">DIAGNOSTIC</option>
         <option value="ENTRETIEN">ENTRETIEN</option>
       </select>
       <div class="text-red-500" *ngIf="InterventionForm.get('type')?.touched && InterventionForm.get('type')?.invalid">
-        <small *ngIf="InterventionForm.get('type')?.errors?.['required']">Type is required.</small>
+        <small *ngIf="InterventionForm.get('type')?.errors?.['required']">Le type d'intervention est obligatoire.</small>
       </div>
     </div>
 
     <div>
       <label>Description</label>
-      <input type="text" formControlName="description" placeholder="Describe the vehicle problem...">
+      <input type="text" formControlName="description" placeholder="Décrivez le problème du véhicule...">
       <div class="text-red-500" *ngIf="InterventionForm.get('description')?.touched && InterventionForm.get('description')?.invalid">
-        <small *ngIf="InterventionForm.get('description')?.errors?.['required']">Description is required.</small>
+        <small *ngIf="InterventionForm.get('description')?.errors?.['required']">La description est obligatoire.</small>
       </div>
     </div>
 
     <div>
-      <label>Initial Diagnostic</label>
-      <input type="text" formControlName="diagnostic" placeholder="e.g., Engine misfire detected...">
+      <label>Diagnostic Initial</label>
+      <input type="text" formControlName="diagnostic" placeholder="ex., Ratés d'allumage moteur détectés...">
     </div>
 
     <div>
-      <label>Status</label>
+      <label>Statut</label>
       <select formControlName="status">
-        <option value="" disabled selected>Select status</option>
-        <option value="RECUE">RECUE</option>
+        <option value="" disabled selected>Sélectionnez un statut</option>
+        <option value="RECUE">REÇUE</option>
         <option value="DIAGNOSTIC_EN_COURS">DIAGNOSTIC EN COURS</option>
-        <option value="DEVIS_A_VALIDER">DEVIS A VALIDER</option>
-        <option value="EN_REPARATION">EN REPARATION</option>
+        <option value="DEVIS_A_VALIDER">DEVIS À VALIDER</option>
+        <option value="EN_REPARATION">EN RÉPARATION</option>
         <option value="TERMINER">TERMINER</option>
-        <option value="RESTITUEE">RESTITUEE</option>
-        <option value="ANNULEE">ANNULEE</option>
+        <option value="RESTITUEE">RESTITUÉE</option>
+        <option value="ANNULEE">ANNULÉE</option>
       </select>
       <div class="text-red-500" *ngIf="InterventionForm.get('status')?.touched && InterventionForm.get('status')?.invalid">
-        <small *ngIf="InterventionForm.get('status')?.errors?.['required']">Status is required.</small>
+        <small *ngIf="InterventionForm.get('status')?.errors?.['required']">Le statut est obligatoire.</small>
       </div>
     </div>
 
     <div>
-      <label>Priority</label>
+      <label>Priorité</label>
       <select formControlName="priorite">
-        <option value="" disabled selected>Select priority</option>
+        <option value="" disabled selected>Sélectionnez une priorité</option>
         <option value="BASSE">BASSE</option>
         <option value="MOYENNE">MOYENNE</option>
         <option value="HAUTE">HAUTE</option>
       </select>
       <div class="text-red-500" *ngIf="InterventionForm.get('priorite')?.touched && InterventionForm.get('priorite')?.invalid">
-        <small *ngIf="InterventionForm.get('priorite')?.errors?.['required']">Priority level is required.</small>
+        <small *ngIf="InterventionForm.get('priorite')?.errors?.['required']">Le niveau de priorité est obligatoire.</small>
       </div>
     </div>
 
     <div>
-      <label>Estimated Cost (DHs)</label>
+      <label>Coût Estimé (DHs)</label>
       <input type="number" formControlName="coutEstime">
       <div class="text-red-500" *ngIf="InterventionForm.get('coutEstime')?.touched && InterventionForm.get('coutEstime')?.invalid">
-        <small *ngIf="InterventionForm.get('coutEstime')?.errors?.['required']">Estimated cost is required.</small>
-        <small *ngIf="InterventionForm.get('coutEstime')?.errors?.['min']">Cost cannot be negative.</small>
+        <small *ngIf="InterventionForm.get('coutEstime')?.errors?.['required']">Le coût estimé est obligatoire.</small>
+        <small *ngIf="InterventionForm.get('coutEstime')?.errors?.['min']">Le coût ne peut pas être négatif.</small>
       </div>
     </div>
 
-
     <div>
-      <label>Deposit Date</label>
+      <label>Date de Dépôt</label>
       <input type="date" formControlName="dateDepot">
       <div class="text-red-500" *ngIf="InterventionForm.get('dateDepot')?.touched && InterventionForm.get('dateDepot')?.invalid">
-        <small *ngIf="InterventionForm.get('dateDepot')?.errors?.['required']">Deposit date is required.</small>
+        <small *ngIf="InterventionForm.get('dateDepot')?.errors?.['required']">La date de dépôt est obligatoire.</small>
       </div>
     </div>
 
     <div>
-      <label>Expected Return Date</label>
+      <label>Date de Restitution Prévue</label>
       <input type="date" formControlName="dateRestitutionPrevue">
       <div class="text-red-500" *ngIf="InterventionForm.get('dateRestitutionPrevue')?.touched && InterventionForm.get('dateRestitutionPrevue')?.invalid">
-        <small *ngIf="InterventionForm.get('dateRestitutionPrevue')?.errors?.['required']">Expected return date is required.</small>
+        <small *ngIf="InterventionForm.get('dateRestitutionPrevue')?.errors?.['required']">La date de restitution prévue est obligatoire.</small>
+      </div>
+    </div>
+    <div>
+      <div>
+        <label for="dateCloture">Date de clôture *</label>
+        <input type="datetime-local" formControlName="dateCloture" />
+      </div>
+      <div *ngIf="InterventionForm.get('dateCloture')?.invalid && InterventionForm.get('dateCloture')?.touched">
+        <small *ngIf="InterventionForm.get('dateCloture')?.errors?.['required']">
+          La date de clôture est obligatoire.
+        </small>
       </div>
     </div>
 
     <div>
-      <button type="submit" [disabled]="InterventionForm.invalid">Create Intervention</button>
+      <button type="submit" [disabled]="InterventionForm.invalid">Créer l'Intervention</button>
     </div>
   </form>
 </div>

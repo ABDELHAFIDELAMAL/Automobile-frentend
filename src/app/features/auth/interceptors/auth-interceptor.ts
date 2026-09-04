@@ -8,15 +8,18 @@ import { AuthService } from '../service/auth-service';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   constructor(
-    private router: Router,
+
     private authService: AuthService,
   ) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const newRequest = request.clone({
-      headers: request.headers.set('Authorization', `Bearer ${this.authService.AccessToken}`),
-    });
-    console.log("Handle request... " , newRequest);
-    return next.handle(newRequest);
+    if(!request.url.includes('/auth/login')) {
+      const newRequest = request.clone({
+        headers: request.headers.set('Authorization', `Bearer ${this.authService.AccessToken}`),
+      });
+      return next.handle(newRequest);
+    }else{
+      return next.handle(request);
+    }
   }
 }
