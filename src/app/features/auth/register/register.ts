@@ -55,7 +55,7 @@ export class Register implements OnInit {
       this.authService.register(nom, prenom, email, password).subscribe({
         next: (value) => {
           console.log(value);
-          this.router.navigateByUrl('/login');
+          this.router.navigateByUrl('/login').then(r => '/admin');
         },
         error: (err) => {
           if (err.status === 400) {

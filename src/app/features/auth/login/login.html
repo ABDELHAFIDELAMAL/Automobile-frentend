@@ -1,9 +1,9 @@
 <div>
-  <h1>Login</h1>
+  <h1>Connexion</h1>
   <form [formGroup]="loginForm" (ngSubmit)="Login()">
     <div class="divInput">
       <div>
-        <label>Email</label>
+        <label class="flex items-center">Adress Email</label>
         <input type="email" formControlName="email" >
       </div>
       <small *ngIf="loginForm.hasError('invalidCredentials')" class="text-danger" style="color: red;">
@@ -16,17 +16,17 @@
     </div>
 
     <div class="PasswordDiv">
-      <label>Password</label>
-      <input type="password" formControlName="password" >
+      <label>Mot de passe</label>
+      <input type="password" formControlName="password">
       <div class="text-red-500" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
-        <small *ngIf="loginForm.get('password')?.errors?.['required']">Password is required.</small>
-        <small *ngIf="loginForm.get('password')?.errors?.['minlength']">Minimum 6 characters.</small>
-        <small *ngIf="loginForm.get('password')?.errors?.['maxlength']">Maximum 20 characters.</small>
+        <small *ngIf="loginForm.get('password')?.errors?.['required']">Le mot de passe est obligatoire.</small>
+        <small *ngIf="loginForm.get('password')?.errors?.['minlength']">Minimum 6 caractères.</small>
+        <small *ngIf="loginForm.get('password')?.errors?.['maxlength']">Maximum 20 caractères.</small>
       </div>
     </div>
     <section>
-      <span>Don't have an account?</span>
-      <a routerLink="/register">Create account</a>
+      <span>Vous n'avez pas de compte?</span>
+      <a routerLink="/register">Créer un compte</a>
     </section>
     <button type="submit" [disabled]="loginForm.invalid"
     class="py-1 px-4 bg-green-500 m-2 rounded shadow">

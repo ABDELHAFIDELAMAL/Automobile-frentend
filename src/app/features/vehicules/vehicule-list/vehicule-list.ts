@@ -51,6 +51,10 @@ export class VehiculeList implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadVehicules();
+  }
+
+  loadVehicules() {
     this.vehicleService.getAllVehicles().subscribe({
       next: (response: any) => {
         this.vehicules.set(response.data);
@@ -65,6 +69,16 @@ export class VehiculeList implements OnInit {
 
   }
 
-  deleteVehicule(id: number) {
-
+  deleteVehicule(id: number): void {
+    if (confirm('Êtes-vous sûr de vouloir supprimer ce véhicule ?')) {
+      this.vehicleService.deleteVehicule(id).subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            this.vehicules.update((prev) => prev.filter((v) => v.id !== id));
+          }
+        },
+        error: (err) => console.error('Erreur lors de la suppression:', err),
+      });
+    }
+  }
 }

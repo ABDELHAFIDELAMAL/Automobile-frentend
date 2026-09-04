@@ -1,1 +1,63 @@
-<p>utilisateur-create works!</p>
+<div class="cont">
+  <form [formGroup]="UtilisateurForm" (ngSubmit)="createUtilisateur()">
+    <div>
+      <h1>Créer un Utilisateur</h1>
+    </div>
+
+    <div>
+      <label>Nom</label>
+      <input type="text" formControlName="nom" placeholder="ex., Doe">
+      <div class="text-red-500" *ngIf="UtilisateurForm.get('nom')?.touched && UtilisateurForm.get('nom')?.invalid">
+        <small *ngIf="UtilisateurForm.get('nom')?.errors?.['required']">Le nom est obligatoire.</small>
+        <small *ngIf="UtilisateurForm.get('nom')?.errors?.['minlength']">Minimum 3 caractères requis.</small>
+        <small *ngIf="UtilisateurForm.get('nom')?.errors?.['maxlength']">Maximum 50 caractères autorisés.</small>
+      </div>
+    </div>
+
+    <div>
+      <label>Prénom</label>
+      <input type="text" formControlName="prenom" placeholder="ex., John">
+      <div class="text-red-500" *ngIf="UtilisateurForm.get('prenom')?.touched && UtilisateurForm.get('prenom')?.invalid">
+        <small *ngIf="UtilisateurForm.get('prenom')?.errors?.['required']">Le prénom est obligatoire.</small>
+        <small *ngIf="UtilisateurForm.get('prenom')?.errors?.['minlength']">Minimum 3 caractères requis.</small>
+        <small *ngIf="UtilisateurForm.get('prenom')?.errors?.['maxlength']">Maximum 50 caractères autorisés.</small>
+      </div>
+    </div>
+
+    <div>
+      <label>Adresse Email</label>
+      <input type="email" formControlName="email" placeholder="ex., john.doe@mail.com">
+      <div class="text-red-500" *ngIf="UtilisateurForm.get('email')?.touched && UtilisateurForm.get('email')?.invalid">
+        <small *ngIf="UtilisateurForm.get('email')?.errors?.['required']">L'email est obligatoire.</small>
+        <small *ngIf="UtilisateurForm.get('email')?.errors?.['email']">Format d'email invalide.</small>
+      </div>
+    </div>
+
+    <div>
+      <label>Mot de passe</label>
+      <input type="password" formControlName="password" placeholder="••••••••">
+      <div class="text-red-500" *ngIf="UtilisateurForm.get('password')?.touched && UtilisateurForm.get('password')?.invalid">
+        <small *ngIf="UtilisateurForm.get('password')?.errors?.['required']">Le mot de passe est obligatoire.</small>
+        <small *ngIf="UtilisateurForm.get('password')?.errors?.['minlength']">Minimum 6 caractères requis.</small>
+        <small *ngIf="UtilisateurForm.get('password')?.errors?.['maxlength']">Maximum 100 caractères autorisés.</small>
+      </div>
+    </div>
+
+    <div>
+      <label>Rôle du compte</label>
+      <select formControlName="role">
+        <option value="" disabled selected>Sélectionnez un rôle</option>
+        <option value="ADMIN">ADMIN</option>
+        <option value="USER">USER</option>
+        <option value="MECANICIEN">MECANICIEN</option>
+      </select>
+      <div class="text-red-500" *ngIf="UtilisateurForm.get('role')?.touched && UtilisateurForm.get('role')?.invalid">
+        <small *ngIf="UtilisateurForm.get('role')?.errors?.['required']">L'assignation d'un rôle est obligatoire.</small>
+      </div>
+    </div>
+
+    <div>
+      <button type="submit" [disabled]="UtilisateurForm.invalid">Créer l'Utilisateur</button>
+    </div>
+  </form>
+</div>
