@@ -8,16 +8,13 @@ import { NgIf } from '@angular/common';
   selector: 'app-mecanicien-create',
   styleUrl: './mecanicien-create.css',
   templateUrl: './mecanicien-create.html',
+  standalone: true,
 })
 export class MecanicienCreate {
   Specialite = Specialite;
 
   MecanicienForm = new FormGroup({
-    nom: new FormControl('', [
-      Validators.required ,
-      Validators.minLength(3),
-      Validators.maxLength(50),
-    ]),
+    nom: new FormControl('', [Validators.required]),
     specialite: new FormControl('', [Validators.required]),
     disponible: new FormControl(true),
   });

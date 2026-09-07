@@ -9,6 +9,7 @@ import { Router, RouterLink } from '@angular/router';
   selector: 'app-login',
   styleUrl: './login.css',
   templateUrl: './login.html',
+  standalone: true,
 })
 export class Login implements OnInit {
   loginForm = new FormGroup({
@@ -31,26 +32,24 @@ export class Login implements OnInit {
     let email: string | null | undefined = this.loginForm.value.email;
     let password: string | null | undefined = this.loginForm.value.password;
 
-    console.log(this.loginForm.value);
+
+    console.log("data sinding to server : " , this.loginForm.value);
 
     if (email != null && password != null) {
       this.authService.login(email, password).subscribe({
         next: (data) => {
-          console.log(data);
+          console.log("Reponse de server : " , data);
           this.authService.loadProfile(data);
-          this.router.navigateByUrl('/admin').then(success => {
-            if (success) {
-              console.log('Redirection vers le dashboard admin réussie !');
-            }
-          });
+          this.router.navigateByUrl('/admin');
         },
         error: (err) => {
           console.error(err);
           if (err.status === 401 || err.status === 400) {
+            console.log("Error Login")
             this.loginForm.setErrors({ invalidCredentials: true });
           }
-        }
-      })
+        },
+      });
     }
   }
 }

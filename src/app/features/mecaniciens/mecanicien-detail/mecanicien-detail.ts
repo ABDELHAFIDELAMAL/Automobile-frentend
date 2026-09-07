@@ -6,8 +6,8 @@ import { MecanicienService } from '../services/mecanicien';
   selector: 'app-mecanicien-detail',
   styleUrl: './mecanicien-detail.css',
   templateUrl: './mecanicien-detail.html',
+  standalone: true,
 })
 export class MecanicienDetail {
-  constructor(private MecanicienService : MecanicienService) {
-  }
+  constructor(private MecanicienService: MecanicienService) {}
 }

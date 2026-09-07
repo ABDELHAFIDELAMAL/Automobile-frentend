@@ -1,7 +1,6 @@
 import { inject, Service } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { jwtDecode } from 'jwt-decode';
-import { Router } from '@angular/router';
 
 
 @Service()
@@ -13,9 +12,6 @@ export class AuthService {
   private readonly http = inject(HttpClient);
   email: any ;
   roles : any ;
-
-  constructor() {
-  }
 
 
   login(email: string, password: string) {
@@ -44,9 +40,5 @@ export class AuthService {
     let decodedJwt : any = jwtDecode(this.AccessToken);
     this.email = decodedJwt.sub;
     this.roles = decodedJwt.roles;
-  }
-
-  loadJwtTokenFromLocalStorage(data: any) {
-
   }
 }

@@ -16,9 +16,9 @@ import { Router, RouterLink } from '@angular/router';
   selector: 'app-register',
   styleUrl: './register.css',
   templateUrl: './register.html',
+  standalone: true,
 })
 export class Register implements OnInit {
-
   RegisterForm = new FormGroup({
     nom: new FormControl('', [
       Validators.required,
@@ -55,7 +55,8 @@ export class Register implements OnInit {
       this.authService.register(nom, prenom, email, password).subscribe({
         next: (value) => {
           console.log(value);
-          this.router.navigateByUrl('/login').then(r => '/admin');
+
+          this.router.navigateByUrl('/login');
         },
         error: (err) => {
           if (err.status === 400) {

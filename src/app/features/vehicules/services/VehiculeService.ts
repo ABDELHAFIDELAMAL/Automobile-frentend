@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Vehicule } from '../../../entities/Vehicule';
 import { Observable } from 'rxjs';
 
@@ -23,8 +23,11 @@ export class VehicleService {
     return this.http.post<Vehicule>(`${this.baseUrl}/create`, vehicule);
   }
 
-  updateVehicule(id: number, vehicule: Vehicule): Observable<Vehicule> {
-    return this.http.put<Vehicule>(`${this.baseUrl}/update`, vehicule);
+  updateVehicule(id: number, vehicule: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.put<any>(`${this.baseUrl}/vehicles/${id}`, vehicule, { headers });
   }
 
   deleteVehicule(id: number): Observable<void> {

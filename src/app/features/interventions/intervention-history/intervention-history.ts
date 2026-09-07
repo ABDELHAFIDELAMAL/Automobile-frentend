@@ -5,5 +5,6 @@ import { Component } from '@angular/core';
   selector: 'app-intervention-history',
   styleUrl: './intervention-history.css',
   templateUrl: './intervention-history.html',
+  standalone: true,
 })
 export class InterventionHistory {}

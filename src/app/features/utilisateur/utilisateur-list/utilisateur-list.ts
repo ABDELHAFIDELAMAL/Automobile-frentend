@@ -5,5 +5,6 @@ import { Component } from '@angular/core';
   selector: 'app-utilisateur-list',
   styleUrl: './utilisateur-list.css',
   templateUrl: './utilisateur-list.html',
+  standalone: true,
 })
 export class UtilisateurList {}

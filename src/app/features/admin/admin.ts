@@ -5,5 +5,6 @@ import { Component } from '@angular/core';
   selector: 'app-admin',
   styleUrl: './admin.css',
   templateUrl: './admin.html',
+  standalone: true,
 })
 export class Admin {}

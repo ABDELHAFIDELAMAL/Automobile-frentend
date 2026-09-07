@@ -5,5 +5,6 @@ import { Component } from '@angular/core';
   selector: 'app-status-badge',
   styleUrl: './status-badge.css',
   templateUrl: './status-badge.html',
+  standalone: true,
 })
 export class StatusBadge {}
