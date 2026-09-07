@@ -1,0 +1,128 @@
+@reference "tailwindcss";
+
+
+.dashboard-container {
+  @apply bg-slate-50 min-h-screen w-full;
+}
+
+.dashboard-header {
+  @apply mb-8;
+}
+
+.dashboard-header h1 {
+  @apply text-2xl font-bold text-slate-800 tracking-tight;
+}
+
+.dashboard-header p {
+  @apply text-sm text-slate-500 mt-1;
+}
+
+.loading-state {
+  @apply flex flex-col items-center justify-center py-12 space-y-3 text-slate-500;
+}
+
+.spinner {
+  @apply animate-spin rounded-full h-8 w-8 border-2 border-slate-300 border-t-indigo-600;
+}
+
+.error-state {
+  @apply flex items-center gap-2 p-4 bg-rose-50 border border-rose-200 rounded-xl text-rose-600 text-sm my-4;
+}
+
+.dashboard-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-6 mb-8;
+}
+
+.stat-card {
+  @apply flex items-center p-6 bg-white rounded-2xl shadow-sm border border-slate-100 transition-all duration-300 hover:shadow-md;
+}
+
+.card-icon {
+  @apply flex items-center justify-center size-12 rounded-xl mr-4;
+}
+
+.card-icon span {
+  @apply text-[24px];
+}
+
+.card-info {
+  @apply flex flex-col;
+}
+
+.card-label {
+  @apply text-xs font-semibold uppercase tracking-wider text-slate-400;
+}
+
+.card-value {
+  @apply text-2xl font-bold text-slate-800 mt-1;
+}
+
+.blue-variant .card-icon {
+  @apply bg-blue-50 text-blue-600;
+}
+
+.amber-variant .card-icon {
+  @apply bg-amber-50 text-amber-600;
+}
+
+.history-section {
+  @apply bg-white border border-slate-100 rounded-2xl p-6 shadow-sm;
+}
+
+.section-title {
+  @apply text-lg font-bold text-slate-800 mb-4 tracking-tight;
+}
+
+.history-list {
+  @apply space-y-4;
+}
+
+.history-item {
+  @apply flex items-start gap-4 p-4 rounded-xl bg-slate-50 border border-slate-100 transition-colors duration-200 hover:bg-slate-100/50;
+}
+
+.history-badge {
+  @apply flex size-8 shrink-0 items-center justify-center rounded-full bg-slate-200 text-slate-600 mt-0.5;
+}
+
+.history-badge span {
+  @apply text-[18px];
+}
+
+.history-details {
+  @apply flex-1 min-w-0;
+}
+
+.history-header {
+  @apply flex items-center gap-2 flex-wrap mb-1;
+}
+
+.status-old {
+  @apply text-xs px-2 py-0.5 rounded bg-slate-200 text-slate-600 font-mono font-medium;
+}
+
+.status-new {
+  @apply text-xs px-2 py-0.5 rounded bg-indigo-100 text-indigo-700 font-mono font-medium;
+}
+
+@reference "tailwindcss";
+
+.arrow {
+  @apply text-sm text-slate-400;
+}
+
+.history-comment {
+  @apply text-sm text-slate-600 line-clamp-2 mb-2;
+}
+
+.history-footer {
+  @apply flex items-center justify-between text-xs text-slate-400 font-medium;
+}
+
+.history-author {
+  @apply truncate mr-2;
+}
+
+.history-date {
+  @apply shrink-0;
+}
