@@ -61,7 +61,6 @@ export class VehiculeList implements OnInit {
     this.vehicules.push(prototypeVehicule);
   }
 
-
   logVehicules(): void {
     for (const vehicule of this.vehicules) {
       console.log(vehicule.id);

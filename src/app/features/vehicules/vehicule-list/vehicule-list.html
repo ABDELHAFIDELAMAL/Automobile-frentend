@@ -1,4 +1,5 @@
 <div class="p-5">
+  <h1>Vehicules</h1>
   @for (vehicule of vehicules; track vehicule.id) {
     <div>
       <h2>Véhicule : {{ vehicule.marque }} {{ vehicule.modele }}</h2>
@@ -43,7 +44,7 @@
         <p>Aucune intervention pour ce véhicule.</p>
       }
       <div>
-        <button routerLink="/vehicules/update/:id">Update</button>
+        <button routerLink="/vehicules/update/:id">update</button>
         <button class="py-4 px-2 bg-color-red" (click)="deleteVehicule(vehicule.id)">Delete</button>
       </div>
     </div>

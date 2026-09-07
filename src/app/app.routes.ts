@@ -9,9 +9,9 @@ import { Register } from './features/auth/register/register';
 import { Admin } from './features/admin/admin';
 import { InterventionCreate } from './features/interventions/intervention-create/intervention-create';
 import { MecanicienCreate } from './features/mecaniciens/mecanicien-create/mecanicien-create';
-import { VehiculeCreate } from './features/vehicules/vehicule-create/vehicule-create';
 import { VehiculeDetail } from './features/vehicules/vehicule-detail/vehicule-detail';
 import { MecanicienDetail } from './features/mecaniciens/mecanicien-detail/mecanicien-detail';
+import { VehiculeCreate } from './features/vehicules/vehicule-create/vehicule-create';
 
 
 export const routes: Routes = [

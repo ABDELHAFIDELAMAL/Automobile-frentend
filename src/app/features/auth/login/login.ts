@@ -40,7 +40,7 @@ export class Login implements OnInit {
         next: (data) => {
           console.log("Reponse de server : " , data);
           this.authService.loadProfile(data);
-          this.router.navigateByUrl('/admin');
+          this.router.navigateByUrl('/interventions');
         },
         error: (err) => {
           console.error(err);

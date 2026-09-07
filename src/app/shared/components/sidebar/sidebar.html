@@ -1,106 +1,64 @@
-<aside
-  class="w-64 h-screen bg-white border-r border-slate-200
-         px-4 py-6 flex flex-col justify-between
-         text-slate-900 shadow-sm"
->
-  <div class="w-full">
-    <div class="mb-10 px-3">
-      <h2 class="text-lg font-semibold text-slate-700 hidden sm:block">Gestion Atelier</h2>
-      <p class="text-sm font-semibold text-slate-700 hidden sm:block">
-        MANAGEMENT SYSTEM
-      </p>
+<aside class="sidebar-container">
+  <div class="sidebar-top">
+    <div class="sidebar-brand">
+      <h2>Gestion Atelier</h2>
+      <p>MANAGEMENT SYSTEM</p>
     </div>
 
     <nav>
-      <p class="mt-1 text-sm tracking-wider text-slate-400">
-        Main menu
-      </p>
+      <p class="menu-title">Main menu</p>
 
-      <ul class="space-y-2">
-
-        <!-- Dashboard -->
+      <ul class="menu-list">
         <li
-          routerLinkActive="bg-indigo-600 text-white shadow-md shadow-indigo-200"
+          routerLinkActive="active-link"
           [routerLinkActiveOptions]="{ exact: true }"
           routerLink="/dashboard"
-          class="group rounded text-slate-500
-                 hover:bg-indigo-50 hover:text-indigo-600
-                 transition-all duration-300 ease-in-out"
+          class="menu-item"
         >
-          <a
-            routerLink="dashboard"
-            class="flex w-full items-center gap-3 px-4 py-3"
-          >
-            <span
-              class="material-symbols-outlined text-[22px]
-                     transition-transform duration-300
-                     group-hover:scale-110"
-            >
-              dashboard
-            </span>
-            <span class="text-sm font-semibold tracking-wide">
-              Dashboard
-            </span>
+          <a routerLink="/dashboard" class="menu-link">
+            <span class="material-symbols-outlined menu-icon">dashboard</span>
+            <span class="menu-text">Dashboard</span>
           </a>
         </li>
-        <li>
-          <button routerLink="/create/mecanicien"
-                  class="bg-black text-white font-bold text-sm py-2 px-4 rounded-lg shadow"
-          >
-            Create Mecanicien
-          </button>
+
+        <li
+          routerLinkActive="active-link"
+          routerLink="/vehicules"
+          class="menu-item"
+        >
+          <a routerLink="/vehicules" class="menu-link">
+            <span class="material-symbols-outlined menu-icon">directions_car</span>
+            <span class="menu-text">Véhicules</span>
+          </a>
+        </li>
+        <li
+          routerLinkActive="active-link"
+          routerLink="/inteventions"
+          class="menu-item"
+        >
+          <a routerLink="/inteventions" class="menu-link">
+            <span class="material-symbols-outlined menu-icon">build</span>
+            <span class="menu-text">Interventions</span>
+          </a>
         </li>
       </ul>
     </nav>
   </div>
 
-
-  <div class="w-full">
-
-    <div
-      class="mb-4 flex items-center gap-3 rounded-xl
-             bg-slate-50 p-3"
-    >
-      <div
-        class="flex size-10 shrink-0 items-center justify-center
-               rounded-full bg-indigo-100 text-indigo-600"
-      >
-        <span class="material-symbols-outlined text-[22px]">
-          person
-        </span>
+  <div class="sidebar-bottom">
+    <div class="user-profile">
+      <div class="user-avatar-container">
+        <span class="material-symbols-outlined">person</span>
       </div>
-
-      <div class="min-w-0 flex-1">
-        <p class="truncate text-sm font-semibold text-slate-800">
-          Abdelhafid
-        </p>
-
-        <p class="truncate text-xs text-slate-400">
-          Administrator
-        </p>
+      <div class="user-info">
+        <p class="user-name">Abdelhafid</p>
+        <p class="user-role">Administrator</p>
       </div>
     </div>
 
-    <!-- Logout -->
-    <button
-      type="button"
-      class="group flex w-full items-center justify-center gap-2
-             rounded-xl border border-rose-100
-             bg-rose-50 py-3
-             text-sm font-semibold text-rose-600
-             hover:border-rose-600 hover:bg-rose-600 hover:text-white
-             hover:shadow-md hover:shadow-rose-200
-             transition-all duration-300 ease-in-out"
-    >
-      <span
-        class="material-symbols-outlined text-[21px]
-               transition-transform duration-300
-               group-hover:-translate-x-1"
-      >
-        logout
-      </span>
+    <button type="button" class="logout-button">
+      <span class="material-symbols-outlined logout-icon">logout</span>
       <span>Log out</span>
     </button>
-
   </div>
 </aside>
