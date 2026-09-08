@@ -1,62 +1,58 @@
-import { Injectable, inject } from '@angular/core'; // <-- @Injectable à la place de @Service
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Mecanicien } from '../../../entities/Mecanicien';
 import { Intervention } from '../../../entities/Interventions';
-
+import { ApiResponse } from '../../../entities/ApiResponse';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MecanicienService {
-
   private readonly baseUrl = 'http://localhost:8080/api/v1/mecaniciens';
   private readonly http = inject(HttpClient);
 
-
-  getAllMechanicals(): Observable<Mecanicien[]> {
-    return this.http.get<Mecanicien[]>(this.baseUrl);
+  getAllMechanicals(): Observable<ApiResponse<Mecanicien[]>> {
+    return this.http.get<ApiResponse<Mecanicien[]>>(this.baseUrl);
   }
 
-  getMechanicalsDisponibles(disponible: boolean): Observable<Mecanicien[]> {
+  getMechanicalsDisponibles(disponible: boolean): Observable<ApiResponse<Mecanicien[]>> {
     const params = new HttpParams().set('disponible', disponible.toString());
-    return this.http.get<Mecanicien[]>(`${this.baseUrl}/disponibles`, { params });
+    return this.http.get<ApiResponse<Mecanicien[]>>(`${this.baseUrl}/disponibles`, { params });
   }
 
-
-  getMecanicienById(id: number): Observable<Mecanicien> {
-    return this.http.get<Mecanicien>(`${this.baseUrl}/${id}`);
+  getMecanicienById(id: number): Observable<ApiResponse<Mecanicien>> {
+    return this.http.get<ApiResponse<Mecanicien>>(`${this.baseUrl}/${id}`);
   }
 
-  createMecanicien(mecanicien: Mecanicien): Observable<Mecanicien> {
-    return this.http.post<Mecanicien>(`${this.baseUrl}/create`, mecanicien);
+  createMecanicien(mecanicien: Partial<Mecanicien>): Observable<ApiResponse<Mecanicien>> {
+    return this.http.post<ApiResponse<Mecanicien>>(`${this.baseUrl}/create`, mecanicien);
   }
 
-
-  updateMecanicien(id: number, mecanicien: Mecanicien): Observable<Mecanicien> {
-    return this.http.put<Mecanicien>(`${this.baseUrl}/update/${id}`, mecanicien);
+  updateMecanicien(
+    id: number,
+    mecanicien: Partial<Mecanicien>,
+  ): Observable<ApiResponse<Mecanicien>> {
+    return this.http.put<ApiResponse<Mecanicien>>(`${this.baseUrl}/update/${id}`, mecanicien);
   }
 
-
-  deleteMecanicien(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/delete/${id}`);
+  deleteMecanicien(id: number): Observable<ApiResponse<void>> {
+    return this.http.delete<ApiResponse<void>>(`${this.baseUrl}/delete/${id}`);
   }
 
-  activer(id: number): Observable<Mecanicien> {
-    return this.http.patch<Mecanicien>(`${this.baseUrl}/activer/${id}`, null);
+  activer(id: number): Observable<ApiResponse<Mecanicien>> {
+    return this.http.patch<ApiResponse<Mecanicien>>(`${this.baseUrl}/activer/${id}`, null);
   }
 
-
-  desactiver(id: number): Observable<Mecanicien> {
-    return this.http.patch<Mecanicien>(`${this.baseUrl}/desactiver/${id}`, null);
+  desactiver(id: number): Observable<ApiResponse<Mecanicien>> {
+    return this.http.patch<ApiResponse<Mecanicien>>(`${this.baseUrl}/desactiver/${id}`, null);
   }
 
-  getInterventions(id: number): Observable<Intervention[]> {
-    return this.http.get<Intervention[]>(`${this.baseUrl}/${id}/interventions`);
+  getInterventions(id: number): Observable<ApiResponse<Intervention[]>> {
+    return this.http.get<ApiResponse<Intervention[]>>(`${this.baseUrl}/${id}/interventions`);
   }
 
-
-  getCharge(): Observable<Record<number, number>> {
-    return this.http.get<Record<number, number>>(`${this.baseUrl}/charge`);
+  getCharge(): Observable<ApiResponse<Record<number, number>>> {
+    return this.http.get<ApiResponse<Record<number, number>>>(`${this.baseUrl}/charge`);
   }
 }

@@ -27,16 +27,7 @@ export class Dashboard implements OnInit {
     this.dashboardService.getAtelierStats().subscribe({
       next: (response) => {
         this.stats = response.data || response;
-        this.recentHistory = this.stats.dernieresInterventions || [
-          {
-            id: 2,
-            ancienStatus: 'DEVIS_A_VALIDER',
-            nouveauStatus: 'EN_REPARATION',
-            commentaire: 'Passage en réparation après validation du devis par téléphone',
-            date: '2026-09-03T17:08:13.969418',
-            auteur: 'Youssef BENNANI',
-          },
-        ];
+        console.log(response.data);
         this.loading = false;
       },
       error: (err) => {

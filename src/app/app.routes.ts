@@ -4,7 +4,7 @@ import { Login } from './features/auth/login/login';
 import { InterventionList } from './features/interventions/intervention-list/intervention-list';
 import { VehiculeList } from './features/vehicules/vehicule-list/vehicule-list';
 import { MecanicienList } from './features/mecaniciens/mecanicien-list/mecanicien-list';
-import { InterventionHistory } from './features/interventions/intervention-history/intervention-history';
+import { InterventionHistory } from './features/historique/historique-list/intervention-history';
 import { Register } from './features/auth/register/register';
 import { Admin } from './features/admin/admin';
 import { InterventionCreate } from './features/interventions/intervention-create/intervention-create';
@@ -32,7 +32,9 @@ export const routes: Routes = [
 
   { path: 'inteventions', component: InterventionList },
   { path: 'create/intervention', component: InterventionCreate },
-  { path: 'historique', component: InterventionHistory },
+
+  { path: 'historiques', component: InterventionHistory },
+  { path: 'historiques/intervention/:id', component: InterventionHistory },
 
   {
     path: 'admin',

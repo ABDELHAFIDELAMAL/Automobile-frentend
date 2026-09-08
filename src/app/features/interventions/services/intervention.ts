@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Intervention } from '../../../entities/Interventions';
+import { ApiResponse } from '../../../entities/ApiResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -10,64 +11,76 @@ export class InterventionService {
   private readonly baseUrl = 'http://localhost:8080/api/v1/interventions';
   private readonly http = inject(HttpClient);
 
-  getAllInterventions(): Observable<Intervention[]> {
-    return this.http.get<Intervention[]>(this.baseUrl);
+  getAllInterventions(): Observable<ApiResponse<Intervention[]>> {
+    return this.http.get<ApiResponse<Intervention[]>>(this.baseUrl);
   }
 
-  createIntervention(intervention: Intervention): Observable<Intervention> {
-    return this.http.post<Intervention>(`${this.baseUrl}/create`, intervention);
+  createIntervention(intervention: Partial<Intervention>): Observable<ApiResponse<Intervention>> {
+    return this.http.post<ApiResponse<Intervention>>(`${this.baseUrl}/create`, intervention);
   }
 
-  updateIntervention(id: number, intervention: Intervention): Observable<Intervention> {
-    return this.http.put<Intervention>(`${this.baseUrl}/update/${id}`, intervention);
+  updateIntervention(
+    id: number,
+    intervention: Partial<Intervention>,
+  ): Observable<ApiResponse<Intervention>> {
+    return this.http.put<ApiResponse<Intervention>>(`${this.baseUrl}/update/${id}`, intervention);
   }
 
-  assignMecanicien(id: number, mecanicien: any): Observable<Intervention> {
-    return this.http.patch<Intervention>(`${this.baseUrl}/assign/${id}`, mecanicien);
+  assignMecanicien(id: number, mecanicien: any): Observable<ApiResponse<Intervention>> {
+    return this.http.patch<ApiResponse<Intervention>>(`${this.baseUrl}/assign/${id}`, mecanicien);
   }
 
-  setCoutEstime(id: number, cout: number): Observable<Intervention> {
+  setCoutEstime(id: number, cout: number): Observable<ApiResponse<Intervention>> {
     const params = new HttpParams().set('cout', cout.toString());
-    return this.http.post<Intervention>(`${this.baseUrl}/setcout/${id}`, null, { params });
-  }
-
-  addDiagnostic(id: number, diagnostic: string): Observable<Intervention> {
-    const params = new HttpParams().set('diagnostic', diagnostic);
-    return this.http.post<Intervention>(`${this.baseUrl}/ajouter/diagnostic/${id}`, null, {
+    return this.http.post<ApiResponse<Intervention>>(`${this.baseUrl}/setcout/${id}`, null, {
       params,
     });
   }
 
-  changerStatus(id: number, statusIntervention: string): Observable<Intervention> {
-    return this.http.patch<Intervention>(`${this.baseUrl}/change/status/${id}`, statusIntervention);
+  addDiagnostic(id: number, diagnostic: string): Observable<ApiResponse<Intervention>> {
+    const params = new HttpParams().set('diagnostic', diagnostic);
+    return this.http.post<ApiResponse<Intervention>>(
+      `${this.baseUrl}/ajouter/diagnostic/${id}`,
+      null,
+      {
+        params,
+      },
+    );
   }
 
-  terminer(id: number): Observable<Intervention> {
-    return this.http.patch<Intervention>(`${this.baseUrl}/terminer/${id}`, null);
+  changerStatus(id: number, statusIntervention: string): Observable<ApiResponse<Intervention>> {
+    return this.http.patch<ApiResponse<Intervention>>(
+      `${this.baseUrl}/change/status/${id}`,
+      statusIntervention,
+    );
   }
 
-  restituer(id: number): Observable<Intervention> {
-    return this.http.patch<Intervention>(`${this.baseUrl}/restituer/${id}`, null);
+  terminer(id: number): Observable<ApiResponse<Intervention>> {
+    return this.http.patch<ApiResponse<Intervention>>(`${this.baseUrl}/terminer/${id}`, null);
   }
 
-  getInterventionByMecanicien(id: number): Observable<Intervention[]> {
-    return this.http.get<Intervention[]>(`${this.baseUrl}/by/mecanicien/${id}`);
+  restituer(id: number): Observable<ApiResponse<Intervention>> {
+    return this.http.patch<ApiResponse<Intervention>>(`${this.baseUrl}/restituer/${id}`, null);
   }
 
-  getInterventionByVehicule(id: number): Observable<Intervention[]> {
-    return this.http.get<Intervention[]>(`${this.baseUrl}/by/vehicule/${id}`);
+  getInterventionByMecanicien(id: number): Observable<ApiResponse<Intervention[]>> {
+    return this.http.get<ApiResponse<Intervention[]>>(`${this.baseUrl}/by/mecanicien/${id}`);
   }
 
-  getEnRetard(): Observable<Intervention[]> {
-    return this.http.get<Intervention[]>(`${this.baseUrl}/en/retard`);
+  getInterventionByVehicule(id: number): Observable<ApiResponse<Intervention[]>> {
+    return this.http.get<ApiResponse<Intervention[]>>(`${this.baseUrl}/by/vehicule/${id}`);
   }
 
-  calculerCoutTotal(id: number): Observable<number> {
-    return this.http.get<number>(`${this.baseUrl}/calculer/cout/total/${id}`);
+  getEnRetard(): Observable<ApiResponse<Intervention[]>> {
+    return this.http.get<ApiResponse<Intervention[]>>(`${this.baseUrl}/en/retard`);
   }
 
-  getInterventionsByType(type: any): Observable<Intervention[]> {
-    return this.http.request<Intervention[]>('GET', `${this.baseUrl}/by/type`, {
+  calculerCoutTotal(id: number): Observable<ApiResponse<number>> {
+    return this.http.get<ApiResponse<number>>(`${this.baseUrl}/calculer/cout/total/${id}`);
+  }
+
+  getInterventionsByType(type: any): Observable<ApiResponse<Intervention[]>> {
+    return this.http.request<ApiResponse<Intervention[]>>('GET', `${this.baseUrl}/by/type`, {
       body: type,
     });
   }

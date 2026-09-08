@@ -1,4 +1,4 @@
-
+@reference "tailwindcss" ;
 .cont {
   @apply min-h-screen flex flex-col items-center justify-center bg-slate-50 p-4 mx-auto;
 }

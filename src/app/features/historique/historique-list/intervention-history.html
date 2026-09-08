@@ -1,0 +1,26 @@
+<div class="p-5">
+  <h1>Historique des Interventions</h1>
+  <p>Nombre d'actions : {{ historiques.length }}</p>
+
+  @for (log of historiques; track log.id) {
+    <div>
+      <h3>Action #{{ log.id }}</h3>
+      <p>
+        <strong>Statut :</strong>
+        @if (log.ancienStatus) {
+          <span>{{ log.ancienStatus }}</span>
+        } @else {
+          <span>Nouveau dossier</span>
+        }
+        &rarr;
+        <span>{{ log.nouveauStatus }}</span>
+      </p>
+      <p><strong>Commentaire :</strong> {{ log.commentaire }}</p>
+      <p><strong>Auteur :</strong> {{ log.auteur }}</p>
+      <p><strong>Date :</strong> {{ log.date | date:'dd/MM/yyyy HH:mm' }}</p>
+    </div>
+    <hr />
+  } @empty {
+    <p>Aucun historique disponible pour cette intervention.</p>
+  }
+</div>

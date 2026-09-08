@@ -1,7 +1,7 @@
 <div class="cont">
   <form [formGroup]="VehiculeForm" (ngSubmit)="onSubmit()">
     <div>
-      <h1>Create Vehicule</h1>
+      <h1>{{isEditMode ? 'Modifier Vehicule' : 'Create Vehicule' }}</h1>
     </div>
     <div>
       <div>
@@ -69,7 +69,7 @@
       </div>
     </div>
     <div>
-      <button type="submit" [disabled]="VehiculeForm.invalid">Create Vehicule</button>
+      <button type="submit" [disabled]="VehiculeForm.invalid">{{ isEditMode ? 'Modifier Vehicule' : 'Create Vehicule' }}</button>
     </div>
   </form>
 </div>

@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { VehicleService } from '../services/VehiculeService';
-import { CurrencyPipe, DatePipe, DecimalPipe, NgFor, NgIf } from '@angular/common';
+import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Vehicule } from '../../../entities/Vehicule';
 import { RouterLink } from '@angular/router';
 
 @Component({
-  imports: [DecimalPipe, CurrencyPipe, DatePipe, NgFor, NgIf, FormsModule, RouterLink],
+  imports: [CommonModule, CurrencyPipe, DatePipe, FormsModule, RouterLink],
   selector: 'app-vehicule-list',
   styleUrl: './vehicule-list.css',
   templateUrl: './vehicule-list.html',
@@ -17,22 +17,27 @@ export class VehiculeList implements OnInit {
 
   constructor(private vehicleService: VehicleService) {}
 
-  ngOnInit(): void {
-    this.loadAllVehicles();
+
+
+  ngOnInit() {
+    this.loadVehicules()
   }
 
-  loadAllVehicles(): void {
+  loadVehicules() {
     this.vehicleService.getAllVehicles().subscribe({
-      next: (response: any) => {
-        this.vehicules = response.data || response;
+      next: (response) => {
+        console.log('Length:', response.data.length);
+        this.vehicules = response.data;
+        console.log('Vehicules : ', this.vehicules);
       },
       error: (err) => {
-        console.error('Erreur de API : ', err);
+        console.error('Error:', err);
       },
     });
   }
 
-  deleteVehicule(id: number) {
+  deleteVehicule(id: number): void {
+    console.log('Delete Vehicule called');
     if (!confirm('Êtes-vous sûr de vouloir supprimer ce véhicule ?')) {
       return;
     }
@@ -46,24 +51,4 @@ export class VehiculeList implements OnInit {
     });
   }
 
-  testPushVehicule() {
-    const prototypeVehicule: Vehicule = {
-      id: Math.floor(Math.random() * 1000),
-      immatriculation: 'TEST-123-X',
-      marque: 'TestMarque',
-      modele: 'TestModele',
-      annee: 2026,
-      kilometrage: 100,
-      clientFictif: false,
-      interventions: [],
-    };
-
-    this.vehicules.push(prototypeVehicule);
-  }
-
-  logVehicules(): void {
-    for (const vehicule of this.vehicules) {
-      console.log(vehicule.id);
-    }
-  }
 }
