@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -10,5 +10,10 @@ import { RouterModule } from '@angular/router';
   styleUrl: './sidebar.css',
 })
 export class SidebarComponent {
+  isCollapsed = signal<boolean>(false);
+
+  toggleSidebar(): void {
+    this.isCollapsed.update((state) => !state);
+  }
 
 }

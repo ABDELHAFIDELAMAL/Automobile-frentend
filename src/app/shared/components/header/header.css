@@ -1,8 +1,48 @@
 @reference "tailwindcss";
 
-button[routerLink='/register'] {
-  @apply inline-flex items-center justify-center bg-black text-white font-bold text-sm py-2 px-4 rounded-lg shadow
-  transition-all duration-200 ease-in-out cursor-pointer tracking-wide
-  hover:bg-black hover:shadow-md hover:shadow-blue-500/20
-  active:scale-[0.98] ;
+header {
+  @apply flex items-center justify-between w-full h-full px-6 bg-white select-none;
+}
+
+.header-title {
+  @apply flex items-center;
+}
+
+.header-title h1 {
+  @apply text-xl font-bold text-black tracking-tight;
+}
+
+.search-box {
+  @apply relative w-full max-w-xl mx-4;
+}
+
+.search-box span {
+  @apply absolute left-4 top-1/2 -translate-y-1/2 text-[#a3a3a3] text-[22px] pointer-events-none;
+}
+
+.search-box input {
+  @apply w-full h-12 pl-12 pr-16 bg-white text-black placeholder-[#a3a3a3] text-[15px] font-normal rounded border border-gray-200/80 shadow-sm focus:outline-none transition-all duration-200;
+}
+
+.search-shortcut {
+  @apply absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center h-7 px-2 bg-gray-50 text-gray-400 text-[12px] font-medium rounded-md border border-gray-200 pointer-events-none select-none;
+}
+.profile-box {
+  @apply flex items-center gap-3 cursor-pointer ;
+}
+
+.profile-info {
+  @apply hidden sm:flex flex-col text-right;
+}
+
+.user-name {
+  @apply text-[14px] font-semibold text-black leading-tight hover:text-black/70 transition-colors;
+}
+
+.user-role {
+  @apply text-[12px] text-black/40 mt-0.5;
+}
+
+.user-avatar {
+  @apply w-10 h-10 rounded-full bg-black text-white flex items-center justify-center font-bold text-[14px] border border-black/10 shadow-sm overflow-hidden;
 }

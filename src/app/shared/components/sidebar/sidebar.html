@@ -1,64 +1,58 @@
-<aside class="sidebar-container">
-  <div class="sidebar-top">
-    <div class="sidebar-brand">
-      <h2>Gestion Atelier</h2>
-      <p>MANAGEMENT SYSTEM</p>
+<aside [class.collapsed]="isCollapsed()">
+  <div class="sidebar-header">
+    <div class="logo-box">
+      <span class="material-symbols-outlined">car_gear</span>
     </div>
-
-    <nav>
-      <p class="menu-title">Main menu</p>
-
-      <ul class="menu-list">
-        <li
-          routerLinkActive="active-link"
-          [routerLinkActiveOptions]="{ exact: true }"
-          routerLink="/dashboard"
-          class="menu-item"
-        >
-          <a routerLink="/dashboard" class="menu-link">
-            <span class="material-symbols-outlined menu-icon">dashboard</span>
-            <span class="menu-text">Dashboard</span>
-          </a>
-        </li>
-
-        <li
-          routerLinkActive="active-link"
-          routerLink="/vehicules"
-          class="menu-item"
-        >
-          <a routerLink="/vehicules" class="menu-link">
-            <span class="material-symbols-outlined menu-icon">directions_car</span>
-            <span class="menu-text">Véhicules</span>
-          </a>
-        </li>
-        <li
-          routerLinkActive="active-link"
-          routerLink="/inteventions"
-          class="menu-item"
-        >
-          <a routerLink="/inteventions" class="menu-link">
-            <span class="material-symbols-outlined menu-icon">build</span>
-            <span class="menu-text">Interventions</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <div class="brand-info">
+      <p class="brand-name">Automobile</p>
+      <p class="brand-sub">Gestion Atelier</p>
+    </div>
+    <div class="toggle-btn" (click)="toggleSidebar()">
+      <span class="material-symbols-outlined">chevron_right</span>
+    </div>
   </div>
 
-  <div class="sidebar-bottom">
-    <div class="user-profile">
-      <div class="user-avatar-container">
-        <span class="material-symbols-outlined">person</span>
-      </div>
-      <div class="user-info">
-        <p class="user-name">Abdelhafid</p>
-        <p class="user-role">Administrator</p>
-      </div>
+  <nav class="nav-menu">
+    <div class="nav-item" routerLink='/home' routerLinkActive="active">
+      <span class="material-symbols-outlined">home</span>
+      <p>Home</p>
     </div>
 
-    <button type="button" class="logout-button">
-      <span class="material-symbols-outlined logout-icon">logout</span>
-      <span>Log out</span>
-    </button>
+    <div class="nav-item" routerLink="/dashboard" routerLinkActive="active">
+      <span class="material-symbols-outlined">dashboard</span>
+      <p>Dashboard</p>
+    </div>
+
+    <div class="nav-item" routerLink="/vehicules" routerLinkActive="active">
+      <span class="material-symbols-outlined">directions_car</span>
+      <p>Vehicules</p>
+    </div>
+
+    <div class="nav-item" routerLink="/interventions" routerLinkActive="active">
+      <span class="material-symbols-outlined">build</span>
+      <p>Interventions</p>
+    </div>
+
+    <div class="nav-item" routerLink="/historiques" routerLinkActive="active">
+      <span class="material-symbols-outlined">history</span>
+      <p>Historique</p>
+    </div>
+
+    <div class="nav-item" routerLink="/mecaniciens" routerLinkActive="active">
+      <span class="material-symbols-outlined">engineering</span>
+      <p>Mecaniciens</p>
+    </div>
+
+    <div class="nav-item" routerLink="/utilisateurs" routerLinkActive="active">
+      <span class="material-symbols-outlined">frame_person</span>
+      <p>Utilisateurs</p>
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="nav-item logout-item">
+      <span class="material-symbols-outlined">logout</span>
+      <p>Logout</p>
+    </div>
   </div>
 </aside>
