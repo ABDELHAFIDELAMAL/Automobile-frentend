@@ -1,17 +1,18 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { NgIf, NgFor, CurrencyPipe, DatePipe } from '@angular/common';
-import { DashboardService } from './services/dashboard';
+import { DashboardService } from '../services/dashboard-service';
+import {  DashboardStats } from '../../../entities/Dashboard';
+import { DatePipe, KeyValuePipe } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [NgIf, NgFor, CurrencyPipe, DatePipe],
+  imports: [DatePipe, KeyValuePipe],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
 export class Dashboard implements OnInit {
-  stats = signal<any>(null);
-  recentHistory = signal<any[]>([]);
+  stats = signal<DashboardStats | null>(null);
+  retards = signal<any[]>([]);
   loading = signal<boolean>(true);
   errorMessage = signal<string>('');
 
@@ -25,24 +26,19 @@ export class Dashboard implements OnInit {
     this.loading.set(true);
     this.dashboardService.getAtelierStats().subscribe({
       next: (response) => {
-        const dataReceived = response.data || response;
-        console.log('Data Received : ' , dataReceived);
-        this.stats.set(dataReceived);
-
-
-        if (dataReceived.recentHistory()) {
-          this.recentHistory.set(dataReceived.rentHistory);
+        if (response && response.data) {
+          this.stats.set(response.data);
+          this.retards.set(response.data.retardsRestitution || []);
+          console.log('Stats : ', this.stats());
+          console.log('Stats : ', this.retards());
         }
-
-        console.log('Données reçues et assignées au Signal :', dataReceived);
         this.loading.set(false);
       },
       error: (err) => {
-        console.error('Error fetching dashboard data:', err);
-        this.errorMessage.set('Impossible de charger les données du tableau de bord.');
+        console.error('Error:', err);
+        this.errorMessage.set('Impossible de charger les données.');
         this.loading.set(false);
       },
     });
   }
-
 }

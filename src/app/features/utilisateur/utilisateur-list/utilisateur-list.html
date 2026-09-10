@@ -1,1 +1,7 @@
-<p>utilisateur-list works!</p>
+<div class="">
+  @for(utilisateur of Utilisateurs() ; track utilisateur.id){
+    <div>
+      <h1>Utilisatuer {{ utilisateur.id}}  Nom {{ utilisateur.username}} </h1>
+    </div>
+  }
+</div>

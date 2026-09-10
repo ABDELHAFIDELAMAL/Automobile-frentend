@@ -1,0 +1,308 @@
+@reference "tailwindcss";
+
+.dashboard-container {
+  @apply min-h-screen bg-white text-zinc-950 p-4 sm:p-6 lg:p-8;
+}
+
+.dashboard-header {
+  @apply flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between mb-8;
+}
+
+.eyebrow {
+  @apply text-[10px] sm:text-xs font-bold tracking-[0.2em] text-zinc-400 mb-2;
+}
+
+.dashboard-header h1 {
+  @apply text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight flex flex-wrap items-center gap-3;
+}
+
+.dashboard-header h1 span {
+  @apply inline-flex items-center justify-center min-w-8 h-8 px-2 rounded-lg bg-zinc-950 text-white text-sm font-bold;
+}
+
+.subtitle {
+  @apply mt-2 text-sm text-zinc-500 max-w-xl;
+}
+
+.btn-primary {
+  @apply w-full lg:w-auto bg-zinc-950 text-white px-5 py-3 rounded-xl text-sm font-bold transition-all duration-200 hover:bg-zinc-800 hover:-translate-y-0.5 active:translate-y-0;
+}
+
+.quick-stats {
+  @apply grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4 mb-10;
+}
+
+.stat-card {
+  @apply flex items-center gap-4 bg-white border border-zinc-200 rounded-2xl p-4 sm:p-5 transition-all duration-200 hover:border-zinc-400 hover:shadow-sm;
+}
+
+.stat-icon {
+  @apply flex items-center justify-center w-10 h-10 rounded-xl bg-zinc-950 text-white text-xs font-black;
+}
+
+.stat-orange {
+  @apply bg-orange-100 text-orange-700;
+}
+
+.stat-blue {
+  @apply bg-blue-100 text-blue-700;
+}
+
+.stat-green {
+  @apply bg-emerald-100 text-emerald-700;
+}
+
+.stat-card span {
+  @apply block text-xs text-zinc-500 mb-1;
+}
+
+.stat-card strong {
+  @apply block text-xl font-black;
+}
+
+.section-header {
+  @apply flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-5;
+}
+
+.section-header h2 {
+  @apply text-xl font-black tracking-tight;
+}
+
+.section-header p {
+  @apply text-sm text-zinc-500 mt-1;
+}
+
+.filter-button {
+  @apply flex items-center justify-center gap-3 px-4 py-2.5 border border-zinc-200 rounded-xl text-sm font-semibold bg-white hover:bg-zinc-50 transition;
+}
+
+.interventions-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4;
+}
+
+.intervention-card {
+  @apply relative bg-white border border-zinc-200 rounded-2xl p-4 sm:p-5 overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-zinc-200/50;
+}
+
+.intervention-card::before {
+  content: "";
+  @apply absolute left-0 top-0 bottom-0 w-1 bg-zinc-900;
+}
+
+.card-header {
+  @apply flex items-start justify-between gap-3 mb-4;
+}
+
+.title-group {
+  @apply flex items-start gap-3 min-w-0;
+}
+
+.id-tag {
+  @apply shrink-0 px-2 py-1 rounded-md bg-zinc-100 text-[11px] font-black text-zinc-500;
+}
+
+.title-group h3 {
+  @apply text-base sm:text-lg font-black truncate;
+}
+
+.title-group p {
+  @apply text-xs text-zinc-500 mt-1;
+}
+
+.status-wrapper {
+  @apply shrink-0;
+}
+
+.status-badge {
+  @apply inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-[10px] sm:text-xs font-bold bg-zinc-100 text-zinc-700;
+}
+
+.status-dot {
+  @apply w-1.5 h-1.5 rounded-full bg-current;
+}
+
+.status-badge[data-status="Reçue"] {
+  @apply bg-zinc-100 text-zinc-700;
+}
+
+.status-badge[data-status="Diagnostic en cours"] {
+  @apply bg-orange-100 text-orange-700;
+}
+
+.status-badge[data-status="Devis à valider"] {
+  @apply bg-yellow-100 text-yellow-700;
+}
+
+.status-badge[data-status="En réparation"] {
+  @apply bg-blue-100 text-blue-700;
+}
+
+.status-badge[data-status="Terminée"] {
+  @apply bg-emerald-100 text-emerald-700;
+}
+
+.status-badge[data-status="Restituée"] {
+  @apply bg-green-100 text-green-700;
+}
+
+.status-badge[data-status="Annulée"] {
+  @apply bg-red-100 text-red-700;
+}
+
+.priority-row {
+  @apply flex items-center justify-between border-y border-zinc-100 py-3 mb-4;
+}
+
+.priority-label {
+  @apply text-xs text-zinc-500;
+}
+
+.priority-badge {
+  @apply px-2.5 py-1 rounded-lg text-[10px] font-black uppercase bg-zinc-100 text-zinc-700;
+}
+
+.priority-badge[data-priority="URGENTE"] {
+  @apply bg-red-100 text-red-700;
+}
+
+.priority-badge[data-priority="HAUTE"] {
+  @apply bg-orange-100 text-orange-700;
+}
+
+.priority-badge[data-priority="MOYENNE"] {
+  @apply bg-yellow-100 text-yellow-700;
+}
+
+.priority-badge[data-priority="BASSE"] {
+  @apply bg-zinc-100 text-zinc-600;
+}
+
+.vehicle-box {
+  @apply flex items-center gap-3 p-3 rounded-xl bg-zinc-50 border border-zinc-100 mb-4;
+}
+
+.vehicle-icon {
+  @apply flex items-center justify-center w-10 h-10 rounded-lg bg-white border border-zinc-200 text-lg;
+}
+
+.vehicle-box span {
+  @apply block text-[10px] uppercase tracking-wide text-zinc-400 font-bold;
+}
+
+.vehicle-box strong {
+  @apply block mt-0.5 text-sm font-bold;
+}
+
+.description {
+  @apply mb-5;
+}
+
+.description > span {
+  @apply text-[10px] uppercase tracking-wide font-bold text-zinc-400;
+}
+
+.description p {
+  @apply mt-1 text-sm text-zinc-600 leading-relaxed line-clamp-2;
+}
+
+.information-grid {
+  @apply grid grid-cols-2 gap-x-4 gap-y-4 py-4 border-y border-zinc-100;
+}
+
+.information-item span {
+  @apply block text-[10px] uppercase tracking-wide font-bold text-zinc-400;
+}
+
+.information-item strong {
+  @apply block mt-1 text-xs sm:text-sm font-bold truncate;
+}
+
+.cost {
+  @apply text-zinc-950;
+}
+
+.restitution-box {
+  @apply flex items-center justify-between mt-4 p-3 rounded-xl bg-zinc-950 text-white;
+}
+
+.restitution-box span {
+  @apply block text-[10px] uppercase tracking-wide text-zinc-400;
+}
+
+.restitution-box strong {
+  @apply block mt-1 text-sm font-bold;
+}
+
+.arrow {
+  @apply text-xl text-zinc-400;
+}
+
+.danger-text {
+  @apply text-red-400;
+}
+
+.card-actions {
+  @apply flex gap-2 mt-4;
+}
+
+.card-actions button {
+  @apply flex-1 py-2.5 rounded-xl text-xs font-bold transition-all duration-200;
+}
+
+.btn-secondary {
+  @apply bg-white border border-zinc-200 text-zinc-700 hover:bg-zinc-50 hover:border-zinc-300;
+}
+
+.btn-dark {
+  @apply bg-zinc-950 text-white hover:bg-zinc-800;
+}
+
+.empty-state {
+  @apply col-span-full flex flex-col items-center justify-center min-h-64 border border-dashed border-zinc-300 rounded-2xl text-center p-8;
+}
+
+.empty-state > div {
+  @apply text-4xl font-black text-zinc-300 mb-3;
+}
+
+.empty-state h3 {
+  @apply font-black text-lg;
+}
+
+.empty-state p {
+  @apply text-sm text-zinc-500 mt-1;
+}
+
+.intervention-card[data-priority="URGENTE"]::before {
+  @apply bg-red-500;
+}
+
+.intervention-card[data-priority="HAUTE"]::before {
+  @apply bg-orange-500;
+}
+
+.intervention-card[data-priority="MOYENNE"]::before {
+  @apply bg-yellow-500;
+}
+
+.intervention-card[data-priority="BASSE"]::before {
+  @apply bg-zinc-400;
+}
+
+@media (max-width: 640px) {
+  .intervention-card {
+    @apply rounded-xl p-4;
+  }
+
+  .card-header {
+    @apply flex-col;
+  }
+
+  .status-wrapper {
+    @apply w-full;
+  }
+
+  .status-badge {
+    @apply w-fit;
+  }
+}

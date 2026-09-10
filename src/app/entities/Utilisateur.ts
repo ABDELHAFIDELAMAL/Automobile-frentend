@@ -7,6 +7,6 @@ export interface Utilisateur {
   nom: string;
   prenom: string;
   password?: string;
-  role: Role;
   active: boolean;
+  role: Role[];
 }

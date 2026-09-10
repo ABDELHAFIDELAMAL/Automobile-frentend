@@ -2,9 +2,8 @@
   <h1>Historique des Interventions</h1>
   <p>Nombre d'actions : {{ historiques.length }}</p>
 
-  @for (log of historiques; track log.id) {
+  @for (log of historiques(); track log.id) {
     <div>
-      <h3>Action #{{ log.id }}</h3>
       <p>
         <strong>Statut :</strong>
         @if (log.ancienStatus) {

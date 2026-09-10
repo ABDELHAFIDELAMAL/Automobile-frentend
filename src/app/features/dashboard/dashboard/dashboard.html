@@ -1,67 +1,47 @@
-<div class="dashboard-container">
+<div class="dashboard">
 
-  <header class="dashboard-header">
-    <h1>Vue d'ensemble de l'atelier</h1>
-    <p>Statistiques et activité en temps réel</p>
-  </header>
+  @if (loading()) {
+    <div class="loading-state">
+      <span class="material-symbols-outlined">donut_large</span>
+      <span>Chargement des statistiques...</span>
+    </div>
+  }
+  @if (stats(); as s) {
+    <div class="stats-grid">
 
-  <div *ngIf="loading" class="loading-state">
-    <div class="spinner"></div>
-      <p>Chargement des informations...</p>
-  </div>
-
-  <div *ngIf="errorMessage" class="error-state">
-    <span class="material-symbols-outlined">error</span>
-    <p>{{ errorMessage }}</p>
-  </div>
-
-  <div *ngIf="!loading && !errorMessage" class="dashboard-content">
-
-    <main class="dashboard-grid">
-      <div class="stat-card blue-variant">
-        <div class="card-icon">
-          <span class="material-symbols-outlined">directions_car</span>
+      <div class="stat-card total-card">
+        <div class="stat-card-top">
+          <h1>Recu Aujourdhui</h1>
+          <span class="material-symbols-outlined">calendar_today</span>
         </div>
-        <div class="card-info">
-          <p class="card-label">Véhicules enregistrés</p>
-          <h3 class="card-value">{{ stats?.totalVehicules || 0 }}</h3>
-        </div>
+        <p class="stat-number">{{ s.recuesAujourdhui }}</p>
       </div>
 
-      <div class="stat-card amber-variant">
-        <div class="card-icon">
-          <span class="material-symbols-outlined">build</span>
+      <div class="stat-card diagnostic-card">
+        <div class="stat-card-top">
+          <h1>En Diagnostique</h1>
+          <span class="material-symbols-outlined">car_repair</span>
         </div>
-        <div class="card-info">
-          <p class="card-label">Interventions en cours</p>
-          <h3 class="card-value">{{ stats?.interventionsEnCours || 0 }}</h3>
-        </div>
+        <p class="stat-number">{{ s.enDiagnostic }}</p>
       </div>
-    </main>
 
-    <section class="history-section">
-      <h2 class="section-title">Activité récente de l'atelier</h2>
-
-      <div class="history-list">
-        <div *ngFor="let item of recentHistory" class="history-item">
-          <div class="history-badge">
-            <span class="material-symbols-outlined">history</span>
-          </div>
-          <div class="history-details">
-            <div class="history-header">
-              <span class="status-old">{{ item.ancienStatus }}</span>
-              <span class="material-symbols-outlined arrow">arrow_forward</span>
-              <span class="status-new">{{ item.nouveauStatus }}</span>
-            </div>
-            <p class="history-comment">{{ item.commentaire }}</p>
-            <div class="history-footer">
-              <span class="history-author">Par : {{ item.auteur }}</span>
-              <span class="history-date">{{ item.date | date:'dd/MM/yyyy HH:mm' }}</span>
-            </div>
-          </div>
+      <div class="stat-card repair-card">
+        <div class="stat-card-top">
+          <h1>En Réparation</h1>
+          <span class="material-symbols-outlined">car_repair</span>
         </div>
+        <p class="stat-number">{{ s.enReparation }}</p>
       </div>
-    </section>
 
-  </div>
+      <div class="stat-card finished-card">
+        <div class="stat-card-top">
+          <h1>terminées</h1>
+          <span class="material-symbols-outlined">assignment_turned_in</span>
+        </div>
+        <p class="stat-number">{{ s.terminees }}</p>
+      </div>
+
+    </div>
+
+  }
 </div>
