@@ -1,7 +1,81 @@
-<div class="">
-  @for(utilisateur of Utilisateurs() ; track utilisateur.id){
+<div class="users-page">
+  <div class="users-header p-4">
     <div>
-      <h1>Utilisatuer {{ utilisateur.id}}  Nom {{ utilisateur.username}} </h1>
+      <h1>Utilisateurs </h1>
+      <h2 class="text-rose-500">{{ Utilisateurs().length }}</h2>
     </div>
-  }
+    <div>
+      <h1>Utlisateurs On Shipmment</h1>
+      <h2>{{ counterEnabled() }}</h2>
+    </div>
+    <div>
+      <h1>Utlisateurs Available</h1>
+      <h2>{{ coutNonEnabled() }}</h2>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <div class="responsive-wrapper">
+      <table class="users-table">
+        <thead>
+        <tr>
+          <th>LOGO</th>
+          <th>Status</th>
+          <th>Nom</th>
+          <th>Email</th>
+          <th>Roles</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (user of Utilisateurs(); track user.id) {
+            <tr>
+              <td class="col-avatar">
+                <div class="avatar-logo">
+                  {{ user.prenom?.charAt(0)?.toUpperCase() }}{{ user.nom?.charAt(0)?.toUpperCase() }}
+                </div>
+              </td>
+              <td>
+                <span class="badge-status" [ngClass]="user.enabled ? 'shipment' : 'available'">
+                  {{ user.enabled ? 'On Shipment' : 'Available' }}
+                </span>
+              </td>
+              <td class="col-name">
+                {{ user.prenom }} {{ user.nom }}
+              </td>
+              <td class="col-email">
+                {{ user.email }}
+              </td>
+              <td class="col-roles">
+                <div class="roles-wrapper">
+                  @for (role of user.role; track role) {
+                    <span class="role-text">{{ role }}</span>
+                  }
+                </div>
+              </td>
+              <td>
+                <div class="actions-wrapper">
+                  <button type="button" class="btn-toggle">
+                    {{ user.enabled ? 'Désactiver' : 'Activer' }}
+                  </button>
+                  <button type="button" class="btn-delete">
+                    Supprimer
+                  </button>
+                  <button type="button" class="bg-blue-300 py-1 rounded shadow px-2" routerLink="/profile">
+                    Profile
+                  </button>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="8" class="empty-row">
+                Aucun utilisateur trouvé dans le système.
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

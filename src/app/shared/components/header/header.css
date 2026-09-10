@@ -1,7 +1,8 @@
 @reference "tailwindcss";
+@reference "tailwindcss";
 
 header {
-  @apply flex items-center justify-between w-full h-full px-6 bg-white select-none;
+  @apply flex items-center justify-between w-full h-full px-6 bg-white select-none border-b border-slate-100;
 }
 
 .header-title {
@@ -9,26 +10,23 @@ header {
 }
 
 .header-title h1 {
-  @apply text-xl font-bold text-black tracking-tight;
+  @apply text-xl font-bold text-slate-800 tracking-tight;
 }
 
 .search-box {
-  @apply relative w-full max-w-xl mx-4;
+  @apply relative w-full max-w-xl mx-6;
 }
 
 .search-box span {
-  @apply absolute left-4 top-1/2 -translate-y-1/2 text-[#a3a3a3] text-[22px] pointer-events-none;
+  @apply absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-[20px] pointer-events-none;
 }
 
 .search-box input {
-  @apply w-full h-12 pl-12 pr-16 bg-white text-black placeholder-[#a3a3a3] text-[15px] font-normal rounded border border-gray-200/80 shadow-sm focus:outline-none transition-all duration-200;
+  @apply w-full h-11 pl-11 pr-4 bg-slate-50 text-slate-800 placeholder-slate-400 text-[14px] font-medium rounded-xl border border-slate-200/60 transition-all duration-200 focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-100/50;
 }
 
-.search-shortcut {
-  @apply absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center h-7 px-2 bg-gray-50 text-gray-400 text-[12px] font-medium rounded-md border border-gray-200 pointer-events-none select-none;
-}
 .profile-box {
-  @apply flex items-center gap-3 cursor-pointer ;
+  @apply flex items-center gap-3 cursor-pointer p-1.5 rounded-xl hover:bg-slate-50 transition-all duration-200;
 }
 
 .profile-info {
@@ -36,13 +34,21 @@ header {
 }
 
 .user-name {
-  @apply text-[14px] font-semibold text-black leading-tight hover:text-black/70 transition-colors;
+  @apply text-[14px] font-bold text-slate-700 leading-tight transition-colors;
+}
+
+.profile-box:hover .user-name {
+  @apply text-blue-600;
 }
 
 .user-role {
-  @apply text-[12px] text-black/40 mt-0.5;
+  @apply text-[11px] font-semibold text-slate-400 tracking-wide uppercase mt-0.5;
 }
 
 .user-avatar {
-  @apply w-10 h-10 rounded-full bg-black text-white flex items-center justify-center font-bold text-[14px] border border-black/10 shadow-sm overflow-hidden;
+  @apply w-10 h-10 rounded-xl bg-slate-100 text-slate-500 flex items-center justify-center font-bold text-[24px] border border-slate-200/50 shadow-sm transition-all duration-200;
+}
+
+.profile-box:hover .user-avatar {
+  @apply bg-blue-50 text-blue-600 border-blue-100;
 }

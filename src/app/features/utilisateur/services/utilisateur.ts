@@ -8,7 +8,7 @@ import { ApiResponse } from '../../../entities/ApiResponse';
   providedIn: 'root',
 })
 export class UtilisateurService {
-  private baseUrl: string = 'http://localhost:8080/api/v1/users';
+  private baseUrl: string = 'http://localhost:8080/api/v1/utilisateurs';
   private http = inject(HttpClient);
 
   getAllUtilisateurs(): Observable<ApiResponse<Utilisateur[]>> {
