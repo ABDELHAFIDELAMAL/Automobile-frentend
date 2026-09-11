@@ -2,13 +2,14 @@ import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Vehicule } from '../../../entities/Vehicule';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environment/environment';
 
 
 @Injectable({
   providedIn: 'root',
 })
 export class VehicleService {
-  private baseUrl = 'http://localhost:8080/api/v1/vehicules';
+  private baseUrl = `${environment.baseUrl}/vehicules`;
   private http = inject(HttpClient);
 
   isEditMode = signal<boolean>(false);
@@ -17,8 +18,10 @@ export class VehicleService {
     return this.http.get<{ success: boolean; message: string; data: Vehicule[] }>(this.baseUrl);
   }
 
-  getVehiculeById(id: number): Observable<{ success: boolean; message: string; data: Vehicule}> {
-    return this.http.get<{ success: boolean; message: string; data: Vehicule }>(`${this.baseUrl}/${id}`);
+  getVehiculeById(id: number): Observable<{ success: boolean; message: string; data: Vehicule }> {
+    return this.http.get<{ success: boolean; message: string; data: Vehicule }>(
+      `${this.baseUrl}/${id}`,
+    );
   }
 
   createVehicule(vehicule: {}): Observable<Vehicule> {
