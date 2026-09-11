@@ -27,8 +27,8 @@ export class InterventionList implements OnInit {
         this.interventions.set(response.data);
         console.log('Interventions :', this.interventions());
       },
-      error: (err) => {
-        console.error('Erreur lors du chargement des interventions :', err);
+      error: (error) => {
+        alert(error.message);
       },
     });
   }
@@ -53,6 +53,18 @@ export class InterventionList implements OnInit {
         console.error("Erreur lors de la clôture de l'intervention :", err);
       },
     });
+  }
+
+  deleteIntervention(id: number): void {
+    this.interventionService.deleteIntervention(id).subscribe({
+      next: (responce) => {
+        alert(responce.message);
+        this.loadInterventions();
+      },
+      error: (err) => {
+        alert(err.message);
+      }
+    })
   }
 
   totalInterventions() {

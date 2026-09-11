@@ -41,7 +41,7 @@ export const routes: Routes = [
   { path: 'mecaniciens/:id', component: MecanicienDetail, data: { title: 'Details' } },
 
   { path: 'interventions', component: InterventionList, data: { title: 'Inteventions' } },
-  { path: 'interventions/create', component: InterventionCreate, data: { title: 'Create Intervention' }, },
+  { path: 'interventions/create/:id', component: InterventionCreate, data: { title: 'Create Intervention' }, },
   { path: 'interventions/update/:id', component: InterventionCreate, data: { title: 'Update Intervention' }, },
 
   { path: 'historiques', component: InterventionHistory, data: { title: 'Historiques' } },
