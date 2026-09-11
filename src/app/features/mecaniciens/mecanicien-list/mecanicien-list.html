@@ -1,1 +1,34 @@
-<p>mecanicien-list works!</p>
+<div class="container">
+  <h2>Liste des Mécaniciens</h2>
+
+  @if (Mecaniciens().length === 0) {
+  <p class="empty-message">Aucun mécanicien trouvé.</p>
+  } @else {
+  <table class="mecano-table">
+    <thead>
+    <tr>
+      <th>Nom</th>
+      <th>Spécialité</th>
+      <th>Disponibilité</th>
+      <th>Nombre d'interventions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @for (mecano of Mecaniciens(); track mecano.id) {
+    <tr>
+      <td>{{ mecano.nom }}</td>
+      <td>{{ mecano.specialite }}</td>
+      <td>
+        @if (mecano.disponible) {
+        <span class="badge disponible">Disponible</span>
+        } @else {
+        <span class="badge occupe">Occupé</span>
+        }
+      </td>
+      <td>{{ mecano.interventions.length }}</td>
+    </tr>
+    }
+    </tbody>
+  </table>
+  }
+</div>

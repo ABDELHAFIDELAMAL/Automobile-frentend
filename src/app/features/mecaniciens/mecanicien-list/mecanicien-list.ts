@@ -14,10 +14,10 @@ export class MecanicienList implements OnInit {
   constructor(private MecanocienService: MecanicienService) {}
 
   ngOnInit(): void {
-    this.loadMecanicien()
+    this.loadMecaniciens()
   }
 
-  loadMecanicien(){
+  loadMecaniciens(){
     this.MecanocienService.getAllMechanicals().subscribe({
       next : ( response)=>{
         this.Mecaniciens.set(response.data);

@@ -3,6 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { NgIf } from '@angular/common';
 import { VehicleService } from '../services/VehiculeService';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Vehicule } from '../../../entities/Vehicule';
 
 @Component({
   imports: [ReactiveFormsModule, NgIf],
@@ -11,9 +12,6 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './vehicule-create.html',
   standalone: true,
 })
-
-
-
 export class VehiculeCreate implements OnInit {
   isEditMode = false;
   vehiculeId!: number;
@@ -80,30 +78,53 @@ export class VehiculeCreate implements OnInit {
       return;
     }
 
-    const vehicule = this.VehiculeForm.value;
+    const formValue = this.VehiculeForm.value;
+
+    const parsedAnnee = formValue.annee ? parseInt(formValue.annee.toString(), 10) : null;
+    const parsedKilometrage = formValue.kilometrage
+      ? parseInt(formValue.kilometrage.toString(), 10)
+      : 0;
+
+    const vehiculePayload: any = {
+      immatriculation: formValue.immatriculation,
+      marque: formValue.marque,
+      modele: formValue.modele,
+      annee: isNaN(parsedAnnee!) ? null : parsedAnnee,
+      kilometrage: isNaN(parsedKilometrage) ? 0 : parsedKilometrage,
+      clientFictif: !!formValue.clientFictif,
+    };
+
+    console.log('Données nettoyées prêtes pour le backend :', vehiculePayload);
 
     if (this.isEditMode) {
-      this.vehiculeService.updateVehicule(this.vehiculeId, vehicule).subscribe({
-        next: () => {
-          this.router.navigate(['/vehicules']);
-        },
-        error: (err) => {
-          console.error(err);
-        },
-      });
+      this.updateVehicule(this.vehiculeId, vehiculePayload);
     } else {
-      this.vehiculeService.createVehicule(vehicule).subscribe({
-        next: () => {
-          this.router.navigate(['/vehicules']);
-        },
-        error: (err) => {
-          console.error(err);
-        },
-      });
+      this.createVehicule(vehiculePayload);
     }
   }
 
-  cancel(): void {
-    this.router.navigate(['/vehicules']);
+  createVehicule(vehicule: Vehicule) {
+    console.log('Données envoyées au backend :', vehicule);
+
+    this.vehiculeService.createVehicule(vehicule).subscribe({
+      next: () => {
+        this.router.navigate(['/vehicules']);
+      },
+      error: (err) => {
+        console.error(err);
+        console.log("Détails de l'erreur backend :", err.error);
+      },
+    });
+  }
+
+  updateVehicule(id: number, vehicule: Vehicule) {
+    this.vehiculeService.updateVehicule(id, vehicule).subscribe({
+      next: (response) => {
+        console.log('Response update vehicule ', response);
+      },
+      error: (err) => {
+        console.error('Error details : ', err.error);
+      },
+    });
   }
 }

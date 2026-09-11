@@ -4,7 +4,7 @@ import { Intervention } from './Interventions';
 export interface Mecanicien {
   id: number;
   nom: string;
-  specalite: Specialite;
+  specialite: Specialite;
   disponible: boolean;
   interventions: Intervention[];
 }

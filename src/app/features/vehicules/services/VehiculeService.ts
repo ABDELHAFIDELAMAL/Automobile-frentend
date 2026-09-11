@@ -24,7 +24,7 @@ export class VehicleService {
     );
   }
 
-  createVehicule(vehicule: {}): Observable<Vehicule> {
+  createVehicule(vehicule: Vehicule): Observable<Vehicule> {
     return this.http.post<Vehicule>(`${this.baseUrl}/create`, vehicule);
   }
 

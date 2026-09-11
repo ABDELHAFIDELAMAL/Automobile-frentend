@@ -1,0 +1,41 @@
+@reference "tailwindcss";
+
+.container {
+  @apply max-w-[1200px] mx-auto my-8 px-6;
+}
+
+h2 {
+  @apply text-2xl font-bold text-slate-800 mb-6;
+}
+
+.empty-message {
+  @apply p-8 text-center text-slate-500 bg-slate-50 rounded-lg;
+}
+
+.mecano-table {
+  @apply w-full border-collapse bg-white shadow-md rounded-lg overflow-hidden;
+}
+
+.mecano-table th {
+  @apply p-4 text-left font-semibold text-slate-600 bg-slate-100 border-b-2 border-slate-200;
+}
+
+.mecano-table td {
+  @apply p-4 text-slate-700 border-b border-slate-200;
+}
+
+.mecano-table tbody tr {
+  @apply hover:bg-slate-50 transition-colors;
+}
+
+.badge {
+  @apply inline-block px-3 py-1 text-sm font-medium rounded-full;
+}
+
+.badge.disponible {
+  @apply bg-green-100 text-green-700;
+}
+
+.badge.occupe {
+  @apply bg-red-100 text-red-700;
+}
