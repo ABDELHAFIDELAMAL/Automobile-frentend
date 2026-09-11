@@ -1,0 +1,62 @@
+@reference "tailwindcss";
+
+
+h1 {
+  @apply text-2xl font-bold text-slate-800 mb-2;
+}
+
+.action-count {
+  @apply text-sm text-slate-500 mb-6 font-medium;
+}
+
+.timeline-container {
+  @apply space-y-4 relative before:absolute before:inset-y-0 before:left-4 before:w-0.5 before:bg-slate-200;
+}
+
+.timeline-item {
+  @apply relative pl-10 pb-4 last:pb-0;
+}
+
+.timeline-dot {
+  @apply absolute left-2.5 top-1.5 w-3.5 h-3.5 rounded-full bg-blue-500 border-4 border-white shadow-sm ring-1 ring-blue-500/20;
+}
+
+.timeline-card {
+  @apply bg-white border border-slate-100 rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-200;
+}
+
+.status-row {
+  @apply flex flex-wrap items-center gap-2 text-sm font-medium mb-2;
+}
+
+.status-badge {
+  @apply px-2.5 py-0.5 rounded-md text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200/60;
+}
+
+.status-badge.new {
+  @apply bg-blue-50 text-blue-700 border-blue-100;
+}
+
+.status-arrow {
+  @apply text-slate-400 font-light;
+}
+
+.comment-text {
+  @apply text-slate-600 text-sm mb-3 bg-slate-50 p-2.5 rounded-lg border border-slate-100/80 italic;
+}
+
+.meta-row {
+  @apply flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400 font-medium pt-2 border-t border-slate-50;
+}
+
+.author-info {
+  @apply flex items-center gap-1 text-slate-500;
+}
+
+.date-info {
+  @apply text-slate-400;
+}
+
+.empty-state {
+  @apply flex flex-col items-center justify-center p-12 text-center text-slate-400 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200;
+}

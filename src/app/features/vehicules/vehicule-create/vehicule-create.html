@@ -51,8 +51,8 @@
       </div>
       <div class="text-red-500" *ngIf="VehiculeForm.get('kilometrage')?.touched && VehiculeForm.get('kilometrage')?.invalid">
         <small *ngIf="VehiculeForm.get('kilometrage')?.errors?.['required']">kilometrage is required.</small>
-        <small *ngIf="VehiculeForm.get('kilometrage')?.errors?.['minlength']">kilometrage 4 characters.</small>
-        <small *ngIf="VehiculeForm.get('kilometrage')?.errors?.['maxlength']">kilometrage 20 characters.</small>
+        <small *ngIf="VehiculeForm.get('kilometrage')?.errors?.['min']">POSITIFE.</small>
+        <small *ngIf="VehiculeForm.get('kilometrage')?.errors?.['max']">kilometrage MAX 99999 characters.</small>
       </div>
     </div>
     <div>

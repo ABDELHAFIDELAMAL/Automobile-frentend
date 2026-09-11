@@ -1,5 +1,8 @@
 <div class="p-5">
-  <h1>Les Vehicules</h1>
+  <div>
+    <h1>Les Vehicules</h1>
+    <button type="submit" routerLink="/vehicules/create">Creer Vehicule</button>
+  </div>
   <p>Number vehicules {{ vehicules.length }}</p>
   @for (vehicule of vehicules(); track vehicule.id) {
     <div>

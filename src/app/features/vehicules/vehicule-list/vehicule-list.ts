@@ -27,7 +27,7 @@ export class VehiculeList implements OnInit {
       next: (response) => {
         console.log('Length:', response.data.length);
         this.vehicules.set(response.data);
-        console.log('Vehicules : ', this.vehicules);
+        console.log('Vehicules : ', this.vehicules());
       },
       error: (err) => {
         console.error('Error:', err);
