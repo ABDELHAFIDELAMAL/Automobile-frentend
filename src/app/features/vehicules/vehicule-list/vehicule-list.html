@@ -3,19 +3,25 @@
     <h1>Les Vehicules</h1>
     <button type="submit" routerLink="/vehicules/create">Creer Vehicule</button>
   </div>
-  <p>Number vehicules {{ vehicules.length }}</p>
+  <p>Number vehicules {{ vehicules().length }}</p>
   @for (vehicule of vehicules(); track vehicule.id) {
     <div>
       <h2>Véhicule : {{ vehicule.marque }} {{ vehicule.modele }}</h2>
-      <p>ID : {{ vehicule.id }}</p>
       <p>Immatriculation : {{ vehicule.immatriculation }}</p>
       <p>Année : {{ vehicule.annee }}</p>
       <p>Kilométrage : {{ vehicule.kilometrage | number }} km</p>
       <p>Client Fictif : <span>{{ vehicule.clientFictif ? 'Oui' : 'Non' }}</span></p>
       <h3>Nombre Inerventions {{ vehicule.interventions.length }}</h3>
       <div>
-        <button [routerLink]="['/vehicules/update', vehicule.id]">update</button>
-        <button (click)="deleteVehicule(vehicule.id)">Delete</button>
+        <button [routerLink]="['/vehicules/update', vehicule.id]">
+          <span class="material-symbols-outlined">autorenew</span>
+          <span>Modifier</span>
+        </button>
+        <button (click)="deleteVehicule(vehicule.id)">
+          <span class="material-symbols-outlined">delete</span>
+          <span>Supprimer</span>
+        </button>
+        <button [routerLink]="['/interventions/create', vehicule.id]" class="btn-intervention">Créer Intervention</button>
       </div>
     </div>
     <hr>

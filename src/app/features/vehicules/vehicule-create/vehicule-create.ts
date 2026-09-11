@@ -62,9 +62,8 @@ export class VehiculeCreate implements OnInit {
 
   loadVehicule(id: number): void {
     this.vehiculeService.getVehiculeById(id).subscribe({
-      next: (response: any) => {
-        const vehicule = response.data || response;
-        this.VehiculeForm.patchValue(vehicule);
+      next: (response) => {
+        this.VehiculeForm.patchValue(response.data);
       },
       error: (err) => {
         console.error(err);
@@ -79,22 +78,19 @@ export class VehiculeCreate implements OnInit {
     }
 
     const formValue = this.VehiculeForm.value;
-
     const parsedAnnee = formValue.annee ? parseInt(formValue.annee.toString(), 10) : null;
     const parsedKilometrage = formValue.kilometrage
       ? parseInt(formValue.kilometrage.toString(), 10)
       : 0;
 
-    const vehiculePayload: any = {
-      immatriculation: formValue.immatriculation,
-      marque: formValue.marque,
-      modele: formValue.modele,
+    const vehiculePayload: Vehicule = {
+      immatriculation: formValue.immatriculation ?? '',
+      marque: formValue.marque ?? '',
+      modele: formValue.modele ?? '',
       annee: isNaN(parsedAnnee!) ? null : parsedAnnee,
       kilometrage: isNaN(parsedKilometrage) ? 0 : parsedKilometrage,
       clientFictif: !!formValue.clientFictif,
-    };
-
-    console.log('Données nettoyées prêtes pour le backend :', vehiculePayload);
+    } as Vehicule;
 
     if (this.isEditMode) {
       this.updateVehicule(this.vehiculeId, vehiculePayload);
@@ -104,26 +100,23 @@ export class VehiculeCreate implements OnInit {
   }
 
   createVehicule(vehicule: Vehicule) {
-    console.log('Données envoyées au backend :', vehicule);
-
     this.vehiculeService.createVehicule(vehicule).subscribe({
       next: () => {
         this.router.navigate(['/vehicules']);
       },
       error: (err) => {
         console.error(err);
-        console.log("Détails de l'erreur backend :", err.error);
       },
     });
   }
 
   updateVehicule(id: number, vehicule: Vehicule) {
     this.vehiculeService.updateVehicule(id, vehicule).subscribe({
-      next: (response) => {
-        console.log('Response update vehicule ', response);
+      next: () => {
+        this.router.navigate(['/vehicules']);
       },
       error: (err) => {
-        console.error('Error details : ', err.error);
+        console.error(err);
       },
     });
   }

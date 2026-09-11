@@ -16,7 +16,11 @@ export class InterventionService {
     return this.http.get<ApiResponse<Intervention[]>>(this.baseUrl);
   }
 
-  createIntervention(intervention: Partial<Intervention>): Observable<ApiResponse<Intervention>> {
+  getInterventionById(id:number):Observable<ApiResponse<Intervention>>{
+    return this.http.get<ApiResponse<Intervention>>(`${this.baseUrl}/${id}`);
+  }
+
+  createIntervention(intervention: Intervention): Observable<ApiResponse<Intervention>> {
     return this.http.post<ApiResponse<Intervention>>(`${this.baseUrl}/create`, intervention);
   }
 
@@ -25,6 +29,10 @@ export class InterventionService {
     intervention: Partial<Intervention>,
   ): Observable<ApiResponse<Intervention>> {
     return this.http.put<ApiResponse<Intervention>>(`${this.baseUrl}/update/${id}`, intervention);
+  }
+
+  deleteIntervention(id : number): Observable<ApiResponse<void>>{
+    return this.http.delete<ApiResponse<void>>(`${this.baseUrl}/delete/${id}`);
   }
 
   assignMecanicien(id: number, mecanicien: any): Observable<ApiResponse<Intervention>> {
