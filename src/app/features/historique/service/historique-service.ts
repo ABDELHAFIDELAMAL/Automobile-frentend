@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../../../entities/ApiResponse';
 import { Historique } from '../../../entities/Historique';
+import { environment } from '../../../environment/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HistoriqueService {
-  private readonly baseUrl = 'http://localhost:8080/api/v1/historiques';
+  private baseUrl = `${environment.baseUrl}/historiques`;
   private readonly http = inject(HttpClient);
 
   getAllHistoriques(): Observable<ApiResponse<Historique[]>> {

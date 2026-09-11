@@ -1,22 +1,21 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
-import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Intervention } from '../../../entities/Interventions';
 import { InterventionService } from '../services/intervention';
 
+
 @Component({
   selector: 'app-intervention-list',
   standalone: true,
-  imports: [CommonModule, CurrencyPipe, DatePipe, RouterLink, FormsModule],
+  imports: [CommonModule, DatePipe, CurrencyPipe, FormsModule],
   templateUrl: './intervention-list.html',
   styleUrl: './intervention-list.css',
 })
 export class InterventionList implements OnInit {
-  private readonly interventionService
-    = inject(InterventionService);
+  private readonly interventionService = inject(InterventionService);
 
-  interventions: Intervention[] = [];
+  interventions = signal<Intervention[]>([]);
 
   ngOnInit(): void {
     this.loadInterventions();
@@ -25,10 +24,8 @@ export class InterventionList implements OnInit {
   loadInterventions(): void {
     this.interventionService.getAllInterventions().subscribe({
       next: (response) => {
-
-        this.interventions = response.data;
-        console.log('Interventions :', this.interventions);
-
+        this.interventions.set(response.data);
+        console.log('Interventions :', this.interventions());
       },
       error: (err) => {
         console.error('Erreur lors du chargement des interventions :', err);
@@ -58,4 +55,25 @@ export class InterventionList implements OnInit {
     });
   }
 
+  totalInterventions() {
+    return this.interventions().length;
+  }
+
+  totalDiagnostics = () => {
+    return this.interventions().filter((item) => item.type === 'DIAGNOSTIC').length;
+  };
+
+  totalReparations = () => {
+    return this.interventions().filter((item) => item.type === 'REPARATION').length;
+  };
+
+  coutTotalEstime = () => {
+    return this.interventions().reduce((sum, item) => sum + (item.coutEstime || 0), 0);
+  };
+
+  totalDatesInvalides = () => {
+    return this.interventions().filter(
+      (item) => item.dateRestitutionPrevue && item.dateRestitutionPrevue.toString().startsWith('+'),
+    ).length;
+  };
 }

@@ -5,7 +5,7 @@ import { Header } from './shared/components/header/header';
 import { Footer } from './shared/components/footer/footer';
 import { VehiculeList } from './features/vehicules/vehicule-list/vehicule-list';
 import { Login } from './features/auth/login/login';
-import { Dashboard } from './features/dashboard/dashboard';
+import { Dashboard } from './features/dashboard/dashboard/dashboard';
 
 
 @Component({

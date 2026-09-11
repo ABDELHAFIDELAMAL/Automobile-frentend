@@ -3,12 +3,13 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Intervention } from '../../../entities/Interventions';
 import { ApiResponse } from '../../../entities/ApiResponse';
+import { environment } from '../../../environment/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class InterventionService {
-  private readonly baseUrl = 'http://localhost:8080/api/v1/interventions';
+  private baseUrl = `${environment.baseUrl}/interventions`;
   private readonly http = inject(HttpClient);
 
   getAllInterventions(): Observable<ApiResponse<Intervention[]>> {

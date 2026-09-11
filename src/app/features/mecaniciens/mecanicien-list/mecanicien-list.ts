@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { MecanicienService } from '../services/mecanicien';
 import { Mecanicien } from '../../../entities/Mecanicien';
 
@@ -10,7 +10,7 @@ import { Mecanicien } from '../../../entities/Mecanicien';
   standalone: true,
 })
 export class MecanicienList implements OnInit {
-  Mecaniciens: Mecanicien[] = [];
+  Mecaniciens= signal< Mecanicien[] > ([]);
   constructor(private MecanocienService: MecanicienService) {}
 
   ngOnInit(): void {
@@ -20,8 +20,8 @@ export class MecanicienList implements OnInit {
   loadMecanicien(){
     this.MecanocienService.getAllMechanicals().subscribe({
       next : ( response)=>{
-        this.Mecaniciens = response.data;
-        console.log(this.Mecaniciens);
+        this.Mecaniciens.set(response.data);
+        console.log(this.Mecaniciens());
       },
       error : (error)=>{
         console.log("Error de L API" , error);

@@ -1,7 +1,7 @@
 <div class="p-5">
   <h1>Les Vehicules</h1>
   <p>Number vehicules {{ vehicules.length }}</p>
-  @for (vehicule of vehicules; track vehicule.id) {
+  @for (vehicule of vehicules(); track vehicule.id) {
     <div>
       <h2>Véhicule : {{ vehicule.marque }} {{ vehicule.modele }}</h2>
       <p>ID : {{ vehicule.id }}</p>

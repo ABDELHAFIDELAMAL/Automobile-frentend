@@ -1,4 +1,5 @@
 @reference "tailwindcss";
+
 :host {
   @apply block min-h-screen bg-gray-100 p-5;
 }

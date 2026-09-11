@@ -4,12 +4,13 @@ import { Observable } from 'rxjs';
 import { Mecanicien } from '../../../entities/Mecanicien';
 import { Intervention } from '../../../entities/Interventions';
 import { ApiResponse } from '../../../entities/ApiResponse';
+import { environment } from '../../../environment/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MecanicienService {
-  private readonly baseUrl = 'http://localhost:8080/api/v1/mecaniciens';
+  private baseUrl = `${environment.baseUrl}/mecaniciens`;
   private readonly http = inject(HttpClient);
 
   getAllMechanicals(): Observable<ApiResponse<Mecanicien[]>> {
