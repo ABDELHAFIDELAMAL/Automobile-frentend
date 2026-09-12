@@ -55,17 +55,6 @@ export class InterventionList implements OnInit {
     });
   }
 
-  deleteIntervention(id: number): void {
-    this.interventionService.deleteIntervention(id).subscribe({
-      next: (responce) => {
-        alert(responce.message);
-        this.loadInterventions();
-      },
-      error: (err) => {
-        alert(err.message);
-      }
-    })
-  }
 
   totalInterventions() {
     return this.interventions().length;

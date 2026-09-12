@@ -48,11 +48,13 @@ export class InterventionCreate implements OnInit {
     }
 
     const formValue = this.interventionForm.value;
-    const parsedCoutEstime = formValue.coutEstime ? parseFloat(formValue.coutEstime.toString()) : 0;
+    const parsedCoutEstime = formValue.coutEstime
+      ? parseFloat(formValue.coutEstime.toString())
+      : 0.0;
 
     const interventionPayload = {
-      vehicule: { id: Number(formValue.vehicule) },
-      mecanicien: formValue.mecanicien ? { id: Number(formValue.mecanicien) } : null,
+      vehiculeId: formValue.vehicule ? Number(formValue.vehicule) : null,
+      mecanicienId: formValue.mecanicien ? Number(formValue.mecanicien) : null,
       type: formValue.type,
       description: formValue.description,
       diagnostic: formValue.diagnostic || null,
@@ -87,7 +89,7 @@ export class InterventionCreate implements OnInit {
       next: (response) => {
         console.log('Intervention creer :', intervention);
         alert(response.message);
-        this.router.navigate(['/interventions']).then(r => {});
+        this.router.navigate(['/interventions']).then((r) => {});
       },
       error: (error) => {
         console.log(error);

@@ -1,10 +1,38 @@
-<div class="p-5">
-  <div>
-    <h1>Les Vehicules</h1>
-    <button type="submit" routerLink="/vehicules/create">Creer Vehicule</button>
-  </div>
-  <p>Number vehicules {{ vehicules().length }}</p>
-  @for (vehicule of vehicules(); track vehicule.id) {
+<div class="vehicules">
+  <header>
+    <div>
+      <h1>Nombre des vehicules : {{ this.vehicules().length }} </h1>
+    </div>
+    <div>
+      <label>
+        <input type="search" [(ngModel)]="rechercheTerm" (input)="recherche()" placeholder="Rechercher...">
+      </label>
+    </div>
+    <div>
+      <select
+        [(ngModel)]="selectedStatus"
+        (change)="onStatusChange()"
+        class="status-select"
+      >
+        <option [ngValue]="null">Tous les statuts</option>
+
+        @for (status of statuses; track status) {
+        <option [ngValue]="status">
+          {{ status }}
+        </option>
+        }
+      </select>
+    </div>
+    <div>
+      <button type="submit" routerLink="/vehicules/create">
+        <span class="material-symbols-outlined">add_2</span>
+        Creer Vehicule
+      </button>
+    </div>
+  </header>
+
+  <main>
+    @for (vehicule of vehicules(); track vehicule.id) {
     <div>
       <h2>Véhicule : {{ vehicule.marque }} {{ vehicule.modele }}</h2>
       <p>Immatriculation : {{ vehicule.immatriculation }}</p>
@@ -21,9 +49,14 @@
           <span class="material-symbols-outlined">delete</span>
           <span>Supprimer</span>
         </button>
-        <button [routerLink]="['/interventions/create', vehicule.id]" class="btn-intervention">Créer Intervention</button>
+        <button [routerLink]="['/interventions/create', vehicule.id]" class="btn-intervention">
+          <span class="material-symbols-outlined">add_2</span>
+          Créer Intervention
+        </button>
       </div>
     </div>
     <hr>
-  }
+    }
+  </main>
+
 </div>
