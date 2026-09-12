@@ -5,66 +5,66 @@
 
   <div class="interventions-grid">
     @for (item of interventions(); track item.id) {
-      <div class="intervention-card" [attr.data-priority]="item.priorite">
-        <div class="card-top">
-          <div class="title-group">
-            <span class="id-tag">#{{ item.id }}</span>
-            <h3>{{ item.type }}</h3>
-          </div>
-          <div class="badges">
-            <span class="badge-status" [attr.data-status]="item.status">{{ item.status }}</span>
-            <span class="badge-priority">{{ item.priorite }}</span>
-          </div>
+    <div class="intervention-card" [attr.data-priority]="item.priorite">
+      <div class="card-top">
+        <div class="title-group">
+          <span class="id-tag">#{{ item.id }}</span>
+          <h3>{{ item.type }}</h3>
         </div>
-
-        <div class="card-body">
-          <div class="info-item">
-            <span class="label">Véhicule :</span>
-            <span class="value vehicle-name">{{ item.vehicule?.marque }} {{ item.vehicule?.modele }}</span>
-          </div>
-
-          <div class="info-item">
-            <span class="label">Description :</span>
-            <span class="value desc-text">{{ item.description }}</span>
-          </div>
-
-          <div class="info-item" *ngIf="item.diagnostic">
-            <span class="label">Diagnostic :</span>
-            <span class="value diag-text">{{ item.diagnostic }}</span>
-          </div>
-
-          <div class="info-item price-row">
-            <span class="label">Coût Estimé :</span>
-            <span class="value cost">{{ item.coutEstime | currency:'MAD':'symbol':'1.2-2':'fr-MA' }}</span>
-          </div>
+        <div class="badges">
+          <span class="badge-status" [attr.data-status]="item.status">{{ item.status }}</span>
+          <span class="badge-priority">{{ item.priorite }}</span>
         </div>
-
-        <div class="card-footer">
-          <div class="date-box">
-            <span>Déposé le :</span>
-            <strong>{{ item.dateDepot | date:'dd/MM/yyyy HH:mm' }}</strong>
-          </div>
-
-          <div class="date-box">
-            <span>Restitution :</span>
-            @if (item.dateRestitutionPrevue && item.dateRestitutionPrevue.toString().startsWith('+')) {
-              <strong class="date-error">Date Invalide</strong>
-            } @else {
-              <strong>{{ item.dateRestitutionPrevue | date:'dd/MM/yyyy' }}</strong>
-            }
-          </div>
-        </div>
-
-        <div class="card-actions">
-          <button type="button" class="btn-update">Modifier</button>
-          <button type="button" class="btn-delete">Supprimer</button>
-        </div>
-
       </div>
+
+      <div class="card-body">
+        <div class="info-item">
+          <span class="label">Véhicule :</span>
+          <span class="value vehicle-name">{{ item.vehicule?.marque }} {{ item.vehicule?.modele }}</span>
+        </div>
+
+        <div class="info-item">
+          <span class="label">Description :</span>
+          <span class="value desc-text">{{ item.description }}</span>
+        </div>
+
+        <div class="info-item" *ngIf="item.diagnostic">
+          <span class="label">Diagnostic :</span>
+          <span class="value diag-text">{{ item.diagnostic }}</span>
+        </div>
+
+        <div class="info-item price-row">
+          <span class="label">Coût Estimé :</span>
+          <span class="value cost">{{ item.coutEstime | currency:'MAD':'symbol':'1.2-2':'fr-MA' }}</span>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <div class="date-box">
+          <span>Déposé le :</span>
+          <strong>{{ item.dateDepot | date:'dd/MM/yyyy HH:mm' }}</strong>
+        </div>
+
+        <div class="date-box">
+          <span>Restitution :</span>
+          @if (item.dateRestitutionPrevue && item.dateRestitutionPrevue.toString().startsWith('+')) {
+          <strong class="date-error">Date Invalide</strong>
+          } @else {
+          <strong>{{ item.dateRestitutionPrevue | date:'dd/MM/yyyy' }}</strong>
+          }
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <button type="button" class="btn-update" >
+          <span>Modifier</span>
+        </button>
+      </div>
+    </div>
     } @empty {
-      <div class="empty-state">
-        <p>Aucune intervention trouvée ou en cours de chargement...</p>
-      </div>
+    <div class="empty-state">
+      <p>Aucune intervention trouvée ou en cours de chargement...</p>
+    </div>
     }
   </div>
 </div>

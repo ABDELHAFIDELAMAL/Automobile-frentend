@@ -13,12 +13,15 @@
     </div>
 
     <div>
-      <label>Intervention Type</label>
+      <label>Type Intervention</label>
       <select formControlName="type">
-        <option value="" disabled selected>Select a type</option>
-        <option value="REPARATION">REPARATION</option>
-        <option value="DIAGNOSTIC">DIAGNOSTIC</option>
-        <option value="ENTRETIEN">ENTRETIEN</option>
+        <option value="">-- Choisir un type --</option>
+        <option value="REVISION">Révision (Entretien)</option> <!-- Changé ENTRETIEN en REVISION -->
+        <option value="REPARATION">Réparation</option>
+        <option value="DIAGNOSTIC">Diagnostic</option>
+        <option value="CONTROLE">Contrôle</option>
+        <option value="PNEUMATIQUES">Pneumatiques</option>
+        <option value="AUTRE">Autre</option>
       </select>
       <div class="text-red-500" *ngIf="interventionForm.get('type')?.touched && interventionForm.get('type')?.invalid">
         <small *ngIf="interventionForm.get('type')?.errors?.['required']">Type is required.</small>

@@ -7,7 +7,7 @@ import { Historique } from './Historique';
 
 
 export interface Intervention {
-  id : Number ;
+  id : number ;
   vehicule : Vehicule ;
   type : TypeIntervention ;
   description : String;

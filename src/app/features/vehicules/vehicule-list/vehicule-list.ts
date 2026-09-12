@@ -4,6 +4,7 @@ import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Vehicule } from '../../../entities/Vehicule';
 import { RouterLink } from '@angular/router';
+import { Status } from '../../../enums/Status.enum';
 
 @Component({
   imports: [CommonModule, FormsModule, RouterLink],
@@ -15,6 +16,7 @@ import { RouterLink } from '@angular/router';
 export class VehiculeList implements OnInit {
   vehicules = signal<Vehicule[] >([]);
 
+  rechercheTerm = '';
 
   constructor(private vehicleService: VehicleService) {}
 
@@ -30,7 +32,7 @@ export class VehiculeList implements OnInit {
         console.log('Vehicules : ', this.vehicules());
       },
       error: (err) => {
-        console.error('Error:', err);
+        console.error('Error lors de load vehicules list :', err);
       },
     });
   }
@@ -42,14 +44,62 @@ export class VehiculeList implements OnInit {
     }
     this.vehicleService.deleteVehicule(id).subscribe({
       next: () => {
-        this.vehicules.update(
-          (vehicule) =>
-            vehicule.filter((v) => v.id !== id));
+        this.loadVehicules();
       },
       error: (err) => {
         console.error('Erreur lors de la suppression du véhicule', err);
       },
     });
+  }
+
+
+  statuses = Object.values(Status);
+
+  selectedStatus: Status | null = null;
+
+  onStatusChange() {
+    if (!this.selectedStatus) {
+      this.loadVehicules();
+      return;
+    }
+
+    this.vehicleService.getVehicleByStatus(this.selectedStatus).subscribe({
+      next: (response) => {
+        this.vehicules.set(response.data);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
+
+
+
+  recherche(){
+    this.vehicleService.recherche(this.rechercheTerm).subscribe({
+      next: (response) => {
+        console.log('Recherche response : ', response.data);
+        this.vehicules.set(response.data);
+      },
+      error: (err) => {
+        console.error('Error lors recherche:', err);
+      },
+    });
+  }
+
+
+  affecterMecanicien(idVehicle: number, idMechanic: number){
+    this.vehicleService.affecterMecanicien(idVehicle, idMechanic).subscribe({
+      next: (response) => {
+        alert('Mecanicien affecte');
+        console.log('Mecanicien affecte :' , response.data);
+        this.loadVehicules();
+      },
+      error: (err) => {
+        console.error('Error lors de l affectation :', err);
+      }
+    })
   }
 
 }

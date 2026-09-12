@@ -31,9 +31,7 @@ export class InterventionService {
     return this.http.put<ApiResponse<Intervention>>(`${this.baseUrl}/update/${id}`, intervention);
   }
 
-  deleteIntervention(id : number): Observable<ApiResponse<void>>{
-    return this.http.delete<ApiResponse<void>>(`${this.baseUrl}/delete/${id}`);
-  }
+
 
   assignMecanicien(id: number, mecanicien: any): Observable<ApiResponse<Intervention>> {
     return this.http.patch<ApiResponse<Intervention>>(`${this.baseUrl}/assign/${id}`, mecanicien);

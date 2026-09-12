@@ -26,12 +26,7 @@ export class VehicleService {
   }
 
   updateVehicule(id: number, vehicule: Vehicule): Observable<ApiResponse<Vehicule>> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
-    return this.http.put<ApiResponse<Vehicule>>(`${this.baseUrl}/vehicles/${id}`, vehicule, {
-      headers,
-    });
+    return this.http.put<ApiResponse<Vehicule>>(`${this.baseUrl}/update/${id}`, vehicule);
   }
 
   deleteVehicule(id: number): Observable<ApiResponse<void>> {
