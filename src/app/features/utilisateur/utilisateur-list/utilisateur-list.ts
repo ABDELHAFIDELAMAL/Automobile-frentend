@@ -23,7 +23,6 @@ export class UtilisateurList implements OnInit {
   loadUtilisateurs() {
     this.utilisateurService.getAllUtilisateurs().subscribe({
       next: (response) => {
-        console.log(response);
         console.log(response.data);
         this.Utilisateurs.set(response.data);
         console.log('Utilsateurs ', this.Utilisateurs());
@@ -41,4 +40,16 @@ export class UtilisateurList implements OnInit {
   coutNonEnabled = computed(() => {
     return this.Utilisateurs().filter((user) => !user.enabled).length;
   });
+
+
+  changeStatusUtilisateur(id : number , active : boolean){
+    this.utilisateurService.changeStatutUtilisateur(id, active).subscribe({
+      next: (response) => {
+        console.log(response.data);
+      },
+      error: (error) => {
+        console.error('Error de L API utilisateur ghnage Status : ', error);
+      }
+    })
+  }
 }
