@@ -10,7 +10,7 @@ import { Mecanicien } from '../../../entities/Mecanicien';
   standalone: true,
 })
 export class MecanicienList implements OnInit {
-  Mecaniciens= signal< Mecanicien[] > ([]);
+  Mecaniciens= signal<Mecanicien[]> ([]);
   constructor(private MecanocienService: MecanicienService) {}
 
   ngOnInit(): void {

@@ -1,25 +1,44 @@
-<div class="container">
-  <h1>Historique des Interventions</h1>
-  <p>Nombre d'actions : {{ historiques().length }}</p>
+<div class="historique-container">
+  <div class="historique-header">
+    <h1 class="historique-title">Historique des Interventions</h1>
+    <span class="historique-badge">
+      {{ historiques().length }} {{ historiques().length > 1 ? 'actions' : 'action' }}
+    </span>
+  </div>
 
-  @for (log of historiques(); track log.id) {
-    <div>
-      <p>
-        <strong>Statut :</strong>
+  <div class="historique-timeline">
+    @for (log of historiques(); track log.id) {
+    <div class="timeline-item">
+      <div class="status-flow">
         @if (log.ancienStatus) {
-          <span>{{ log.ancienStatus }}</span>
+        <span class="status-badge status-old">{{ log.ancienStatus }}</span>
         } @else {
-          <span>Nouveau dossier</span>
+        <span class="status-badge status-new-record">Nouveau dossier</span>
         }
-        &rarr;
-        <span>{{ log.nouveauStatus }}</span>
-      </p>
-      <p><strong>Commentaire :</strong> {{ log.commentaire }}</p>
-      <p><strong>Auteur :</strong> {{ log.auteur }}</p>
-      <p><strong>Date :</strong> {{ log.date | date:'dd/MM/yyyy HH:mm' }}</p>
+        <span class="status-arrow">&rarr;</span>
+        <span class="status-badge status-current">{{ log.nouveauStatus }}</span>
+      </div>
+
+      <div class="item-details">
+        @if (log.commentaire) {
+        <p class="item-comment">" {{ log.commentaire }} "</p>
+        }
+
+        <div class="item-meta">
+            <span class="meta-author">
+
+              {{ log.auteur }}
+            </span>
+          <span class="meta-date">
+              {{ log.date | date:'dd/MM/yyyy HH:mm' }}
+            </span>
+        </div>
+      </div>
     </div>
-    <hr />
-  } @empty {
-    <p>Aucun historique disponible pour cette intervention.</p>
-  }
+    } @empty {
+    <div class="empty-state">
+      <p>Aucun historique disponible pour cette intervention.</p>
+    </div>
+    }
+  </div>
 </div>
