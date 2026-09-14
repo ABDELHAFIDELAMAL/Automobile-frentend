@@ -1,120 +1,100 @@
-@if (notification()) {
-<div [class]="notification()?.type === 'success' ? 'bg-green-50 border-green-400 text-green-700' : 'bg-red-50 border-red-400 text-red-700'"
-     class="border px-4 py-3 rounded relative mb-4 flex items-center justify-between transition-all duration-300">
-  <span class="block sm:inline font-medium">{{ notification()?.message }}</span>
-  <button (click)="notification.set(null)" class="text-xl font-bold hover:opacity-70">&times;</button>
-</div>
-}
+<section>
 
-<div class="dashboard-container">
-
-  <div class="dashboard-header">
-    <h2>Suivi des Interventions {{ totalInterventions() }}</h2>
-    <div class="stats-bar flex gap-4 text-sm mt-2">
-      <span>Diagnostics: <strong>{{ totalDiagnostics() }}</strong></span>
-      <span>Réparations: <strong>{{ totalReparations() }}</strong></span>
-      <span>Dates Invalides: <strong class="text-red-500">{{ totalDatesInvalides() }}</strong></span>
-      <span>Coût Estimé Total: <strong>{{ coutTotalEstime() | currency:'MAD':'symbol':'1.2-2':'fr-MA' }}</strong></span>
+  <header>
+    <div class="title">
+      <div>
+        <p>Liste des interventions</p>
+      </div>
+      <div>
+        <button>
+          <span class="material-symbols-outlined">add</span>
+          <p>Creer Interventions</p>
+        </button>
+      </div>
     </div>
-  </div>
 
-  <div class="interventions-grid">
-    @for (item of interventions(); track item.id) {
-    <div class="intervention-card" [attr.data-priority]="item.priorite">
-
-      <div class="card-top">
-        <div class="title-group">
-          <span class="id-tag">#{{ item.id }}</span>
-          <h3>{{ item.type }}</h3>
-        </div>
-        <div class="badges">
-          <span class="badge-status" [attr.data-status]="item.status">{{ item.status }}</span>
-          <span class="badge-priority">{{ item.priorite }}</span>
-        </div>
+    <div class="dashboard">
+      <div>
+        <span class="material-tools-outlined"></span>
       </div>
+      <div>
 
-      <div class="card-body">
-        <div class="info-item">
-          <span class="label">Véhicule :</span>
-          <span class="value vehicle-name">{{ item.vehicule?.marque }} {{ item.vehicule?.modele }}</span>
-        </div>
-
-        <div class="info-item">
-          <span class="label">Description :</span>
-          <span class="value desc-text">{{ item.description }}</span>
-        </div>
-
-        <div class="info-item" *ngIf="item.diagnostic">
-          <span class="label">Diagnostic :</span>
-          <span class="value diag-text">{{ item.diagnostic }}</span>
-        </div>
-
-        <div class="info-item price-row">
-          <span class="label">Coût Estimé :</span>
-          <span class="value cost">{{ item.coutEstime | currency:'MAD':'symbol':'1.2-2':'fr-MA' }}</span>
-        </div>
-
-        <div class="info-item" *ngIf="item.mecanicien">
-          <span class="label">Mécanicien :</span>
-          <span class="value">{{ item.mecanicien.nom }}</span>
-        </div>
       </div>
+      <div>
 
-      <div class="card-footer">
-        <div class="date-box">
-          <span>Déposé le :</span>
-          <strong>{{ item.dateDepot | date:'dd/MM/yyyy HH:mm' }}</strong>
-        </div>
-
-        <div class="date-box">
-          <span>Restitution :</span>
-          @if (item.dateRestitutionPrevue && item.dateRestitutionPrevue.toString().startsWith('+')) {
-          <strong class="date-error">Date Invalide</strong>
-          } @else {
-          <strong>{{ item.dateRestitutionPrevue | date:'dd/MM/yyyy' }}</strong>
-          }
-        </div>
       </div>
-
-      <div class="card-actions flex gap-2 mt-4">
-        <button type="button" class="btn-update">
-          <span>Modifier</span>
-        </button>
-
-        @if (item.status.toString() === 'EN_REPARATION') {
-        <button type="button" (click)="terminerIntervention(item.id)">
-          <span>Terminer</span>
-        </button>
-        }
-
-        @if (item.status.toString() === 'TERMINEE') {
-        <button type="button" (click)="restituer(item.id)">
-          <span class="material-symbols-outlined text-base">assignment_return</span>
-          <span>Restituer</span>
-        </button>
-        }
-
-        <label>
-          <select
-            [ngModel]="item.status"
-            (ngModelChange)="changerStatus(item.id, $event)"
-            class="px-2 py-1.5 text-xs font-semibold rounded-lg border border-gray-300 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
-          >
-            <option value="" disabled hidden>Changer Statut</option>
-            @for (status of statuses; track status) {
-            <option [value]="status">
-              {{ status }}
-            </option>
-            }
-          </select>
-        </label>
+      <div>
+        <p>cout Total Estime</p>
+        <span>{{ coutTotalEstime() }} DHs</span>
       </div>
-
     </div>
+
+
+    <div>
+      <label>
+        <input type="search" placeholder="Rechercher...">
+      </label>
+      <label>
+       <select>
+         <option value="" disabled selected>Filter avec type</option>
+         @for (type of types; track type) {
+         <option [value]="type">
+           {{ type }}
+         </option>
+         }
+       </select>
+      </label>
+      <button type="submit">Renisaliser</button>
+    </div>
+  </header>
+
+
+
+
+
+  <main>
+    @for (intervention of interventions(); track intervention.id) {
+        <div class="containerIntervention p-4">
+
+          <div class="flex gap-5">
+            <h3>{{ intervention.type }} </h3>
+            <p> {{ intervention.status }} </p>
+            <p> {{ intervention .priorite }} </p>
+          </div>
+
+          <div>
+            <p> Description : {{ intervention.description }} </p>
+            <p> Diagnostic : {{ intervention.diagnostic }} </p>
+          </div>
+
+          <div>
+            <h1>Cout Estime = {{ intervention.coutEstime }} DHs</h1>
+          </div>
+
+          <div>
+            <p>Date Depot : {{ intervention.dateDepot | date:'dd/MM/yyyy HH:mm' }}</p>
+            <p>Date Restitution :
+              @if (intervention.dateRestitutionPrevue && !intervention.dateRestitutionPrevue.toString().startsWith('+')) {
+              {{ intervention.dateRestitutionPrevue | date:'dd/MM/yyyy' }}
+              } @else {
+              <span class="text-red-500 font-semibold">Non définie / En cours</span>
+              }
+            </p>
+            <p>Date Cloture : {{ intervention.dateCloture | date:'dd/MM/yyyy HH:mm' }}</p>
+          </div>
+
+
+
+
+          <div class="ListButtons">
+            <div>Restituer</div>
+            <div>Ajouter Diagnostic</div>
+            <div>Affecter Mecanicien</div>
+          </div>
+
+        </div>
     } @empty {
-    <div class="empty-state">
-      <p>Aucune intervention trouvée ou en cours de chargement...</p>
-    </div>
+    <p>Aucune intervention trouvée.</p>
     }
-  </div>
-</div>
+  </main>
+</section>

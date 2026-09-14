@@ -10,8 +10,8 @@ export interface Intervention {
   id : number ;
   vehicule : Vehicule ;
   type : TypeIntervention ;
-  description : String;
-  diagnostic : String;
+  description : string;
+  diagnostic : string;
   status : Status ;
   priorite : Priorite;
   mecanicien : Mecanicien;

@@ -6,6 +6,7 @@ import { InterventionService } from '../services/intervention';
 import { Status } from '../../../enums/Status.enum';
 import { TypeIntervention } from '../../../enums/TypeIntervention.enum';
 import { Mecanicien } from '../../../entities/Mecanicien';
+import { MecanicienService } from '../../mecaniciens/services/mecanicien';
 
 @Component({
   selector: 'app-intervention-list',
@@ -16,11 +17,16 @@ import { Mecanicien } from '../../../entities/Mecanicien';
 })
 export class InterventionList implements OnInit {
   private readonly interventionService = inject(InterventionService);
+  private readonly mecanicienService = inject(MecanicienService);
 
   protected readonly Status = Status;
   statuses: Status[] = Object.values(Status);
+  protected readonly TypeIntervention = TypeIntervention;
+  types: TypeIntervention[] = Object.values(TypeIntervention);
 
   interventions = signal<Intervention[]>([]);
+  mecaniciens = signal<Mecanicien[]>([]);
+
   coutTotal = signal<number>(0);
   notification = signal<{ message: string; type: 'success' | 'error' } | null>(null);
 
@@ -172,17 +178,31 @@ export class InterventionList implements OnInit {
     });
   }
 
-  assignMecanicien(id: number, mecanicien: Mecanicien) {
-    this.interventionService.assignMecanicien(id, mecanicien).subscribe({
+  assignMecanicien(id: number, mecanicienId: string | number): void {
+    const targetId = Number(mecanicienId);
+
+    const mecanicienTrouve = this.mecaniciens().find((mec) => mec.id === targetId);
+
+    if (!mecanicienTrouve) {
+      console.error("Mécanicien introuvable avec l'ID :", targetId);
+      return;
+    }
+
+    this.interventionService.assignMecanicien(id, mecanicienTrouve).subscribe({
       next: () => {
         this.interventions.update((list) =>
           list.map((item) =>
-            item.id === id ? ({ ...item, mecanicien: mecanicien } as typeof item) : item,
+            item.id === id ? ({ ...item, mecanicien: mecanicienTrouve } as typeof item) : item,
           ),
         );
+        this.notification.set({
+          message: 'Mécanicien affecté avec succès !',
+          type: 'success',
+        });
+        setTimeout(() => this.notification.set(null), 3000);
       },
       error: (err) => {
-        console.log('Erreur lors de l assign de mecanicien ', err);
+        console.error("Erreur lors de l'affectation du mécanicien :", err);
       },
     });
   }
@@ -213,6 +233,35 @@ export class InterventionList implements OnInit {
       },
       error: (err) => {
         console.log("Erreur lors de l'ajout du diagnostic : ", err);
+      },
+    });
+  }
+
+  searchInterventions(term: string): void {
+    if (!term.trim()) {
+      this.loadInterventions();
+      return;
+    }
+
+    this.interventions.update((list) =>
+      list.filter(
+        (item) =>
+          item.type.toLowerCase().includes(term.toLowerCase()) ||
+          item.description?.toLowerCase().includes(term.toLowerCase()) ||
+          item.vehicule?.immatriculation.toLowerCase().includes(term.toLowerCase()) ||
+          item.vehicule?.marque.toLowerCase().includes(term.toLowerCase()) ||
+          item.vehicule?.modele.toLowerCase().includes(term.toLowerCase()),
+      ),
+    );
+  }
+
+  loadMecaniciens() {
+    this.mecanicienService.getAllMechanicals().subscribe({
+      next: (response) => {
+        this.mecaniciens.set(response.data);
+      },
+      error: (err) => {
+        console.error('Erreur lors de get mecaniciens ', err);
       },
     });
   }
