@@ -4,7 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { Intervention } from '../../../entities/Interventions';
 import { InterventionService } from '../services/intervention';
 import { Status } from '../../../enums/Status.enum';
-
+import { TypeIntervention } from '../../../enums/TypeIntervention.enum';
+import { Mecanicien } from '../../../entities/Mecanicien';
 
 @Component({
   selector: 'app-intervention-list',
@@ -14,11 +15,14 @@ import { Status } from '../../../enums/Status.enum';
   styleUrl: './intervention-list.css',
 })
 export class InterventionList implements OnInit {
-  statuses: Status[] = Object.values(Status);
-
   private readonly interventionService = inject(InterventionService);
 
+  protected readonly Status = Status;
+  statuses: Status[] = Object.values(Status);
+
   interventions = signal<Intervention[]>([]);
+  coutTotal = signal<number>(0);
+  notification = signal<{ message: string; type: 'success' | 'error' } | null>(null);
 
   totalInterventions() {
     return this.interventions().length;
@@ -44,13 +48,13 @@ export class InterventionList implements OnInit {
 
   ngOnInit(): void {
     this.loadInterventions();
+    this.calculerCoutTotal();
   }
 
   loadInterventions(): void {
     this.interventionService.getAllInterventions().subscribe({
       next: (response) => {
         this.interventions.set(response.data);
-        console.log('Interventions :', this.interventions());
       },
       error: (error) => {
         alert(error.message);
@@ -86,23 +90,129 @@ export class InterventionList implements OnInit {
     });
   }
 
-
-  notification: { message: string; type: 'success' | 'error' } | null = null;
-
   restituer(id: number) {
     this.interventionService.restituer(id).subscribe({
-      next: (response) => {
-        this.notification = {
+      next: () => {
+        this.notification.set({
           message: 'Le véhicule a été restitué avec succès !',
           type: 'success',
-        };
-        this.loadInterventions();
+        });
+        this.interventions.update((list) =>
+          list.map((item) =>
+            item.id === id ? ({ ...item, status: Status.RESTITUEE } as typeof item) : item,
+          ),
+        );
+        setTimeout(() => this.notification.set(null), 4000);
       },
       error: (err) => {
-        this.notification = {
+        this.notification.set({
           message: err.error?.message || 'Une erreur est survenue lors de la restitution.',
           type: 'error',
-        };
+        });
+      },
+    });
+  }
+
+  getInterventionByMecanicien(idMecanicien: number) {
+    this.interventionService.getInterventionByMecanicien(idMecanicien).subscribe({
+      next: (response) => {
+        this.interventions.set(response.data);
+      },
+      error: (err) => {
+        console.error('Erreur lors de la récupération des interventions du mécanicien :', err);
+      },
+    });
+  }
+
+  getInterventionByVehicule(idVehicule: number) {
+    this.interventionService.getInterventionByVehicule(idVehicule).subscribe({
+      next: (response) => {
+        this.interventions.set(response.data);
+      },
+      error: (err) => {
+        console.error('Erreur lors de la récupération des interventions du vehicule :', err);
+      },
+    });
+  }
+
+  calculerCoutTotal() {
+    this.interventionService.calculerCoutTotal().subscribe({
+      next: (response) => {
+        const total = response.data !== undefined ? response.data : response;
+        if (typeof total === 'number') {
+          this.coutTotal.set(total);
+        }
+      },
+      error: (err) => {
+        console.error('Erreur lors du calcul du coût Total : ', err);
+      },
+    });
+  }
+
+  getInterventionsByType(type: TypeIntervention) {
+    this.interventionService.getInterventionsByType(type).subscribe({
+      next: (response) => {
+        this.interventions.set(response.data);
+      },
+      error: (err) => {
+        console.log('Erreur lors de la récupération des interventions de type : ', err);
+      },
+    });
+  }
+
+  getEnRetard() {
+    this.interventionService.getEnRetard().subscribe({
+      next: (response) => {
+        this.interventions.set(response.data);
+      },
+      error: (err) => {
+        console.log('Erreur lors de la récupération des interventions en retard : ', err);
+        this.interventions.set([]);
+      },
+    });
+  }
+
+  assignMecanicien(id: number, mecanicien: Mecanicien) {
+    this.interventionService.assignMecanicien(id, mecanicien).subscribe({
+      next: () => {
+        this.interventions.update((list) =>
+          list.map((item) =>
+            item.id === id ? ({ ...item, mecanicien: mecanicien } as typeof item) : item,
+          ),
+        );
+      },
+      error: (err) => {
+        console.log('Erreur lors de l assign de mecanicien ', err);
+      },
+    });
+  }
+
+  setCoutEstime(id: number, coutEstime: number): void {
+    this.interventionService.setCoutEstime(id, coutEstime).subscribe({
+      next: () => {
+        this.interventions.update((list) =>
+          list.map((item) =>
+            item.id === id ? ({ ...item, coutEstime: coutEstime } as typeof item) : item,
+          ),
+        );
+      },
+      error: (err) => {
+        console.log('Erreur lors de la mise à jour du coût estimé : ', err);
+      },
+    });
+  }
+
+  addDiagnostic(id: number, diagnostic: string) {
+    this.interventionService.addDiagnostic(id, diagnostic).subscribe({
+      next: () => {
+        this.interventions.update((list) =>
+          list.map((item) =>
+            item.id === id ? ({ ...item, diagnostic: diagnostic } as typeof item) : item,
+          ),
+        );
+      },
+      error: (err) => {
+        console.log("Erreur lors de l'ajout du diagnostic : ", err);
       },
     });
   }

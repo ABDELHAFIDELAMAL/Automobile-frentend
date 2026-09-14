@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Intervention } from '../../../entities/Interventions';
 import { ApiResponse } from '../../../entities/ApiResponse';
 import { environment } from '../../../environment/environment';
+import { Mecanicien } from '../../../entities/Mecanicien';
 
 @Injectable({
   providedIn: 'root',
@@ -31,7 +32,7 @@ export class InterventionService {
     return this.http.put<ApiResponse<Intervention>>(`${this.baseUrl}/update/${id}`, intervention);
   }
 
-  assignMecanicien(id: number, mecanicien: any): Observable<ApiResponse<Intervention>> {
+  assignMecanicien(id: number, mecanicien: Mecanicien): Observable<ApiResponse<Intervention>> {
     return this.http.patch<ApiResponse<Intervention>>(`${this.baseUrl}/assign/${id}`, mecanicien);
   }
 
@@ -83,8 +84,8 @@ export class InterventionService {
     return this.http.get<ApiResponse<Intervention[]>>(`${this.baseUrl}/en/retard`);
   }
 
-  calculerCoutTotal(id: number): Observable<ApiResponse<number>> {
-    return this.http.get<ApiResponse<number>>(`${this.baseUrl}/calculer/cout/total/${id}`);
+  calculerCoutTotal(): Observable<ApiResponse<number>> {
+    return this.http.get<ApiResponse<number>>(`${this.baseUrl}/calculer/cout/total`);
   }
 
   getInterventionsByType(type: any): Observable<ApiResponse<Intervention[]>> {
@@ -92,5 +93,4 @@ export class InterventionService {
       body: type,
     });
   }
-
 }

@@ -1,11 +1,29 @@
+@if (notification()) {
+<div [class]="notification()?.type === 'success' ? 'bg-green-50 border-green-400 text-green-700' : 'bg-red-50 border-red-400 text-red-700'"
+     class="border px-4 py-3 rounded relative mb-4 flex items-center justify-between transition-all duration-300">
+  <span class="block sm:inline font-medium">{{ notification()?.message }}</span>
+  <button (click)="notification.set(null)" class="text-xl font-bold hover:opacity-70">&times;</button>
+</div>
+}
+
 <div class="dashboard-container">
+
   <div class="dashboard-header">
     <h2>Suivi des Interventions {{ totalInterventions() }}</h2>
+
+    <!-- Zone optionnelle pour afficher les compteurs de statistiques de votre composant TS -->
+    <div class="stats-bar flex gap-4 text-sm mt-2">
+      <span>Diagnostics: <strong>{{ totalDiagnostics() }}</strong></span>
+      <span>Réparations: <strong>{{ totalReparations() }}</strong></span>
+      <span>Dates Invalides: <strong class="text-red-500">{{ totalDatesInvalides() }}</strong></span>
+      <span>Coût Estimé Total: <strong>{{ coutTotalEstime() | currency:'MAD':'symbol':'1.2-2':'fr-MA' }}</strong></span>
+    </div>
   </div>
 
   <div class="interventions-grid">
     @for (item of interventions(); track item.id) {
     <div class="intervention-card" [attr.data-priority]="item.priorite">
+
       <div class="card-top">
         <div class="title-group">
           <span class="id-tag">#{{ item.id }}</span>
@@ -37,6 +55,11 @@
           <span class="label">Coût Estimé :</span>
           <span class="value cost">{{ item.coutEstime | currency:'MAD':'symbol':'1.2-2':'fr-MA' }}</span>
         </div>
+
+        <div class="info-item" *ngIf="item.mecanicien">
+          <span class="label">Mécanicien :</span>
+          <span class="value">{{ item.mecanicien.nom }}</span>
+        </div>
       </div>
 
       <div class="card-footer">
@@ -60,6 +83,13 @@
           <span>Modifier</span>
         </button>
 
+        <!-- Affichage conditionnel selon la règle stricte de votre backend -->
+        @if (item.status.toString() === 'EN_REPARATION') {
+        <button type="button" (click)="terminerIntervention(item.id)">
+          <span>Terminer</span>
+        </button>
+        }
+
         @if (item.status.toString() === 'TERMINEE') {
         <button type="button" (click)="restituer(item.id)">
           <span class="material-symbols-outlined text-base">assignment_return</span>
@@ -67,14 +97,13 @@
         </button>
         }
 
-        <label class="block">
+        <label>
           <select
             [ngModel]="item.status"
             (ngModelChange)="changerStatus(item.id, $event)"
             class="px-2 py-1.5 text-xs font-semibold rounded-lg border border-gray-300 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
           >
             <option value="" disabled hidden>Changer Statut</option>
-
             @for (status of statuses; track status) {
             <option [value]="status">
               {{ status }}
@@ -82,20 +111,6 @@
             }
           </select>
         </label>
-
-
-        @if (item.status.toString() === 'EN_REPARATION') {
-        <button
-          type="button"
-          (click)="terminerIntervention(item.id)"
-          class="flex items-center justify-center gap-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors text-sm w-full"
-        >
-          <span class="material-symbols-outlined text-base">check_circle</span>
-          <span>Terminer</span>
-        </button>
-        }
-
-
       </div>
 
     </div>
