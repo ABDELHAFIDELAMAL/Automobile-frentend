@@ -55,11 +55,49 @@
         </div>
       </div>
 
-      <div class="card-actions">
-        <button type="button" class="btn-update" >
+      <div class="card-actions flex gap-2 mt-4">
+        <button type="button" class="btn-update">
           <span>Modifier</span>
         </button>
+
+        @if (item.status.toString() === 'TERMINEE') {
+        <button type="button" (click)="restituer(item.id)">
+          <span class="material-symbols-outlined text-base">assignment_return</span>
+          <span>Restituer</span>
+        </button>
+        }
+
+        <label class="block">
+          <select
+            [ngModel]="item.status"
+            (ngModelChange)="changerStatus(item.id, $event)"
+            class="px-2 py-1.5 text-xs font-semibold rounded-lg border border-gray-300 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+          >
+            <option value="" disabled hidden>Changer Statut</option>
+
+            @for (status of statuses; track status) {
+            <option [value]="status">
+              {{ status }}
+            </option>
+            }
+          </select>
+        </label>
+
+
+        @if (item.status.toString() === 'EN_REPARATION') {
+        <button
+          type="button"
+          (click)="terminerIntervention(item.id)"
+          class="flex items-center justify-center gap-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors text-sm w-full"
+        >
+          <span class="material-symbols-outlined text-base">check_circle</span>
+          <span>Terminer</span>
+        </button>
+        }
+
+
       </div>
+
     </div>
     } @empty {
     <div class="empty-state">

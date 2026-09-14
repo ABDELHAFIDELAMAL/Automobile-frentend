@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Intervention } from '../../../entities/Interventions';
 import { ApiResponse } from '../../../entities/ApiResponse';
@@ -16,7 +16,7 @@ export class InterventionService {
     return this.http.get<ApiResponse<Intervention[]>>(this.baseUrl);
   }
 
-  getInterventionById(id:number):Observable<ApiResponse<Intervention>>{
+  getInterventionById(id: number): Observable<ApiResponse<Intervention>> {
     return this.http.get<ApiResponse<Intervention>>(`${this.baseUrl}/${id}`);
   }
 
@@ -30,8 +30,6 @@ export class InterventionService {
   ): Observable<ApiResponse<Intervention>> {
     return this.http.put<ApiResponse<Intervention>>(`${this.baseUrl}/update/${id}`, intervention);
   }
-
-
 
   assignMecanicien(id: number, mecanicien: any): Observable<ApiResponse<Intervention>> {
     return this.http.patch<ApiResponse<Intervention>>(`${this.baseUrl}/assign/${id}`, mecanicien);
@@ -56,9 +54,12 @@ export class InterventionService {
   }
 
   changerStatus(id: number, statusIntervention: string): Observable<ApiResponse<Intervention>> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
     return this.http.patch<ApiResponse<Intervention>>(
       `${this.baseUrl}/change/status/${id}`,
-      statusIntervention,
+      JSON.stringify(statusIntervention),
+      { headers },
     );
   }
 
@@ -91,4 +92,5 @@ export class InterventionService {
       body: type,
     });
   }
+
 }
