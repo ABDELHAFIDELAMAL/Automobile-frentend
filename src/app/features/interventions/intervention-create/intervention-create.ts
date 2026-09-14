@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -19,25 +19,36 @@ export class InterventionCreate implements OnInit {
 
   interventionForm!: FormGroup;
   interventionId?: number;
+  vehiculeId = signal<number | null>(null);
 
   private initForm(): void {
+    const dateDuJour = new Date().toISOString().split('T')[0];
+
     this.interventionForm = new FormGroup({
-      vehicule: new FormControl(null, [Validators.required]),
+      vehicule: new FormControl(this.vehiculeId(), [Validators.required]),
       mecanicien: new FormControl(null),
       historique: new FormControl([]),
       type: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required]),
       diagnostic: new FormControl(''),
-      status: new FormControl('', [Validators.required]),
+      status: new FormControl('RECUE', [Validators.required]),
       priorite: new FormControl('', [Validators.required]),
       coutEstime: new FormControl(0, [Validators.required, Validators.min(0)]),
-      dateDepot: new FormControl('', [Validators.required]),
+      dateDepot: new FormControl(dateDuJour, [Validators.required]),
       dateRestitutionPrevue: new FormControl('', [Validators.required]),
       dateCloture: new FormControl(''),
     });
   }
 
   ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.vehiculeId.set(+id);
+    } else {
+      alert("Erreur : Aucun véhicule n'a été spécifié dans l'URL.");
+      this.router.navigate(['/vehicules']);
+      return;
+    }
     this.initForm();
   }
 
@@ -52,9 +63,12 @@ export class InterventionCreate implements OnInit {
       ? parseFloat(formValue.coutEstime.toString())
       : 0.0;
 
-    const interventionPayload = {
-      vehiculeId: formValue.vehicule ? Number(formValue.vehicule) : null,
-      mecanicienId: formValue.mecanicien ? Number(formValue.mecanicien) : null,
+    // Reconstruction propre du JSON avec des valeurs par défaut pour les types primitifs
+    const interventionPayload: any = {
+      vehicule: {
+        id: Number(this.vehiculeId() || formValue.vehicule),
+        clientFictif: false, // Évite le crash si Spring Boot inspecte l'objet véhicule complet
+      },
       type: formValue.type,
       description: formValue.description,
       diagnostic: formValue.diagnostic || null,
@@ -65,19 +79,34 @@ export class InterventionCreate implements OnInit {
       dateRestitutionPrevue: formValue.dateRestitutionPrevue
         ? `${formValue.dateRestitutionPrevue}T00:00:00`
         : null,
-      dateCloture: formValue.dateCloture ? `${formValue.dateCloture}T00:00:00` : null,
     };
 
+    if (formValue.mecanicien) {
+      interventionPayload.mecanicien = { id: Number(formValue.mecanicien) };
+    }
+
+    if (formValue.dateCloture) {
+      interventionPayload.dateCloture = `${formValue.dateCloture}T00:00:00`;
+    }
+
     if (this.interventionId) {
-      this.updateIntervention(this.interventionId, interventionPayload as any);
+      this.updateIntervention(this.interventionId, interventionPayload);
     } else {
-      this.createIntervention(interventionPayload as any);
+      this.createIntervention(interventionPayload);
     }
   }
 
   private loadInterventionDetails(id: number): void {
     this.interventionsService.getInterventionById(id).subscribe({
-      next: (response) => this.interventionForm.patchValue(response.data),
+      next: (response) => {
+        if (response.data) {
+          this.interventionForm.patchValue({
+            ...response.data,
+            vehicule: response.data.vehicule?.id,
+            mecanicien: response.data.mecanicien?.id,
+          });
+        }
+      },
       error: (error) => {
         console.log(error);
       },
@@ -87,9 +116,9 @@ export class InterventionCreate implements OnInit {
   createIntervention(intervention: Intervention): void {
     this.interventionsService.createIntervention(intervention).subscribe({
       next: (response) => {
-        console.log('Intervention creer :', intervention);
-        alert(response.message);
-        this.router.navigate(['/interventions']).then((r) => {});
+        console.log('Intervention sent to server : ', this.interventionForm.value);
+        alert(response.message || 'Intervention créée avec succès !');
+        this.router.navigate(['/vehicules/details', this.vehiculeId()]);
       },
       error: (error) => {
         console.log(error);
@@ -100,8 +129,8 @@ export class InterventionCreate implements OnInit {
   updateIntervention(id: number, intervention: Intervention): void {
     this.interventionsService.updateIntervention(id, intervention).subscribe({
       next: (response) => {
-        alert(response.message);
-        this.router.navigate(['/interventions']);
+        alert(response.message || 'Intervention mise à jour !');
+        this.router.navigate(['/vehicules/details', this.vehiculeId()]);
       },
       error: (error) => {
         console.log(error);

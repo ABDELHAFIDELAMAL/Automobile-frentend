@@ -4,13 +4,6 @@
       <h1>{{ interventionId ? 'Update' : 'Create' }} Intervention</h1>
     </div>
 
-    <div>
-      <label>Vehicle ID</label>
-      <input type="number" formControlName="vehicule" placeholder="e.g., 12">
-      <div class="text-red-500" *ngIf="interventionForm.get('vehicule')?.touched && interventionForm.get('vehicule')?.invalid">
-        <small *ngIf="interventionForm.get('vehicule')?.errors?.['required']">Vehicle selection is required.</small>
-      </div>
-    </div>
 
     <div>
       <label>Type Intervention</label>
@@ -85,6 +78,14 @@
       <input type="date" formControlName="dateDepot">
       <div class="text-red-500" *ngIf="interventionForm.get('dateDepot')?.touched && interventionForm.get('dateDepot')?.invalid">
         <small *ngIf="interventionForm.get('dateDepot')?.errors?.['required']">Deposit date is required.</small>
+      </div>
+    </div>
+
+    <div>
+      <label>Date Cloture </label>
+      <input type="date" formControlName="dateCloture">
+      <div class="text-red-500" *ngIf="interventionForm.get('dateCloture')?.touched && interventionForm.get('dateCloture')?.invalid">
+        <small *ngIf="interventionForm.get('dateCloture')?.errors?.['required']">Date Cloture required.</small>
       </div>
     </div>
 

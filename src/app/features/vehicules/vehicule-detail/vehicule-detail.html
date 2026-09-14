@@ -1,1 +1,127 @@
-<p>vehicule-detail works!</p>
+@if (loading()) {
+<div class="flex justify-center items-center p-12">
+  <p>Chargement des détails du véhicule...</p>
+</div>
+} @else if (errorMessage()) {
+<div class="bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl mb-6">
+  {{ errorMessage() }}
+</div>
+} @else if (vehicule()) {
+<div class="dashboard-container">
+
+  <div class="mb-6">
+    <button routerLink="/vehicules" class="btn-update !w-auto flex items-center gap-1">
+      <span class="material-symbols-outlined text-base">arrow_back</span>
+      <span>Retour à la liste</span>
+    </button>
+  </div>
+
+  <div class="intervention-card !border-l-blue-600 mb-8" data-priority="NORMAL">
+    <div class="card-top">
+      <div class="title-group">
+        <span class="material-symbols-outlined text-blue-600">directions_car</span>
+        <h2 class="text-xl font-bold text-gray-900">
+          {{ vehicule()?.marque }} {{ vehicule()?.modele }}
+        </h2>
+      </div>
+      <span class="id-tag">#{{ vehicule()?.id }}</span>
+    </div>
+
+    <div class="card-body grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="info-item flex flex-col">
+        <span class="label">Immatriculation</span>
+        <span class="value font-mono font-bold text-gray-900">{{ vehicule()?.immatriculation }}</span>
+      </div>
+      <div class="info-item flex flex-col">
+        <span class="label">Année</span>
+        <span class="value font-semibold text-gray-900">{{ vehicule()?.annee }}</span>
+      </div>
+      <div class="info-item flex flex-col">
+        <span class="label">Kilométrage</span>
+        <span class="value font-semibold text-gray-900">{{ vehicule()?.kilometrage | number }} km</span>
+      </div>
+      <div class="info-item flex flex-col">
+        <span class="label">Client Fictif</span>
+        <span class="value font-semibold" [ngClass]="vehicule()?.clientFictif ? 'text-orange-600' : 'text-green-600'">
+            {{ vehicule()?.clientFictif ? 'Oui' : 'Non' }}
+          </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-8">
+    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+      <span class="material-symbols-outlined text-orange-500">build</span>
+      <span>Interventions en cours ({{ getInterventionsEnCours().length }})</span>
+    </h3>
+
+    <div class="interventions-grid">
+      @for (item of getInterventionsEnCours(); track item.id) {
+      <div class="intervention-card" [attr.data-priority]="item.priorite">
+        <div class="card-top">
+          <div class="title-group">
+            <span class="id-tag">#{{ item.id }}</span>
+            <h3>{{ item.type }}</h3>
+          </div>
+          <span class="badge-status" [attr.data-status]="item.status">{{ item.status }}</span>
+        </div>
+        <div class="card-body">
+          <p class="text-sm text-gray-600 mb-2">{{ item.description }}</p>
+
+          <div class="info-item mb-2" *ngIf="item.mecanicien">
+            <span class="label">Mécanicien :</span>
+            <span class="value">{{ item.mecanicien.nom }}</span>
+          </div>
+
+          <div class="price-row flex justify-between items-center">
+            <span class="label">Estimation :</span>
+            <span class="cost">{{ item.coutEstime | currency:'MAD':'symbol':'1.2-2':'fr-MA' }}</span>
+          </div>
+        </div>
+      </div>
+      } @empty {
+      <div class="empty-state col-span-full">
+        <p>Aucune intervention active sur ce véhicule.</p>
+      </div>
+      }
+    </div>
+  </div>
+
+  <div>
+    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+      <span class="material-symbols-outlined text-green-600">history</span>
+      <span>Historique des interventions ({{ getHistoriqueInterventions().length }})</span>
+    </h3>
+
+    <div class="interventions-grid">
+      @for (item of getHistoriqueInterventions(); track item.id) {
+      <div class="intervention-card opacity-85 bg-gray-50" data-priority="BASSE">
+        <div class="card-top">
+          <div class="title-group">
+            <span class="id-tag">#{{ item.id }}</span>
+            <h3 class="text-gray-700">{{ item.type }}</h3>
+          </div>
+          <span class="badge-status" [attr.data-status]="item.status">{{ item.status }}</span>
+        </div>
+        <div class="card-body">
+          <p class="text-sm text-gray-600 mb-1">{{ item.description }}</p>
+          <p class="text-xs text-gray-500 mb-3 italic" *ngIf="item.diagnostic">
+            <strong>Diagnostic :</strong> {{ item.diagnostic }}
+          </p>
+
+          <div class="flex justify-between items-center text-xs text-gray-500 pt-2 border-t border-gray-100">
+            <span>Clôturé le :</span>
+            <strong>{{ (item.dateCloture || item.dateRestitutionPrevue) | date:'dd/MM/yyyy' }}</strong>
+          </div>
+        </div>
+      </div>
+      } @empty {
+      <div class="empty-state col-span-full">
+        <p>Aucun antécédent technique enregistré pour ce véhicule.</p>
+      </div>
+      }
+    </div>
+  </div>
+
+</div>
+}

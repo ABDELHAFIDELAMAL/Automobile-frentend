@@ -10,8 +10,6 @@
 
   <div class="dashboard-header">
     <h2>Suivi des Interventions {{ totalInterventions() }}</h2>
-
-    <!-- Zone optionnelle pour afficher les compteurs de statistiques de votre composant TS -->
     <div class="stats-bar flex gap-4 text-sm mt-2">
       <span>Diagnostics: <strong>{{ totalDiagnostics() }}</strong></span>
       <span>Réparations: <strong>{{ totalReparations() }}</strong></span>
@@ -83,7 +81,6 @@
           <span>Modifier</span>
         </button>
 
-        <!-- Affichage conditionnel selon la règle stricte de votre backend -->
         @if (item.status.toString() === 'EN_REPARATION') {
         <button type="button" (click)="terminerIntervention(item.id)">
           <span>Terminer</span>
