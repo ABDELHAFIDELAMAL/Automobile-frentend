@@ -17,8 +17,8 @@ header > div:first-child {
   @apply flex-1;
 }
 
-h1 {
-  @apply text-xl font-bold tracking-tight text-slate-900 sm:text-2xl;
+header div p {
+  @apply  font-semibold tracking-tight text-slate-900 ;
 }
 
 header > div:not(:first-child) {

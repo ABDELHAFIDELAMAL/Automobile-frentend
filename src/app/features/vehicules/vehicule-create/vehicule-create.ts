@@ -4,6 +4,7 @@ import { NgIf } from '@angular/common';
 import { VehicleService } from '../services/VehiculeService';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Vehicule } from '../../../entities/Vehicule';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   imports: [ReactiveFormsModule, NgIf],
@@ -99,16 +100,22 @@ export class VehiculeCreate implements OnInit {
     }
   }
 
+
   createVehicule(vehicule: Vehicule) {
     this.vehiculeService.createVehicule(vehicule).subscribe({
       next: () => {
         this.router.navigate(['/vehicules']);
       },
-      error: (err) => {
-        console.error(err);
+      error: (error: HttpErrorResponse) => {
+        if (error.status === 409) {
+          alert('Cette immatriculation existe déjà.');
+        } else {
+          console.log(error.message);
+        }
       },
     });
   }
+
 
   updateVehicule(id: number, vehicule: Vehicule) {
     this.vehiculeService.updateVehicule(id, vehicule).subscribe({
