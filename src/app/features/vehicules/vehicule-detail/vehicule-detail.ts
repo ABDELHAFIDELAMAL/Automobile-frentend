@@ -1,33 +1,59 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
+import { CommonModule, CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { VehicleService } from '../services/VehiculeService';
 import { Vehicule } from '../../../entities/Vehicule';
-import { Router } from '@angular/router';
 import { Status } from '../../../enums/Status.enum';
 
 @Component({
-  imports: [],
   selector: 'app-vehicule-detail',
-  styleUrl: './vehicule-detail.css',
+  standalone: true,
+  imports: [CommonModule, DatePipe, CurrencyPipe, DecimalPipe, RouterLink],
   templateUrl: './vehicule-detail.html',
+  styleUrl: './vehicule-detail.css',
 })
 export class VehiculeDetail implements OnInit {
-  private vehicleService = inject(VehicleService);
-  private router = inject(Router);
+  private readonly vehicleService = inject(VehicleService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
-  vehicule = signal<Vehicule | undefined>(undefined);
+  protected readonly Status = Status;
 
-  ngOnInit(): void {}
+  vehicule = signal<Vehicule | null>(null);
+  loading = signal<boolean>(true);
+  errorMessage = signal<string | null>(null);
 
-  getVehiculeByMatricule(matricule: string): void {
-    this.vehicleService.getVehiculeByMatricule(matricule).subscribe({
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.getVehiculeById(+id);
+    } else {
+      this.errorMessage.set('Identifiant du véhicule introuvable.');
+      this.loading.set(false);
+    }
+  }
+
+  getVehiculeById(id: number): void {
+    this.vehicleService.getVehiculeById(id).subscribe({
       next: (response) => {
-        this.vehicule.set(response.data);
+        this.vehicule.set(response.data || response);
+        this.loading.set(false);
       },
       error: (err) => {
-        console.error('Error:', err);
-      },
+        console.error('Error lors de getVehiculeById:', err);
+        this.errorMessage.set('Impossible de charger les informations du véhicule.');
+        this.loading.set(false);
+      }
     });
   }
 
+  getInterventionsEnCours() {
+    const list = this.vehicule()?.interventions || [];
+    return list.filter((i) => i.status !== Status.RESTITUEE && i.status !== Status.TERMINEE);
+  }
 
+  getHistoriqueInterventions() {
+    const list = this.vehicule()?.interventions || [];
+    return list.filter((i) => i.status === Status.RESTITUEE || i.status === Status.TERMINEE);
+  }
 }
