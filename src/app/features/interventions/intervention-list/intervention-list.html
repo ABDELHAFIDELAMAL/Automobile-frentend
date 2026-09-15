@@ -1,21 +1,60 @@
 <section>
 
+
+  @if (notification()) {
+  @let notif = notification()!;
+
+  <div class="fixed top-4 right-4 z-50 flex items-center gap-4 w-full max-w-sm sm:max-w-md p-4 rounded-xl shadow-lg transition-all duration-300"
+       [ngClass]="{
+         'bg-green-500 text-white': notif.type === 'success',
+         'bg-red-500 text-white': notif.type === 'error'
+       }">
+
+    <span class="inline-flex shrink-0 rounded-full p-2.5 bg-white"
+          [ngClass]="{
+            'text-green-500': notif.type === 'success',
+            'text-red-500': notif.type === 'error'
+          }">
+      <span class="material-symbols-outlined block text-xl">
+        {{ notif.type === 'success' ? 'check_circle' : 'notifications_active' }}
+      </span>
+    </span>
+
+    <div class="flex-1 min-w-0">
+      <p class="text-sm font-medium text-white leading-snug break-words">
+        {{ notif.message }}
+      </p>
+    </div>
+
+    <button type="button"
+            class="all-unset inline-flex shrink-0 p-1 rounded-full text-black bg-white transition-colors cursor-pointer"
+            (click)="notification.set(null)">
+      <span class="material-symbols-outlined text-lg block">close</span>
+    </button>
+  </div>
+  }
+
+
+
+
+
+
+
+
+
+
+
+
   <header>
     <div class="title">
       <div>
         <p>Liste des interventions</p>
       </div>
-      <div routerLink="/interventions/create">
-        <button>
-          <span class="material-symbols-outlined">add</span>
-          <p>Creer Interventions</p>
-        </button>
-      </div>
+      <button type="submit" (click)="loadInterventions()">Réinitialiser</button>
     </div>
-
     <div class="dashboard">
       <div>
-        <span class=""></span>
+        <span class="material-symbols-outlined">build</span>
         <p>Total Interventions </p>
         <p>{{ totalInterventions() }}</p>
       </div>
@@ -50,7 +89,6 @@
           }
         </select>
       </label>
-      <button type="submit" (click)="loadInterventions()">Réinitialiser</button>
     </div>
   </header>
 
@@ -80,7 +118,7 @@
             placeholder="0"
           >
         </label>
-        <span>DH</span>
+        <span>DHs</span>
       </div>
 
       <div>
@@ -98,27 +136,27 @@
       <div class="workflow-actions ">
         @switch (intervention.status) {
         @case (Status.RECUE) {
-        <button (click)="changerStatus(intervention.id, Status.DIAGNOSTIC_EN_COURS)" >
+        <button (click)="changerStatus(intervention.id, Status.DIAGNOSTIC_EN_COURS)" class="oklch(71.5% 0.143 215.221)">
           Commencer le Diagnostic
         </button>
         }
         @case (Status.DIAGNOSTIC_EN_COURS) {
-        <button (click)="changerStatus(intervention.id, Status.DEVIS_A_VALIDER)" >
+        <button (click)="changerStatus(intervention.id, Status.DEVIS_A_VALIDER)" class="bg-yellow-500">
           Générer le Devis
         </button>
         }
         @case (Status.DEVIS_A_VALIDER) {
-        <button (click)="changerStatus(intervention.id, Status.EN_REPARATION)" >
+        <button (click)="changerStatus(intervention.id, Status.EN_REPARATION)" class="bg-red-500">
            Lancer la Réparation
         </button>
         }
         @case (Status.EN_REPARATION) {
-        <button (click)="changerStatus(intervention.id, Status.TERMINEE)" >
+        <button (click)="changerStatus(intervention.id, Status.TERMINEE)"  class="bg-orange-500">
           Terminer les Travaux
         </button>
         }
         @case (Status.TERMINEE) {
-        <button (click)="changerStatus(intervention.id, Status.RESTITUEE)" >
+        <button (click)="changerStatus(intervention.id, Status.RESTITUEE)" class="bg-green-500">
           Restituer le Véhicule
         </button>
         }
@@ -133,7 +171,7 @@
         @if (intervention.status === Status.DIAGNOSTIC_EN_COURS && !intervention.diagnostic) {
         <button
           type="button"
-          (click)="addDiagnostic(intervention.id, 'Nouveau diagnostic à rédiger')"
+          (click)="addDiagnostic(intervention.id, 'Nouveau diagnostic à rédiger')" class="bg-rose-500"
           >
            Rédiger le Diagnostic
         </button>
@@ -167,4 +205,5 @@
     <p >Aucune intervention trouvée.</p>
     }
   </main>
+
 </section>

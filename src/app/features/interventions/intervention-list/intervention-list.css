@@ -1,171 +1,159 @@
-@import "tailwindcss";
+@reference "tailwindcss";
 
-section {
-  @apply min-h-screen bg-slate-50 p-4 md:p-8 font-sans antialiased text-slate-800;
+@layer base {
+  :root {
+    --bg-main: #f8fafc;
+    --bg-card: #ffffff;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --border-color: #e2e8f0;
+  }
+  body {
+    @apply bg-slate-50 text-slate-900 font-sans antialiased text-sm leading-normal min-h-screen;
+  }
+  aside, nav {
+    @apply bg-slate-900 text-white w-full lg:w-64 flex flex-col p-6 gap-2 shrink-0 border-r border-slate-800;
+  }
+  aside a, nav a {
+    @apply text-slate-400 no-underline px-4 py-3 rounded-lg flex items-center gap-3 font-medium transition-all duration-200 hover:text-white hover:bg-slate-800;
+  }
+  aside a.active, nav a.active {
+    @apply text-white bg-blue-600 font-semibold shadow-sm;
+  }
+  header {
+    @apply bg-white border-b border-slate-200 p-6 flex flex-col gap-6 shadow-sm;
+  }
+  header .title {
+    @apply flex justify-between items-center flex-wrap gap-4;
+  }
+  header .title p {
+    @apply text-2xl font-bold text-slate-900 tracking-tight;
+  }
+  header > div:last-child {
+    @apply flex gap-4 flex-wrap items-center;
+  }
+  main {
+    @apply p-4 md:p-6 max-w-7xl mx-auto flex flex-col gap-6 w-full;
+  }
+  section {
+    @apply flex flex-col gap-6 w-full;
+  }
+  form {
+    @apply bg-white border border-slate-200 rounded-xl p-6 grid grid-cols-1 sm:grid-cols-2 gap-5 shadow-sm;
+  }
+  label {
+    @apply flex flex-col gap-1.5 font-semibold text-xs uppercase tracking-wider text-slate-700;
+  }
+  input, select, textarea {
+    @apply w-full px-3.5 py-2.5 border border-slate-300 rounded-lg bg-white text-slate-900 font-normal text-sm transition-all duration-150 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 disabled:bg-slate-100 disabled:cursor-not-allowed;
+  }
+  input[type="search"] {
+    @apply min-w-[240px];
+  }
+  textarea {
+    @apply min-h-[100px] resize-y col-span-1 sm:col-span-2;
+  }
+  button, input[type="submit"] {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-lg border border-transparent cursor-pointer transition-all duration-150 bg-blue-600 text-white shadow-sm hover:bg-blue-700 active:translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none w-full sm:w-auto;
+  }
+  header button,
+  button[type="reset"] {
+    @apply bg-white text-slate-700 border-slate-300 hover:bg-slate-100 hover:text-slate-900;
+  }
+  table {
+    @apply w-full border-collapse bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm block overflow-x-auto whitespace-nowrap md:table md:whitespace-normal;
+  }
+  th, td {
+    @apply px-4 py-3.5 text-left border-b border-slate-200;
+  }
+  th {
+    @apply bg-slate-50 text-xs uppercase tracking-wider font-bold text-slate-500;
+  }
+  tr:last-child td {
+    @apply border-b-0;
+  }
+  tr:hover td {
+    @apply bg-slate-50/80;
+  }
+  ul {
+    @apply relative pl-6 list-none;
+  }
+  ul::before {
+    @apply content-[''] absolute top-0 bottom-0 left-[7px] w-0.5 bg-slate-200;
+  }
+  li {
+    @apply relative mb-6 pl-2;
+  }
+  li::before {
+    @apply content-[''] absolute -left-6 top-1 w-3 h-3 rounded-full bg-blue-600 border-2 border-white ring-2 ring-blue-600;
+  }
+  div[role="alert"], .alert {
+    @apply p-4 rounded-lg border-l-4 border-blue-600 bg-blue-50 text-blue-900 text-sm font-medium;
+  }
 }
-
-header {
-  @apply mb-8 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col gap-6;
-}
-
-header .title {
-  @apply flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-100 pb-4;
-}
-
-header .title p {
-  @apply text-xl md:text-2xl font-bold tracking-tight text-slate-900;
-}
-
-header .title button {
-  @apply w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-4 py-2.5 rounded-xl shadow-sm transition-all duration-200 cursor-pointer;
-}
-
-header .title button span {
-  @apply text-xl;
-}
-
-header .dashboard {
-  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4;
-}
-
-header .dashboard div {
-  @apply bg-slate-50 p-4 rounded-xl border border-slate-100 flex items-center justify-between;
-}
-
-header .dashboard div p:first-of-type {
-  @apply text-xs font-semibold text-slate-500 uppercase tracking-wider;
-}
-
-header .dashboard div p:last-of-type,
-header .dashboard div span:last-of-type {
-  @apply text-2xl font-bold text-slate-900 mt-1;
-}
-
-header .dashboard div:last-child {
-  @apply border-indigo-100 bg-indigo-50/30;
-}
-
-header .dashboard div:last-child span {
-  @apply text-emerald-600 font-extrabold;
-}
-
-header > div:last-child {
-  @apply flex flex-col md:flex-row items-stretch md:items-center gap-3;
-}
-
-header > div:last-child label:first-of-type {
-  @apply flex-1;
-}
-
-header input[type="search"] {
-  @apply w-full px-4 py-2 border border-slate-200 rounded-xl bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none text-sm placeholder-slate-400;
-}
-
-header select {
-  @apply w-full md:w-64 px-4 py-2 border border-slate-200 rounded-xl bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-sm text-slate-700 cursor-pointer;
-}
-
-header button[type="submit"] {
-  @apply px-4 py-2 text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl shadow-sm transition-colors cursor-pointer;
-}
-
-main {
-  @apply grid grid-cols-1 lg:grid-cols-2 gap-6 items-start;
-}
-
-.containerIntervention {
-  @apply bg-white rounded-2xl border border-slate-100 shadow-sm transition-all duration-300 p-5 md:p-6 flex flex-col gap-4;
-}
-
-.containerIntervention > div:first-child {
-  @apply flex items-start justify-between sm:items-center gap-3 border-b border-slate-50 pb-3;
-}
-
-.containerIntervention h3 {
-  @apply text-base font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded-md border border-indigo-100;
-}
-
-.containerIntervention .badge-status {
-  @apply inline-flex px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-100 text-slate-800 border border-slate-200 uppercase;
-}
-
-.containerIntervention > div:first-child p {
-  @apply text-xs font-bold px-2 py-1 rounded-md uppercase tracking-wider bg-rose-50 text-rose-700 border border-rose-100;
-}
-
-.containerIntervention > div:nth-child(2) {
-  @apply space-y-3 bg-slate-50/50 p-4 rounded-xl border border-slate-100 text-sm;
-}
-
-.containerIntervention > div:nth-child(2) p:first-of-type {
-  @apply text-slate-700 leading-relaxed font-medium;
-}
-
-.containerIntervention > div:nth-child(2) p:last-of-type {
-  @apply italic text-slate-500 pt-2 border-t border-slate-200/60;
-}
-
-.containerIntervention > div:nth-child(3) {
-  @apply flex items-center gap-2 bg-slate-50/50 px-3 py-2 rounded-xl border border-slate-100 self-start text-sm;
-}
-
-.containerIntervention > div:nth-child(3) input[type="number"] {
-  @apply w-20 px-2 py-1 text-right font-bold text-slate-900 bg-white border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none;
-}
-
-.containerIntervention > div:nth-child(3) span {
-  @apply text-xs font-bold text-slate-400;
-}
-
-.containerIntervention > div:nth-child(4) {
-  @apply grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs border-y border-slate-100 py-3 text-slate-500;
-}
-
-.containerIntervention > div:nth-child(4) p {
-  @apply flex flex-col gap-0.5 font-medium text-slate-400;
-}
-
-.containerIntervention > div:nth-child(4) p span,
-.containerIntervention > py-4 {
-  @apply font-semibold text-slate-700;
-}
-
-.containerIntervention > div:nth-child(4) p span.text-red-500 {
-  @apply text-amber-600 bg-amber-50 border border-amber-100 px-1.5 py-0.5 rounded self-start font-medium text-[11px];
-}
-
-.workflow-actions {
-  @apply w-full pt-1;
-}
-
-.workflow-actions button {
-  @apply w-full flex items-center justify-center gap-2 text-white font-semibold py-2.5 px-4 rounded-xl shadow-sm transition-colors text-sm cursor-pointer bg-indigo-600 hover:bg-indigo-700;
-}
-
-.workflow-actions span {
-  @apply w-full flex items-center justify-center bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold py-2.5 rounded-xl text-sm;
-}
-
-.ListButtons {
-  @apply flex flex-col sm:flex-row sm:items-end gap-4 w-full pt-2;
-}
-
-.ListButtons > button {
-  @apply flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-semibold border border-indigo-200 text-indigo-700 bg-white hover:bg-indigo-50 rounded-xl shadow-sm transition-colors cursor-pointer h-10 self-end;
-}
-
-.assignment-container {
-  @apply flex-1 flex flex-col gap-1 w-full;
-}
-
-.assignment-container label {
-  @apply text-[10px] font-bold text-slate-400 uppercase tracking-wider;
-}
-
-.assignment-container select {
-  @apply w-full px-3 py-2 border border-slate-200 rounded-xl bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-xs text-slate-700 transition-all cursor-pointer h-10 disabled:bg-slate-50 disabled:text-slate-400 disabled:border-slate-200 disabled:cursor-not-allowed;
-}
-
-main > p {
-  @apply col-span-full bg-white border border-dashed border-slate-200 rounded-2xl p-12 text-center text-slate-400 text-sm font-medium;
+@layer components {
+  .dashboard {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full;
+  }
+  .dashboard > div {
+    @apply bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-2 relative shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md;
+  }
+  .dashboard > div p:first-of-type {
+    @apply text-xs font-semibold text-slate-500 uppercase tracking-wider;
+  }
+  .dashboard > div p:last-of-type,
+  .dashboard > div span:not(.material-symbols-outlined) {
+    @apply text-2xl font-extrabold text-slate-900 leading-tight;
+  }
+  .dashboard > div .material-symbols-outlined {
+    @apply absolute top-4 right-4 text-slate-400 text-2xl;
+  }
+  .containerIntervention {
+    @apply bg-white border border-slate-200 rounded-xl p-6 flex flex-col gap-5 shadow-sm transition-all duration-200 hover:shadow-md;
+  }
+  .containerIntervention > div:nth-child(1) {
+    @apply flex items-center justify-between flex-wrap gap-3 border-b border-slate-200 pb-3;
+  }
+  .containerIntervention h3 {
+    @apply text-lg font-bold text-slate-900;
+  }
+  .containerIntervention > div:nth-child(2) {
+    @apply flex flex-col gap-2 bg-slate-50 p-4 rounded-lg border border-slate-100;
+  }
+  .containerIntervention > div:nth-child(2) p {
+    @apply text-slate-600 text-sm;
+  }
+  .containerIntervention > div:nth-child(3) {
+    @apply flex items-center gap-2;
+  }
+  .containerIntervention > div:nth-child(3) input {
+    @apply max-w-[140px];
+  }
+  .containerIntervention > div:nth-child(3) span {
+    @apply font-bold text-slate-600;
+  }
+  .containerIntervention > div:nth-child(4) {
+    @apply grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-slate-500 bg-slate-50/50 p-3 rounded-md border border-slate-200/60;
+  }
+  .workflow-actions {
+    @apply flex items-center justify-start pt-2;
+  }
+  .workflow-actions span {
+    @apply inline-flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-600 font-semibold rounded-lg text-xs uppercase tracking-wider;
+  }
+  .ListButtons {
+    @apply flex flex-col sm:flex-row flex-wrap gap-4 items-stretch sm:items-center justify-between border-t border-slate-200 pt-4;
+  }
+  .assignment-container {
+    @apply flex items-center gap-3 flex-wrap;
+  }
+  .badge-status, span.badge-status {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-500 text-white leading-none;
+  }
+  .badge-status:empty {
+    @apply hidden;
+  }
+  div:has(> .badge-status) > p:last-child {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-bold uppercase tracking-wider border border-slate-200 bg-slate-50;
+  }
 }

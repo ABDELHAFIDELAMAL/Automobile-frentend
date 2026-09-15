@@ -29,6 +29,8 @@ export class InterventionList implements OnInit {
   mecaniciens = signal<Mecanicien[]>([]);
   coutTotal = signal<number>(0);
 
+  notification = signal<{ message: string; type: 'success' | 'error' } | null>(null);
+
   totalInterventions() {
     return this.interventions().length;
   }
@@ -79,6 +81,7 @@ export class InterventionList implements OnInit {
     });
   }
 
+
   changerStatus(id: number, statusCible: Status): void {
     const interventionActuelle = this.interventions().find((item) => item.id === id);
     const nomAuteur = interventionActuelle?.mecanicien?.nom || 'SYSTEM';
@@ -91,14 +94,23 @@ export class InterventionList implements OnInit {
             item.id === id ? ({ ...item, status: statusCible } as typeof item) : item,
           ),
         );
-        console.log('Status Intervention changer avec success ');
-        alert('Status Intervention changer avec success ');
+        this.notification.set({
+          message: `Le statut a été mis à jour vers "${statusCible}" avec succès !`,
+          type: 'success',
+        });
+        setTimeout(() => this.notification.set(null), 4000);
       },
       error: (err) => {
-        console.error("Erreur lors de changer Status de l'Intervention " , err);
+        console.error(err);
+        this.notification.set({
+          message: err.error?.message || 'Transition de statut refusée par les règles du workflow.',
+          type: 'error',
+        });
+        setTimeout(() => this.notification.set(null), 4000);
       },
     });
   }
+
 
   terminerIntervention(id: number): void {
     this.interventionService.terminer(id).subscribe({
@@ -108,15 +120,25 @@ export class InterventionList implements OnInit {
             item.id === id ? ({ ...item, status: Status.TERMINEE } as typeof item) : item,
           ),
         );
-        alert('Le véhicule a été terminee avec succès !');
+        this.notification.set({
+          message: 'Le véhicule a été terminé avec succès !',
+          type: 'success',
+        });
+        setTimeout(() => this.notification.set(null), 4000);
       },
       error: (err) => {
         console.error("Erreur lors de la clôture de l'intervention :", err);
+        this.notification.set({
+          message:
+            err.error?.message || "Une erreur est survenue lors de la clôture de l'intervention.",
+          type: 'error',
+        });
+        setTimeout(() => this.notification.set(null), 4000);
       },
     });
   }
 
-  restituer(id: number) {
+  restituer(id: number): void {
     this.interventionService.restituer(id).subscribe({
       next: () => {
         this.interventions.update((list) =>
@@ -124,10 +146,19 @@ export class InterventionList implements OnInit {
             item.id === id ? ({ ...item, status: Status.RESTITUEE } as typeof item) : item,
           ),
         );
-        alert('Le véhicule a été restitué avec succès !');
+        this.notification.set({
+          message: 'Le véhicule a été restitué avec succès !',
+          type: 'success',
+        });
+        setTimeout(() => this.notification.set(null), 4000);
       },
       error: (err) => {
-        console.error('Erreur lors du restituer vehicule :', err);
+        console.error('Erreur lors de la restitution du véhicule :', err);
+        this.notification.set({
+          message: err.error?.message || 'Une erreur est survenue lors de la restitution.',
+          type: 'error',
+        });
+        setTimeout(() => this.notification.set(null), 4000);
       },
     });
   }
@@ -191,15 +222,38 @@ export class InterventionList implements OnInit {
 
     if (!mecanicienSelectionne) {
       console.error('Mécanicien introuvable dans la liste');
+      this.notification.set({
+        message: 'Mécanicien introuvable dans la liste locale.',
+        type: 'error',
+      });
+      setTimeout(() => this.notification.set(null), 4000);
       return;
     }
 
     this.interventionService.assignMecanicien(interventionId, mecanicienSelectionne).subscribe({
       next: (response: ApiResponse<Intervention>) => {
-        console.log('Mécanicien assigné avec succès !', response.data);
-        alert('Mécanicien assigné avec succès !');
+        this.interventions.update((list) =>
+          list.map((item) =>
+            item.id === interventionId
+              ? ({ ...item, mecanicien: mecanicienSelectionne } as typeof item)
+              : item,
+          ),
+        );
+        this.notification.set({
+          message: 'Mécanicien assigné avec succès !',
+          type: 'success',
+        });
+        setTimeout(() => this.notification.set(null), 4000);
       },
-      error: (err) => console.error("Erreur lors de l'assignation :", err),
+      error: (err) => {
+        console.error("Erreur lors de l'assignation :", err);
+        this.notification.set({
+          message:
+            err.error?.message || "Une erreur est survenue lors de l'assignation du mécanicien.",
+          type: 'error',
+        });
+        setTimeout(() => this.notification.set(null), 4000);
+      },
     });
   }
 
@@ -215,14 +269,25 @@ export class InterventionList implements OnInit {
             item.id === id ? ({ ...item, coutEstime: coutEstime } as typeof item) : item,
           ),
         );
+        this.calculerCoutTotal();
+        this.notification.set({
+          message: 'Coût estimé mis à jour avec succès !',
+          type: 'success',
+        });
+        setTimeout(() => this.notification.set(null), 4000);
       },
       error: (err) => {
         console.log('Erreur lors de la mise à jour du coût estimé : ', err);
+        this.notification.set({
+          message: err.error?.message || 'Une erreur est survenue lors de la mise à jour du coût.',
+          type: 'error',
+        });
+        setTimeout(() => this.notification.set(null), 4000);
       },
     });
   }
 
-  addDiagnostic(id: number, diagnostic: string) {
+  addDiagnostic(id: number, diagnostic: string): void {
     this.interventionService.addDiagnostic(id, diagnostic).subscribe({
       next: () => {
         this.interventions.update((list) =>
@@ -230,10 +295,19 @@ export class InterventionList implements OnInit {
             item.id === id ? ({ ...item, diagnostic: diagnostic } as typeof item) : item,
           ),
         );
-        alert('Daignostic ajoute avec successs');
+        this.notification.set({
+          message: 'Diagnostic ajouté avec succès !',
+          type: 'success',
+        });
+        setTimeout(() => this.notification.set(null), 4000);
       },
       error: (err) => {
         console.log("Erreur lors de l'ajout du diagnostic : ", err);
+        this.notification.set({
+          message: err.error?.message || "Une erreur est survenue lors de l'ajout du diagnostic.",
+          type: 'error',
+        });
+        setTimeout(() => this.notification.set(null), 4000);
       },
     });
   }

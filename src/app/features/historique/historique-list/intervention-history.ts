@@ -1,10 +1,10 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { Historique } from '../../../entities/Historique';
 import { HistoriqueService } from '../service/historique-service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgClass } from '@angular/common';
 
 @Component({
-  imports: [DatePipe],
+  imports: [DatePipe, NgClass],
   selector: 'app-intervention-history',
   styleUrl: './intervention-history.css',
   templateUrl: './intervention-history.html',
