@@ -42,17 +42,17 @@
       </label>
       <label>
         <select
+          (change)="onTypeChange($event)"
           class="px-4 py-2 border border-gray-300 rounded-lg"
         >
           <option value="">Tous les types</option>
 
-          @for (type of typesInterventions ; track type) {
+          @for (type of typesInterventions; track type) {
           <option [value]="type">
             {{ type }}
           </option>
           }
         </select>
-
       </label>
       <button type="submit" (click)="loadInterventions()" >Renisaliser</button>
     </div>
@@ -160,5 +160,6 @@
     } @empty {
     <p>Aucune intervention trouvée.</p>
     }
+
   </main>
 </section>
