@@ -5,6 +5,7 @@ import { Intervention } from '../../../entities/Interventions';
 import { ApiResponse } from '../../../entities/ApiResponse';
 import { environment } from '../../../environment/environment';
 import { Mecanicien } from '../../../entities/Mecanicien';
+import { TypeIntervention } from '../../../enums/TypeIntervention.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -88,9 +89,13 @@ export class InterventionService {
     return this.http.get<ApiResponse<number>>(`${this.baseUrl}/calculer/cout/total`);
   }
 
-  getInterventionsByType(type: any): Observable<ApiResponse<Intervention[]>> {
-    return this.http.request<ApiResponse<Intervention[]>>('GET', `${this.baseUrl}/by/type`, {
-      body: type,
+  getInterventionsByType(type: TypeIntervention): Observable<ApiResponse<Intervention[]>> {
+    return this.http.get<ApiResponse<Intervention[]>>(`${this.baseUrl}/by/type` , {
+      params : {
+        type : type
+      }
     });
   }
+
+
 }
