@@ -38,7 +38,7 @@ export class InterventionService {
   }
 
   setCoutEstime(id: number, cout: number): Observable<ApiResponse<Intervention>> {
-    const params = new HttpParams().set('cout', cout.toString());
+    const params = new HttpParams().set('coutEstime', cout.toString());
     return this.http.post<ApiResponse<Intervention>>(`${this.baseUrl}/setcout/${id}`, null, {
       params,
     });
@@ -55,13 +55,14 @@ export class InterventionService {
     );
   }
 
-  changerStatus(id: number, statusIntervention: string): Observable<ApiResponse<Intervention>> {
+  changerStatus(id: number, statusIntervention: string, auteur: string,
+  ): Observable<ApiResponse<Intervention>> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
+     const params = new HttpParams().set('auteur', auteur);
     return this.http.patch<ApiResponse<Intervention>>(
       `${this.baseUrl}/change/status/${id}`,
       JSON.stringify(statusIntervention),
-      { headers },
+      { headers, params },
     );
   }
 
@@ -90,12 +91,10 @@ export class InterventionService {
   }
 
   getInterventionsByType(type: TypeIntervention): Observable<ApiResponse<Intervention[]>> {
-    return this.http.get<ApiResponse<Intervention[]>>(`${this.baseUrl}/by/type` , {
-      params : {
-        type : type
-      }
+    return this.http.get<ApiResponse<Intervention[]>>(`${this.baseUrl}/by/type`, {
+      params: {
+        type: type,
+      },
     });
   }
-
-
 }

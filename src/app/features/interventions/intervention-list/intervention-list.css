@@ -1,291 +1,171 @@
-@reference "tailwindcss";
+@import "tailwindcss";
 
-.intervention-page {
-  @apply min-h-screen bg-white p-4 sm:p-6 lg:p-8 antialiased text-slate-800;
+section {
+  @apply min-h-screen bg-slate-50 p-4 md:p-8 font-sans antialiased text-slate-800;
 }
 
-.intervention-container {
-  @apply mx-auto max-w-7xl space-y-6;
+header {
+  @apply mb-8 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col gap-6;
 }
 
-.page-header {
-  @apply flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between;
+header .title {
+  @apply flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-100 pb-4;
 }
 
-.page-header p {
-  @apply font-semibold tracking-tight text-slate-500 ;
+header .title p {
+  @apply text-xl md:text-2xl font-bold tracking-tight text-slate-900;
 }
 
-
-.btn-primary {
-  @apply inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-emerald-700 active:scale-[0.98];
-}
-
-.btn-primary span {
-  @apply text-base leading-none;
-}
-
-.stats-grid {
-  @apply grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4;
-}
-
-.stat-card {
-  @apply flex items-center gap-4 rounded-xl border border-slate-100 bg-white p-4 shadow-sm;
-}
-
-.stat-icon {
-  @apply flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-sm font-bold;
-}
-
-.stat-icon.blue {
-  @apply bg-blue-50 text-blue-700;
-}
-
-.stat-icon.orange {
-  @apply bg-amber-50 text-amber-700;
-}
-
-.stat-icon.purple {
-  @apply bg-purple-50 text-purple-700;
-}
-
-.stat-icon.green {
-  @apply bg-emerald-50 text-emerald-700;
-}
-
-.stat-card span {
-  @apply block text-xs font-semibold text-slate-500 uppercase tracking-wider;
-}
-
-.stat-card strong {
-  @apply mt-0.5 block text-xl font-bold text-slate-900;
-}
-
-.toolbar {
-  @apply flex flex-col gap-3 rounded-xl border border-slate-100 bg-white p-3 lg:flex-row lg:items-center;
-}
-
-.search-box {
-  @apply flex min-h-10 flex-1 items-center gap-2.5 rounded-lg border border-slate-200 bg-white px-3 focus-within:border-slate-400;
-}
-
-.search-box span {
-  @apply text-sm text-slate-400;
-}
-
-.search-box input {
-  @apply w-full border-0 bg-transparent text-sm font-medium text-slate-800 outline-none placeholder:text-slate-400;
-}
-
-.filter-select {
-  @apply min-h-10 w-full sm:w-auto rounded-lg border border-slate-200 bg-white px-3 text-sm font-medium text-slate-700 outline-none focus:border-slate-400;
-}
-
-.filter-btn {
-  @apply min-h-10 w-full sm:w-auto rounded-lg bg-slate-100 px-4 text-sm font-semibold text-slate-800 hover:bg-slate-200;
-}
-
-.reset-btn {
-  @apply min-h-10 w-full sm:w-auto rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-600 hover:bg-slate-50;
-}
-
-.notification {
-  @apply flex items-center gap-3 rounded-xl border p-3.5 text-sm font-semibold;
-}
-
-.notification-success {
-  @apply border-emerald-200 bg-emerald-50 text-emerald-900;
-}
-
-.notification-error {
-  @apply border-rose-200 bg-rose-50 text-rose-900;
-}
-
-.notification span {
-  @apply flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-white text-xs font-bold shadow-xs;
-}
-
-.notification p {
-  @apply m-0;
-}
-
-.content-card {
-  @apply bg-white;
-}
-
-.card-header {
-  @apply flex flex-col gap-3 border-b border-slate-100 pb-4 sm:flex-row sm:items-center sm:justify-between;
+header .title button {
+  @apply w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-4 py-2.5 rounded-xl shadow-sm transition-all duration-200 cursor-pointer;
 }
 
-.card-header h2 {
-  @apply text-lg font-bold text-slate-900;
+header .title button span {
+  @apply text-xl;
 }
 
-.card-header p {
-  @apply text-sm font-medium text-slate-500;
+header .dashboard {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4;
 }
 
-.total-cost {
-  @apply rounded-lg bg-slate-50 px-3.5 py-2 border border-slate-100;
+header .dashboard div {
+  @apply bg-slate-50 p-4 rounded-xl border border-slate-100 flex items-center justify-between;
 }
 
-.total-cost span {
-  @apply block text-xs font-semibold text-slate-500 uppercase tracking-wider;
+header .dashboard div p:first-of-type {
+  @apply text-xs font-semibold text-slate-500 uppercase tracking-wider;
 }
 
-.total-cost strong {
-  @apply block text-base font-bold text-slate-900;
+header .dashboard div p:last-of-type,
+header .dashboard div span:last-of-type {
+  @apply text-2xl font-bold text-slate-900 mt-1;
 }
 
-.table-wrapper {
-  @apply w-full overflow-x-auto;
+header .dashboard div:last-child {
+  @apply border-indigo-100 bg-indigo-50/30;
 }
 
-table {
-  @apply w-full min-w-[900px] border-collapse text-left;
+header .dashboard div:last-child span {
+  @apply text-emerald-600 font-extrabold;
 }
 
-thead {
-  @apply hidden;
+header > div:last-child {
+  @apply flex flex-col md:flex-row items-stretch md:items-center gap-3;
 }
 
-tbody tr {
-  @apply border-b border-slate-100 transition-colors hover:bg-slate-50/50;
+header > div:last-child label:first-of-type {
+  @apply flex-1;
 }
 
-td {
-  @apply whitespace-nowrap px-4 py-4 text-sm font-medium text-slate-600 align-middle;
+header input[type="search"] {
+  @apply w-full px-4 py-2 border border-slate-200 rounded-xl bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none text-sm placeholder-slate-400;
 }
 
-td:first-child,
-.vehicle-cell strong {
-  @apply font-bold text-slate-900;
+header select {
+  @apply w-full md:w-64 px-4 py-2 border border-slate-200 rounded-xl bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-sm text-slate-700 cursor-pointer;
 }
 
-.vehicle-cell {
-  @apply flex items-center gap-3;
+header button[type="submit"] {
+  @apply px-4 py-2 text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl shadow-sm transition-colors cursor-pointer;
 }
 
-.vehicle-icon {
-  @apply flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-600 text-xs font-bold;
+main {
+  @apply grid grid-cols-1 lg:grid-cols-2 gap-6 items-start;
 }
 
-.vehicle-cell span {
-  @apply text-xs text-slate-500 font-medium;
+.containerIntervention {
+  @apply bg-white rounded-2xl border border-slate-100 shadow-sm transition-all duration-300 p-5 md:p-6 flex flex-col gap-4;
 }
 
-.type-badge {
-  @apply text-sm text-slate-600 font-medium;
+.containerIntervention > div:first-child {
+  @apply flex items-start justify-between sm:items-center gap-3 border-b border-slate-50 pb-3;
 }
 
-.description {
-  @apply max-w-[180px] truncate text-sm text-slate-600 font-medium;
+.containerIntervention h3 {
+  @apply text-base font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded-md border border-indigo-100;
 }
 
-.diagnostic {
-  @apply max-w-[150px] truncate text-sm text-slate-600 font-medium;
+.containerIntervention .badge-status {
+  @apply inline-flex px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-100 text-slate-800 border border-slate-200 uppercase;
 }
 
-.empty-value {
-  @apply text-sm text-slate-400 font-normal italic;
+.containerIntervention > div:first-child p {
+  @apply text-xs font-bold px-2 py-1 rounded-md uppercase tracking-wider bg-rose-50 text-rose-700 border border-rose-100;
 }
 
-.mechanic-cell {
-  @apply flex items-center gap-2;
+.containerIntervention > div:nth-child(2) {
+  @apply space-y-3 bg-slate-50/50 p-4 rounded-xl border border-slate-100 text-sm;
 }
 
-.avatar {
-  @apply flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-200 text-xs font-bold text-slate-700;
+.containerIntervention > div:nth-child(2) p:first-of-type {
+  @apply text-slate-700 leading-relaxed font-medium;
 }
 
-.mechanic-cell span {
-  @apply text-sm font-semibold text-slate-700;
+.containerIntervention > div:nth-child(2) p:last-of-type {
+  @apply italic text-slate-500 pt-2 border-t border-slate-200/60;
 }
 
-.status-select {
-  @apply inline-flex items-center justify-center rounded-md px-3 py-1.5 text-xs font-bold border-0 appearance-none text-center outline-none cursor-pointer tracking-wide;
+.containerIntervention > div:nth-child(3) {
+  @apply flex items-center gap-2 bg-slate-50/50 px-3 py-2 rounded-xl border border-slate-100 self-start text-sm;
 }
 
-.status-en-attente,
-.status-diagnostic {
-  @apply bg-emerald-100 text-emerald-800;
+.containerIntervention > div:nth-child(3) input[type="number"] {
+  @apply w-20 px-2 py-1 text-right font-bold text-slate-900 bg-white border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none;
 }
 
-.status-reparation {
-  @apply bg-sky-100 text-sky-800;
+.containerIntervention > div:nth-child(3) span {
+  @apply text-xs font-bold text-slate-400;
 }
 
-.status-terminee,
-.status-restituee {
-  @apply bg-rose-100 text-rose-700;
+.containerIntervention > div:nth-child(4) {
+  @apply grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs border-y border-slate-100 py-3 text-slate-500;
 }
 
-.cost-cell {
-  @apply flex items-center gap-1;
+.containerIntervention > div:nth-child(4) p {
+  @apply flex flex-col gap-0.5 font-medium text-slate-400;
 }
 
-.cost-cell input {
-  @apply w-20 bg-transparent border-0 py-0 text-sm font-semibold text-slate-800 outline-none focus:ring-0;
+.containerIntervention > div:nth-child(4) p span,
+.containerIntervention > py-4 {
+  @apply font-semibold text-slate-700;
 }
 
-.cost-cell span {
-  @apply text-sm font-bold text-slate-500;
+.containerIntervention > div:nth-child(4) p span.text-red-500 {
+  @apply text-amber-600 bg-amber-50 border border-amber-100 px-1.5 py-0.5 rounded self-start font-medium text-[11px];
 }
 
-.date-cell {
-  @apply text-sm font-semibold text-slate-500;
+.workflow-actions {
+  @apply w-full pt-1;
 }
 
-.actions {
-  @apply flex items-center justify-end gap-2;
+.workflow-actions button {
+  @apply w-full flex items-center justify-center gap-2 text-white font-semibold py-2.5 px-4 rounded-xl shadow-sm transition-colors text-sm cursor-pointer bg-indigo-600 hover:bg-indigo-700;
 }
 
-.action-btn {
-  @apply inline-flex items-center justify-center rounded-md px-3 py-1.5 text-xs font-bold transition-all;
+.workflow-actions span {
+  @apply w-full flex items-center justify-center bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold py-2.5 rounded-xl text-sm;
 }
 
-.diagnostic-btn {
-  @apply bg-sky-100 text-sky-800 hover:bg-sky-200;
+.ListButtons {
+  @apply flex flex-col sm:flex-row sm:items-end gap-4 w-full pt-2;
 }
 
-.finish-btn {
-  @apply bg-emerald-100 text-emerald-800 hover:bg-emerald-200;
+.ListButtons > button {
+  @apply flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-semibold border border-indigo-200 text-indigo-700 bg-white hover:bg-indigo-50 rounded-xl shadow-sm transition-colors cursor-pointer h-10 self-end;
 }
 
-.return-btn {
-  @apply bg-rose-100 text-rose-700 hover:bg-rose-200;
+.assignment-container {
+  @apply flex-1 flex flex-col gap-1 w-full;
 }
 
-.empty-state {
-  @apply flex min-h-64 flex-col items-center justify-center py-12 text-center;
+.assignment-container label {
+  @apply text-[10px] font-bold text-slate-400 uppercase tracking-wider;
 }
 
-.empty-icon {
-  @apply mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-xl text-slate-400;
+.assignment-container select {
+  @apply w-full px-3 py-2 border border-slate-200 rounded-xl bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-xs text-slate-700 transition-all cursor-pointer h-10 disabled:bg-slate-50 disabled:text-slate-400 disabled:border-slate-200 disabled:cursor-not-allowed;
 }
-
-.empty-state h3 {
-  @apply text-base font-bold text-slate-800;
-}
-
-.empty-state p {
-  @apply mt-1 text-sm font-medium text-slate-500;
-}
-
-@media (max-width: 640px) {
-  .intervention-page {
-    @apply p-3;
-  }
-
-  .stat-card {
-    @apply p-3.5;
-  }
-
-  .toolbar {
-    @apply p-2.5;
-  }
 
-  .total-cost {
-    @apply w-full;
-  }
+main > p {
+  @apply col-span-full bg-white border border-dashed border-slate-200 rounded-2xl p-12 text-center text-slate-400 text-sm font-medium;
 }
