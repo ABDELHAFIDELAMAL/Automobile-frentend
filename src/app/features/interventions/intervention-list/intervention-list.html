@@ -20,7 +20,7 @@
         <p>{{ totalInterventions() }}</p>
       </div>
       <div>
-        <span class=""></span>
+        <span class="material-symbols-outlined">repeat</span>
         <p>Total Reparations </p>
         <p>{{ totalReparations() }}</p>
       </div>
@@ -31,10 +31,9 @@
       </div>
       <div>
         <p>cout Total Estime</p>
-        <span>{{ coutTotalEstime() }} DHs</span>
+        <span>{{ coutTotal() }} DHs</span>
       </div>
     </div>
-
 
     <div>
       <label>
@@ -46,120 +45,126 @@
           class="px-4 py-2 border border-gray-300 rounded-lg"
         >
           <option value="">Tous les types</option>
-
           @for (type of typesInterventions; track type) {
-          <option [value]="type">
-            {{ type }}
-          </option>
+          <option [value]="type">{{ type }}</option>
           }
         </select>
       </label>
-      <button type="submit" (click)="loadInterventions()" >Renisaliser</button>
+      <button type="submit" (click)="loadInterventions()">Réinitialiser</button>
     </div>
   </header>
 
 
-
   <main>
     @for (intervention of interventions(); track intervention.id) {
-        <div class="containerIntervention p-4">
+    <div class="containerIntervention">
 
-          <div class="flex gap-5">
-            <h3>{{ intervention.type }} </h3>
-            <p> {{ intervention.status }} </p>
-            <p> {{ intervention .priorite }} </p>
-          </div>
+      <div >
+        <h3>{{ intervention.type }} </h3>
+        <span class="badge-status">{{ intervention.status }}</span>
+        <p> {{ intervention.priorite }} </p>
+      </div>
 
-          <div>
-            <p> Description : {{ intervention.description }} </p>
-            <p> Diagnostic : {{ intervention.diagnostic }} </p>
-          </div>
+      <div>
+        <p> Description : {{ intervention.description }} </p>
+        <p> Diagnostic : {{ intervention.diagnostic || 'Aucun diagnostic saisi' }} </p>
+      </div>
 
-          <div>
-            <label>
-              <input
-                type="number"
-                min="0"
-                [value]="intervention.coutEstime ?? 0"
-                (change)="setCoutEstime(intervention.id, $any($event.target).value)"
-                placeholder="0"
-              >
-            </label>
-            <span>DH</span>
-          </div>
+      <div>
+        <label>
+          <input
+            type="number"
+            min="0"
+            [value]="intervention.coutEstime ?? 0"
+            (change)="setCoutEstime(intervention.id, $any($event.target).value)"
+            placeholder="0"
+          >
+        </label>
+        <span>DH</span>
+      </div>
 
-          <div>
-            <p>Date Depot : {{ intervention.dateDepot | date:'dd/MM/yyyy HH:mm' }}</p>
-            <p>Date Restitution :
-              @if (intervention.dateRestitutionPrevue && !intervention.dateRestitutionPrevue.toString().startsWith('+')) {
-              {{ intervention.dateRestitutionPrevue | date:'dd/MM/yyyy' }}
-              } @else {
-              <span class="text-red-500 font-semibold">Non définie / En cours</span>
-              }
-            </p>
-            <p>Date Cloture : {{ intervention.dateCloture | date:'dd/MM/yyyy HH:mm' }}</p>
-          </div>
+      <div>
+        <p>Date Dépôt : {{ intervention.dateDepot | date:'dd/MM/yyyy HH:mm' }}</p>
+        <p>Date Restitution :
+          @if (intervention.dateRestitutionPrevue && !intervention.dateRestitutionPrevue.toString().startsWith('+')) {
+          {{ intervention.dateRestitutionPrevue | date:'dd/MM/yyyy' }}
+          } @else {
+          <span >Non définie / En cours</span>
+          }
+        </p>
+        <p>Date Clôture : {{ intervention.dateCloture | date:'dd/MM/yyyy HH:mm' }}</p>
+      </div>
 
+      <div class="workflow-actions ">
+        @switch (intervention.status) {
+        @case (Status.RECUE) {
+        <button (click)="changerStatus(intervention.id, Status.DIAGNOSTIC_EN_COURS)" >
+          Commencer le Diagnostic
+        </button>
+        }
+        @case (Status.DIAGNOSTIC_EN_COURS) {
+        <button (click)="changerStatus(intervention.id, Status.DEVIS_A_VALIDER)" >
+          Générer le Devis
+        </button>
+        }
+        @case (Status.DEVIS_A_VALIDER) {
+        <button (click)="changerStatus(intervention.id, Status.EN_REPARATION)" >
+           Lancer la Réparation
+        </button>
+        }
+        @case (Status.EN_REPARATION) {
+        <button (click)="changerStatus(intervention.id, Status.TERMINEE)" >
+          Terminer les Travaux
+        </button>
+        }
+        @case (Status.TERMINEE) {
+        <button (click)="changerStatus(intervention.id, Status.RESTITUEE)" >
+          Restituer le Véhicule
+        </button>
+        }
+        @case (Status.RESTITUEE) {
+        <span >Clôturée (Véhicule Restitué)</span>
+        }
+        }
+      </div>
 
-          <div class="ListButtons flex items-center gap-2">
-            @if (intervention.status.toString() === 'EN_REPARATION') {
-            <button
-              type="button"
-              (click)="terminerIntervention(intervention.id)"
-              class="action-btn finish-btn"
-            >
-              Terminer
-            </button>
+      <div class="ListButtons">
+
+        @if (intervention.status === Status.DIAGNOSTIC_EN_COURS && !intervention.diagnostic) {
+        <button
+          type="button"
+          (click)="addDiagnostic(intervention.id, 'Nouveau diagnostic à rédiger')"
+          >
+           Rédiger le Diagnostic
+        </button>
+        }
+
+        @if (intervention.status !== Status.TERMINEE && intervention.status !== Status.RESTITUEE) {
+        <div class="assignment-container">
+          @let disponibles = getMecaniciensDisponibles();
+          <label for="mecanicien-select-{{intervention.id}}">Affecter un mécanicien :</label>
+          <select
+            id="mecanicien-select-{{intervention.id}}"
+            [value]="intervention.mecanicien?.id || ''"
+            [disabled]="disponibles.length === 0 || !!intervention.mecanicien"
+            (change)="assignMecanicien(intervention.id, $event)">
+
+            @if (disponibles.length === 0) {
+            <option value="" selected disabled>Aucun mécanicien disponible</option>
+            } @else {
+            <option value="" disabled selected>Choisir un mécanicien libre</option>
+            @for (mecanicien of disponibles; track mecanicien.id) {
+            <option [value]="mecanicien.id">Nom : {{ mecanicien.nom }}</option>
             }
-
-            @if (intervention.status.toString() === 'TERMINEE') {
-            <button
-              type="button"
-              (click)="restituer(intervention.id)"
-              class="action-btn return-btn"
-            >
-              Restituer
-            </button>
             }
-            @if (intervention.status.toString() === 'RECUE' && !intervention.diagnostic ) {
-            <button
-              type="button"
-              (click)="addDiagnostic(intervention.id, intervention.diagnostic )"
-              class="action-btn diagnostic-btn">
-              Ajouter Diagnostic
-            </button>
-            }
-
-            @if (intervention.status.toString() !== 'TERMINEE') {
-            <div class="assignment-container">
-              @let disponibles = getMecaniciensDisponibles();
-              <label for="mecanicien-select">Affecter un mécanicien :</label>
-              <select
-                id="mecanicien-select"
-                [value]="intervention.mecanicien?.id || ''"
-                [disabled]="disponibles.length === 0"
-                (change)="assignMecanicien(intervention.id, $event)">
-
-                @if (disponibles.length === 0) {
-                <option value="" selected disabled>Aucun mécanicien disponible</option>
-                } @else {
-                <option value="" disabled selected>Choisir un mécanicien libre</option>
-
-                @for (mecanicien of disponibles; track mecanicien.id) {
-                <option [value]="mecanicien.id">Nom : {{ mecanicien.nom }}</option>
-                  }
-                }
-              </select>
-            </div>
-            }
-
-
-          </div>
-
+          </select>
         </div>
-    } @empty {
-    <p>Aucune intervention trouvée.</p>
-    }
+        }
+      </div>
 
+    </div>
+    } @empty {
+    <p >Aucune intervention trouvée.</p>
+    }
   </main>
 </section>

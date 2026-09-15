@@ -79,16 +79,23 @@ export class InterventionList implements OnInit {
     });
   }
 
-  changerStatus(id: number, status: Status): void {
-    this.interventionService.changerStatus(id, status).subscribe({
-      next: () => {
+  changerStatus(id: number, statusCible: Status): void {
+    const interventionActuelle = this.interventions().find((item) => item.id === id);
+    const nomAuteur = interventionActuelle?.mecanicien?.nom || 'SYSTEM';
+    const statusStr = statusCible.toString();
+
+    this.interventionService.changerStatus(id, statusStr, nomAuteur).subscribe({
+      next: (response: ApiResponse<Intervention>) => {
         this.interventions.update((list) =>
-          list.map((item) => (item.id === id ? ({ ...item, status } as typeof item) : item)),
+          list.map((item) =>
+            item.id === id ? ({ ...item, status: statusCible } as typeof item) : item,
+          ),
         );
-        alert("'Staus a ete changer avec succès !'");
+        console.log('Status Intervention changer avec success ');
+        alert('Status Intervention changer avec success ');
       },
       error: (err) => {
-        console.error('Erreur lors du changement de statut :', err);
+        console.error("Erreur lors de changer Status de l'Intervention " , err);
       },
     });
   }
