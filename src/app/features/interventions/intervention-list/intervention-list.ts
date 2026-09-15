@@ -28,7 +28,6 @@ export class InterventionList implements OnInit {
   interventions = signal<Intervention[]>([]);
   mecaniciens = signal<Mecanicien[]>([]);
   coutTotal = signal<number>(0);
-  notification = signal<{ message: string; type: 'success' | 'error' } | null>(null);
 
   totalInterventions() {
     return this.interventions().length;
@@ -86,6 +85,7 @@ export class InterventionList implements OnInit {
         this.interventions.update((list) =>
           list.map((item) => (item.id === id ? ({ ...item, status } as typeof item) : item)),
         );
+        alert("'Staus a ete changer avec succès !'");
       },
       error: (err) => {
         console.error('Erreur lors du changement de statut :', err);
@@ -101,6 +101,7 @@ export class InterventionList implements OnInit {
             item.id === id ? ({ ...item, status: Status.TERMINEE } as typeof item) : item,
           ),
         );
+        alert('Le véhicule a été terminee avec succès !');
       },
       error: (err) => {
         console.error("Erreur lors de la clôture de l'intervention :", err);
@@ -111,22 +112,15 @@ export class InterventionList implements OnInit {
   restituer(id: number) {
     this.interventionService.restituer(id).subscribe({
       next: () => {
-        this.notification.set({
-          message: 'Le véhicule a été restitué avec succès !',
-          type: 'success',
-        });
         this.interventions.update((list) =>
           list.map((item) =>
             item.id === id ? ({ ...item, status: Status.RESTITUEE } as typeof item) : item,
           ),
         );
-        setTimeout(() => this.notification.set(null), 4000);
+        alert('Le véhicule a été restitué avec succès !');
       },
       error: (err) => {
-        this.notification.set({
-          message: err.error?.message || 'Une erreur est survenue lors de la restitution.',
-          type: 'error',
-        });
+        console.error('Erreur lors du restituer vehicule :', err);
       },
     });
   }
@@ -251,5 +245,27 @@ export class InterventionList implements OnInit {
           item.vehicule?.immatriculation.toLowerCase().includes(term.toLowerCase()),
       ),
     );
+  }
+
+  onTypeChange(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+    const value = selectElement.value;
+
+    if (!value) {
+      this.loadInterventions();
+    } else {
+      this.getInterventionByType(value as TypeIntervention);
+    }
+  }
+
+  getInterventionByType(type: TypeIntervention): void {
+    this.interventionService.getInterventionsByType(type).subscribe({
+      next: (response) => {
+        this.interventions.set(response.data || response);
+      },
+      error: (err) => {
+        console.error('Erreur lors de getInterventionsByType', err);
+      },
+    });
   }
 }
