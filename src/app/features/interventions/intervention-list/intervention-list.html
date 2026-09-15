@@ -5,7 +5,7 @@
       <div>
         <p>Liste des interventions</p>
       </div>
-      <div>
+      <div routerLink="/interventions/create">
         <button>
           <span class="material-symbols-outlined">add</span>
           <p>Creer Interventions</p>
@@ -15,13 +15,19 @@
 
     <div class="dashboard">
       <div>
-        <span class="material-tools-outlined"></span>
+        <span class=""></span>
+        <p>Total Interventions </p>
+        <p>{{ totalInterventions() }}</p>
       </div>
       <div>
-
+        <span class=""></span>
+        <p>Total Reparations </p>
+        <p>{{ totalReparations() }}</p>
       </div>
       <div>
-
+        <span class=""></span>
+        <p>Total Diagnostics </p>
+        <p>{{ totalDiagnostics() }}</p>
       </div>
       <div>
         <p>cout Total Estime</p>
@@ -32,23 +38,25 @@
 
     <div>
       <label>
-        <input type="search" placeholder="Rechercher...">
+        <input type="search" (input)="searchInterventions($any($event.target).value)" placeholder="Rechercher...">
       </label>
       <label>
-       <select>
-         <option value="" disabled selected>Filter avec type</option>
-         @for (type of types; track type) {
-         <option [value]="type">
-           {{ type }}
-         </option>
-         }
-       </select>
+        <select
+          class="px-4 py-2 border border-gray-300 rounded-lg"
+        >
+          <option value="">Tous les types</option>
+
+          @for (type of typesInterventions ; track type) {
+          <option [value]="type">
+            {{ type }}
+          </option>
+          }
+        </select>
+
       </label>
-      <button type="submit">Renisaliser</button>
+      <button type="submit" (click)="loadInterventions()" >Renisaliser</button>
     </div>
   </header>
-
-
 
 
 
@@ -68,7 +76,16 @@
           </div>
 
           <div>
-            <h1>Cout Estime = {{ intervention.coutEstime }} DHs</h1>
+            <label>
+              <input
+                type="number"
+                min="0"
+                [value]="intervention.coutEstime ?? 0"
+                (change)="setCoutEstime(intervention.id, $any($event.target).value)"
+                placeholder="0"
+              >
+            </label>
+            <span>DH</span>
           </div>
 
           <div>
@@ -84,12 +101,59 @@
           </div>
 
 
+          <div class="ListButtons flex items-center gap-2">
+            @if (intervention.status.toString() === 'EN_REPARATION') {
+            <button
+              type="button"
+              (click)="terminerIntervention(intervention.id)"
+              class="action-btn finish-btn"
+            >
+              Terminer
+            </button>
+            }
+
+            @if (intervention.status.toString() === 'TERMINEE') {
+            <button
+              type="button"
+              (click)="restituer(intervention.id)"
+              class="action-btn return-btn"
+            >
+              Restituer
+            </button>
+            }
+            @if (intervention.status.toString() === 'RECUE' && !intervention.diagnostic ) {
+            <button
+              type="button"
+              (click)="addDiagnostic(intervention.id, intervention.diagnostic )"
+              class="action-btn diagnostic-btn">
+              Ajouter Diagnostic
+            </button>
+            }
+
+            @if (intervention.status.toString() !== 'TERMINEE') {
+            <div class="assignment-container">
+              @let disponibles = getMecaniciensDisponibles();
+              <label for="mecanicien-select">Affecter un mécanicien :</label>
+              <select
+                id="mecanicien-select"
+                [value]="intervention.mecanicien?.id || ''"
+                [disabled]="disponibles.length === 0"
+                (change)="assignMecanicien(intervention.id, $event)">
+
+                @if (disponibles.length === 0) {
+                <option value="" selected disabled>Aucun mécanicien disponible</option>
+                } @else {
+                <option value="" disabled selected>Choisir un mécanicien libre</option>
+
+                @for (mecanicien of disponibles; track mecanicien.id) {
+                <option [value]="mecanicien.id">Nom : {{ mecanicien.nom }}</option>
+                  }
+                }
+              </select>
+            </div>
+            }
 
 
-          <div class="ListButtons">
-            <div>Restituer</div>
-            <div>Ajouter Diagnostic</div>
-            <div>Affecter Mecanicien</div>
           </div>
 
         </div>

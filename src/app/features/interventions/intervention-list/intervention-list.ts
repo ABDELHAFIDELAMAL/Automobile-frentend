@@ -4,9 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { Intervention } from '../../../entities/Interventions';
 import { InterventionService } from '../services/intervention';
 import { Status } from '../../../enums/Status.enum';
-import { TypeIntervention } from '../../../enums/TypeIntervention.enum';
 import { Mecanicien } from '../../../entities/Mecanicien';
 import { MecanicienService } from '../../mecaniciens/services/mecanicien';
+import { TypeIntervention } from '../../../enums/TypeIntervention.enum';
+import { ApiResponse } from '../../../entities/ApiResponse';
 
 @Component({
   selector: 'app-intervention-list',
@@ -21,12 +22,11 @@ export class InterventionList implements OnInit {
 
   protected readonly Status = Status;
   statuses: Status[] = Object.values(Status);
-  protected readonly TypeIntervention = TypeIntervention;
-  types: TypeIntervention[] = Object.values(TypeIntervention);
+
+  typesInterventions: TypeIntervention[] = Object.values(TypeIntervention);
 
   interventions = signal<Intervention[]>([]);
   mecaniciens = signal<Mecanicien[]>([]);
-
   coutTotal = signal<number>(0);
   notification = signal<{ message: string; type: 'success' | 'error' } | null>(null);
 
@@ -54,16 +54,28 @@ export class InterventionList implements OnInit {
 
   ngOnInit(): void {
     this.loadInterventions();
+    this.loadMecaniciens();
     this.calculerCoutTotal();
   }
 
   loadInterventions(): void {
     this.interventionService.getAllInterventions().subscribe({
       next: (response) => {
-        this.interventions.set(response.data);
+        this.interventions.set(response.data || response);
       },
       error: (error) => {
-        alert(error.message);
+        console.log('Erreur loard de load interventions : ', error);
+      },
+    });
+  }
+
+  loadMecaniciens(): void {
+    this.mecanicienService.getAllMechanicals().subscribe({
+      next: (response) => {
+        this.mecaniciens.set(response.data || response);
+      },
+      error: (error) => {
+        console.error('Erreur lors du chargement des mécaniciens :', error);
       },
     });
   }
@@ -122,7 +134,7 @@ export class InterventionList implements OnInit {
   getInterventionByMecanicien(idMecanicien: number) {
     this.interventionService.getInterventionByMecanicien(idMecanicien).subscribe({
       next: (response) => {
-        this.interventions.set(response.data);
+        this.interventions.set(response.data || response);
       },
       error: (err) => {
         console.error('Erreur lors de la récupération des interventions du mécanicien :', err);
@@ -133,7 +145,7 @@ export class InterventionList implements OnInit {
   getInterventionByVehicule(idVehicule: number) {
     this.interventionService.getInterventionByVehicule(idVehicule).subscribe({
       next: (response) => {
-        this.interventions.set(response.data);
+        this.interventions.set(response.data || response);
       },
       error: (err) => {
         console.error('Erreur lors de la récupération des interventions du vehicule :', err);
@@ -141,12 +153,15 @@ export class InterventionList implements OnInit {
     });
   }
 
-  calculerCoutTotal() {
+  calculerCoutTotal(): void {
     this.interventionService.calculerCoutTotal().subscribe({
       next: (response) => {
-        const total = response.data !== undefined ? response.data : response;
-        if (typeof total === 'number') {
-          this.coutTotal.set(total);
+        const rawTotal = response.data !== undefined ? response.data : response;
+        if (rawTotal !== null && rawTotal !== undefined) {
+          const cleanTotal = Number(rawTotal);
+          if (!isNaN(cleanTotal)) {
+            this.coutTotal.set(cleanTotal);
+          }
         }
       },
       error: (err) => {
@@ -155,21 +170,10 @@ export class InterventionList implements OnInit {
     });
   }
 
-  getInterventionsByType(type: TypeIntervention) {
-    this.interventionService.getInterventionsByType(type).subscribe({
-      next: (response) => {
-        this.interventions.set(response.data);
-      },
-      error: (err) => {
-        console.log('Erreur lors de la récupération des interventions de type : ', err);
-      },
-    });
-  }
-
   getEnRetard() {
     this.interventionService.getEnRetard().subscribe({
       next: (response) => {
-        this.interventions.set(response.data);
+        this.interventions.set(response.data || response);
       },
       error: (err) => {
         console.log('Erreur lors de la récupération des interventions en retard : ', err);
@@ -178,33 +182,28 @@ export class InterventionList implements OnInit {
     });
   }
 
-  assignMecanicien(id: number, mecanicienId: string | number): void {
-    const targetId = Number(mecanicienId);
+  assignMecanicien(interventionId: number, event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+    const mecanicienId = Number(selectElement.value);
 
-    const mecanicienTrouve = this.mecaniciens().find((mec) => mec.id === targetId);
+    const mecanicienSelectionne = this.mecaniciens().find((m) => m.id === mecanicienId);
 
-    if (!mecanicienTrouve) {
-      console.error("Mécanicien introuvable avec l'ID :", targetId);
+    if (!mecanicienSelectionne) {
+      console.error('Mécanicien introuvable dans la liste');
       return;
     }
 
-    this.interventionService.assignMecanicien(id, mecanicienTrouve).subscribe({
-      next: () => {
-        this.interventions.update((list) =>
-          list.map((item) =>
-            item.id === id ? ({ ...item, mecanicien: mecanicienTrouve } as typeof item) : item,
-          ),
-        );
-        this.notification.set({
-          message: 'Mécanicien affecté avec succès !',
-          type: 'success',
-        });
-        setTimeout(() => this.notification.set(null), 3000);
+    this.interventionService.assignMecanicien(interventionId, mecanicienSelectionne).subscribe({
+      next: (response: ApiResponse<Intervention>) => {
+        console.log('Mécanicien assigné avec succès !', response.data);
+        alert('Mécanicien assigné avec succès !');
       },
-      error: (err) => {
-        console.error("Erreur lors de l'affectation du mécanicien :", err);
-      },
+      error: (err) => console.error("Erreur lors de l'assignation :", err),
     });
+  }
+
+  getMecaniciensDisponibles(): Mecanicien[] {
+    return this.mecaniciens().filter((mecanicien) => mecanicien.disponible);
   }
 
   setCoutEstime(id: number, coutEstime: number): void {
@@ -230,6 +229,7 @@ export class InterventionList implements OnInit {
             item.id === id ? ({ ...item, diagnostic: diagnostic } as typeof item) : item,
           ),
         );
+        alert('Daignostic ajoute avec successs');
       },
       error: (err) => {
         console.log("Erreur lors de l'ajout du diagnostic : ", err);
@@ -246,23 +246,10 @@ export class InterventionList implements OnInit {
     this.interventions.update((list) =>
       list.filter(
         (item) =>
-          item.type.toLowerCase().includes(term.toLowerCase()) ||
+          item.type.toString().toLowerCase().includes(term.toLowerCase()) ||
           item.description?.toLowerCase().includes(term.toLowerCase()) ||
-          item.vehicule?.immatriculation.toLowerCase().includes(term.toLowerCase()) ||
-          item.vehicule?.marque.toLowerCase().includes(term.toLowerCase()) ||
-          item.vehicule?.modele.toLowerCase().includes(term.toLowerCase()),
+          item.vehicule?.immatriculation.toLowerCase().includes(term.toLowerCase()),
       ),
     );
-  }
-
-  loadMecaniciens() {
-    this.mecanicienService.getAllMechanicals().subscribe({
-      next: (response) => {
-        this.mecaniciens.set(response.data);
-      },
-      error: (err) => {
-        console.error('Erreur lors de get mecaniciens ', err);
-      },
-    });
   }
 }
