@@ -5,6 +5,7 @@ import { Mecanicien } from '../../../entities/Mecanicien';
 import { Intervention } from '../../../entities/Interventions';
 import { ApiResponse } from '../../../entities/ApiResponse';
 import { environment } from '../../../environment/environment';
+import { Specialite } from '../../../enums/Specialite.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -55,5 +56,11 @@ export class MecanicienService {
 
   getCharge(): Observable<ApiResponse<Record<number, number>>> {
     return this.http.get<ApiResponse<Record<number, number>>>(`${this.baseUrl}/charge`);
+  }
+
+  getMecaniciensBySpecialite(specialite: Specialite): Observable<ApiResponse<Mecanicien[]>> {
+    return this.http.get<ApiResponse<Mecanicien[]>>(`${this.baseUrl}/by/specialite`, {
+      params: { specialite: specialite.toString() }
+    });
   }
 }

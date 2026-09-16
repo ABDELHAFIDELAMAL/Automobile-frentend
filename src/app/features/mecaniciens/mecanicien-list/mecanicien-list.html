@@ -1,34 +1,87 @@
 <div class="container">
-  <h2>Liste des Mécaniciens</h2>
 
-  @if (Mecaniciens().length === 0) {
-  <p class="empty-message">Aucun mécanicien trouvé.</p>
-  } @else {
-  <table class="mecano-table">
-    <thead>
-    <tr>
-      <th>Nom</th>
-      <th>Spécialité</th>
-      <th>Disponibilité</th>
-      <th>Nombre d'interventions</th>
-    </tr>
-    </thead>
-    <tbody>
-    @for (mecano of Mecaniciens(); track mecano.id) {
-    <tr>
-      <td>{{ mecano.nom }}</td>
-      <td>{{ mecano.specialite }}</td>
-      <td>
-        @if (mecano.disponible) {
-        <span class="badge disponible">Disponible</span>
-        } @else {
-        <span class="badge occupe">Occupé</span>
+  <header class="flex items-center justify-between text-sm">
+
+    <div>
+      <h2>Liste des Mécaniciens</h2>
+    </div>
+
+    <div class="w-full sm:w-64">
+      <label>
+        <select
+          (change)="onDisponibiliteChange($event)"
+          class="w-full px-4 py-2 border border-slate-200 rounded-xl bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-sm text-slate-700 cursor-pointer shadow-sm"
+        >
+          <option value="" selected>Tous les mécaniciens</option>
+          <option value="disponible">Mécaniciens Disponibles</option>
+          <option value="non_disponible">Mécaniciens Non Disponibles</option>
+        </select>
+      </label>
+    </div>
+
+
+    <div class="w-full sm:w-64">
+      <label>
+        <select
+          (change)="onSpecialiteChange($event)"
+          class="w-full px-4 py-2 border border-slate-200 rounded-xl bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-sm text-slate-700 cursor-pointer shadow-sm"
+        >
+          <option value="" selected>Toutes les spécialités</option>
+          @for (specialite of specialities; track specialite) {
+          <option [value]="specialite">
+            {{ specialite }}
+          </option>
+          }
+        </select>
+      </label>
+    </div>
+
+
+    <div>
+      <button type="button" routerLink="/mecaniciens/create"
+      class="flex font-semibold gap-2 items-center justify-center py-2 px-4 bg-black text-white rounded-md hover:bg-gray-800"
+      >
+        <span class="material-symbols-outlined">add</span>
+        <p>Crer Mecanicien</p>
+      </button>
+    </div>
+  </header>
+
+    <main>
+      @if (Mecaniciens().length === 0) {
+      <p class="empty-message">Aucun mécanicien trouvé.</p>
+      } @else {
+      <table class="mecano-table">
+        <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Spécialité</th>
+          <th>Disponibilité</th>
+          <th>Nombre d'interventions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @for (mecano of Mecaniciens(); track mecano.id) {
+        <tr>
+          <td>{{ mecano.nom }}</td>
+          <td>{{ mecano.specialite }}</td>
+          <td>
+            @if (mecano.disponible) {
+            <span class="badge disponible">Disponible</span>
+            } @else {
+            <span class="badge occupe">Occupé</span>
+            }
+          </td>
+          <td>{{ mecano.interventions.length }}</td>
+        </tr>
+        <td>
+          <button  [disabled]="mecano.disponible" type="button" (click)="deleteMecanicien(mecano.id)" >
+            <span class="material-symbols-outlined">delete</span>
+          </button>
+        </td>
         }
-      </td>
-      <td>{{ mecano.interventions.length }}</td>
-    </tr>
-    }
-    </tbody>
-  </table>
-  }
+        </tbody>
+      </table>
+      }
+    </main>
 </div>
