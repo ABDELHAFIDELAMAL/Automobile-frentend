@@ -29,6 +29,6 @@ export class HistoriqueService {
 
   getHistoriquesByDate(date: string): Observable<ApiResponse<Historique[]>> {
     const params = new HttpParams().set('date', date);
-    return this.http.get<ApiResponse<Historique[]>>(this.baseUrl, { params });
+    return this.http.get<ApiResponse<Historique[]>>(`${this.baseUrl}/by/date`, { params });
   }
 }

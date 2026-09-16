@@ -2,9 +2,10 @@ import { Component, OnInit, signal } from '@angular/core';
 import { MecanicienService } from '../services/mecanicien';
 import { Mecanicien } from '../../../entities/Mecanicien';
 import { Specialite } from '../../../enums/Specialite.enum';
+import { NgClass } from '@angular/common';
 
 @Component({
-  imports: [],
+  imports: [NgClass],
   selector: 'app-mecanicien-list',
   styleUrl: './mecanicien-list.css',
   templateUrl: './mecanicien-list.html',
@@ -60,7 +61,7 @@ export class MecanicienList implements OnInit {
     const target = event.target as HTMLSelectElement;
     const valeur = target.value;
     if (valeur === '') {
-       this.loadMecaniciens();
+      this.loadMecaniciens();
     } else {
       const estDisponible = valeur === 'disponible';
       this.getMecaniciensDisponible(estDisponible);
@@ -79,20 +80,45 @@ export class MecanicienList implements OnInit {
     });
   }
 
-
-
   deleteMecanicien(id: number): void {
     if (confirm('Êtes-vous sûr de vouloir supprimer ce mécanicien ?')) {
       this.MecanocienService.deleteMecanicien(id).subscribe({
         next: () => {
-          this.Mecaniciens.update(listeActuelle =>
-            listeActuelle.filter(mecanicien => mecanicien.id !== id)
+          this.Mecaniciens.update((listeActuelle) =>
+            listeActuelle.filter((mecanicien) => mecanicien.id !== id),
           );
           console.log(`Le mécanicien avec l'ID ${id} a été supprimé avec succès.`);
         },
         error: (error) => {
-          console.error("Erreur lors de la suppression du mécanicien :", error.message);
-        }
+          console.error('Erreur lors de la suppression du mécanicien :', error.message);
+        },
+      });
+    }
+  }
+
+
+  toggleStatut(mecanicien: any): void {
+    const ancienEtat = mecanicien.disponible;
+    mecanicien.disponible = !mecanicien.disponible;
+    if (mecanicien.disponible) {
+      this.MecanocienService.activer(mecanicien.id).subscribe({
+        next: (response) => {
+          alert('Mécanicien activé avec succès');
+        },
+        error: (error) => {
+          console.error("Erreur d'activation, retour à l'ancien état", error);
+          mecanicien.disponible = ancienEtat;
+        },
+      });
+    } else {
+      this.MecanocienService.desactiver(mecanicien.id).subscribe({
+        next: (response) => {
+          alert('Mécanicien désactivé avec succès');
+        },
+        error: (error) => {
+          console.error("Erreur de désactivation, retour à l'ancien état", error);
+          mecanicien.disponible = ancienEtat;
+        },
       });
     }
   }
