@@ -36,7 +36,7 @@ export const routes: Routes = [
   { path: 'vehicules/details/:id', component: VehiculeDetail, data: { title: 'Details' } },
 
   { path: 'mecaniciens', component: MecanicienList, data: { title: 'Mecaniciens' } },
-  { path: 'create/mecanicien', component: MecanicienCreate, data: { title: 'Create Mecanicien' } },
+  { path: 'mecaniciens/create', component: MecanicienCreate, data: { title: 'Create Mecanicien' } },
   { path: 'mecaniciens/update/:id', component: MecanicienCreate, data: { title: 'Update Mecanicien' }, },
   { path: 'mecaniciens/:id', component: MecanicienDetail, data: { title: 'Details' } },
 
