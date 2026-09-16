@@ -37,8 +37,8 @@
     </div>
 
 
-    <div>
-      <button type="button" routerLink="/mecaniciens/create"
+    <div routerLink="/mecaniciens/create">
+      <button type="button"
       class="flex font-semibold gap-2 items-center justify-center py-2 px-4 bg-black text-white rounded-md hover:bg-gray-800"
       >
         <span class="material-symbols-outlined">add</span>
@@ -58,6 +58,7 @@
           <th>Spécialité</th>
           <th>Disponibilité</th>
           <th>Nombre d'interventions</th>
+          <th>Operations</th>
         </tr>
         </thead>
         <tbody>
@@ -73,12 +74,40 @@
             }
           </td>
           <td>{{ mecano.interventions.length }}</td>
+          <td class="flex gap-4">
+            <button  [disabled]="mecano.disponible" type="button" (click)="deleteMecanicien(mecano.id)" class="text-red-500" >
+              <span class="material-symbols-outlined">delete</span>
+            </button>
+            <button class="text-blue-500">
+              <span class="material-symbols-outlined">update</span>
+            </button>
+
+            <div class="relative flex items-center p-1 bg-slate-200/80 rounded-full w-44 select-none">
+              <div
+                [ngClass]="mecano.disponible ? 'translate-x-0' : 'translate-x-[84px]'"
+                class="absolute top-1 bottom-1 left-1 w-[88px] bg-white rounded-full shadow-sm transition-transform duration-300 ease-out pointer-events-none"
+              ></div>
+              <button
+                type="button"
+                (click)="!mecano.disponible && toggleStatut(mecano)"
+                [ngClass]="mecano.disponible ? 'text-slate-800 font-extrabold' : 'text-slate-500 font-bold'"
+                class="relative z-10 w-[88px] py-1 text-[11px] tracking-wider text-center transition-colors duration-200 focus:outline-none"
+              >
+                Activer
+              </button>
+              <button
+                type="button"
+                (click)="mecano.disponible && toggleStatut(mecano)"
+                [ngClass]="!mecano.disponible ? 'text-slate-800 font-extrabold' : 'text-slate-500 font-bold'"
+                class="relative z-10 w-[88px] py-1 text-[11px] tracking-wider text-center transition-colors duration-200 focus:outline-none"
+              >
+                Désactiver
+              </button>
+            </div>
+
+
+          </td>
         </tr>
-        <td>
-          <button  [disabled]="mecano.disponible" type="button" (click)="deleteMecanicien(mecano.id)" >
-            <span class="material-symbols-outlined">delete</span>
-          </button>
-        </td>
         }
         </tbody>
       </table>
