@@ -39,4 +39,30 @@ export class InterventionHistory implements OnInit {
       },
     });
   }
+
+
+  rechercherParDate(dateValue: string): void {
+    if (!dateValue) {
+      this.reinitialiserFiltre();
+      return;
+    }
+
+    const [year, month, day] = dateValue.split('-');
+    const dateFormatee = `${day}/${month}/${year}`;
+
+    this.historiqueService.getHistoriquesByDate(dateFormatee).subscribe({
+      next: (response) => {
+        console.log('Données reçues du serveur de la date ' , dateFormatee , ': ', response.data);
+        this.historiques.set(response.data);
+      },
+      error: (err) => {
+        console.error('Erreur lors du filtrage Historique :', err);
+        this.historiques.set([]);
+      }
+    });
+  }
+
+  reinitialiserFiltre(): void {
+    this.loadHistorique();
+  }
 }
