@@ -5,6 +5,33 @@
       <span class="material-symbols-outlined text-blue-600">history</span>
       Historique de l'atelier
     </h1>
+
+
+    <div class="flex items-center gap-2">
+      <span class="font-semibold mx-1">Filtrer par date : </span>
+      <div class="relative flex items-center">
+        <label>
+          <input
+            type="date"
+            #dateInput
+            (change)="rechercherParDate(dateInput.value)"
+            class="pl-8 pr-2.5 py-1.5 text-xs font-bold text-slate-700 bg-white border border-slate-200 rounded-md focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all cursor-pointer"
+          >
+        </label>
+      </div>
+
+      @if (dateInput.value) {
+      <button
+        (click)="dateInput.value = ''; reinitialiserFiltre()"
+        class="p-1.5 text-slate-400 hover:text-rose-500 rounded-md hover:bg-rose-50 transition-colors border border-transparent hover:border-rose-100 flex items-center justify-center"
+        title="Effacer le filtre"
+      >
+        Renitialiser
+      </button>
+      }
+    </div>
+
+
     <span class="px-2.5 py-1 text-xs font-bold text-slate-600 bg-slate-100 rounded-md border border-slate-200 uppercase tracking-wider">
       {{ historiques().length }} {{ historiques().length > 1 ? 'actions' : 'action' }}
     </span>

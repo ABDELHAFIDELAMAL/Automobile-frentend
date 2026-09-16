@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../../../entities/ApiResponse';
 import { Historique } from '../../../entities/Historique';
@@ -24,5 +24,11 @@ export class HistoriqueService {
 
   createHistorique(historique: Partial<Historique>): Observable<ApiResponse<Historique>> {
     return this.http.post<ApiResponse<Historique>>(`${this.baseUrl}/create`, historique);
+  }
+
+
+  getHistoriquesByDate(date: string): Observable<ApiResponse<Historique[]>> {
+    const params = new HttpParams().set('date', date);
+    return this.http.get<ApiResponse<Historique[]>>(this.baseUrl, { params });
   }
 }
