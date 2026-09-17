@@ -26,7 +26,6 @@ export class MecanicienList implements OnInit {
     this.MecanocienService.getAllMechanicals().subscribe({
       next: (response) => {
         this.Mecaniciens.set(response.data);
-        console.log(this.Mecaniciens());
       },
       error: (error) => {
         console.log('Error de L API', error);
@@ -50,8 +49,7 @@ export class MecanicienList implements OnInit {
     this.MecanocienService.getMecaniciensBySpecialite(specialite).subscribe({
       next: (response) => {
         this.Mecaniciens.set(response.data);
-        console.log('GetMecaniciensBySpecialite', response.data);
-      },
+        },
       error: (error) => {
         console.log('Error lors de GetMecaniciensBySpecialite', error.message);
       },
@@ -73,8 +71,7 @@ export class MecanicienList implements OnInit {
     this.MecanocienService.getMechanicalsDisponibles(disponible).subscribe({
       next: (response) => {
         this.Mecaniciens.set(response.data);
-        console.log('La list des mecaniciens disponible est : ', response.data);
-      },
+       },
       error: (error) => {
         console.log('Erreur lors de get mecaniciens disponible : ', error.message);
       },
@@ -88,8 +85,7 @@ export class MecanicienList implements OnInit {
           this.Mecaniciens.update((listeActuelle) =>
             listeActuelle.filter((mecanicien) => mecanicien.id !== id),
           );
-          console.log(`Le mécanicien avec l'ID ${id} a été supprimé avec succès.`);
-        },
+         },
         error: (error) => {
           console.error('Erreur lors de la suppression du mécanicien :', error.message);
         },
@@ -103,7 +99,6 @@ export class MecanicienList implements OnInit {
     if (mecanicien.disponible) {
       this.MecanocienService.activer(mecanicien.id).subscribe({
         next: (response) => {
-          alert('Mécanicien activé avec succès');
         },
         error: (error) => {
           console.error("Erreur d'activation, retour à l'ancien état", error);
@@ -113,7 +108,7 @@ export class MecanicienList implements OnInit {
     } else {
       this.MecanocienService.desactiver(mecanicien.id).subscribe({
         next: (response) => {
-          alert('Mécanicien désactivé avec succès');
+
         },
         error: (error) => {
           console.error("Erreur de désactivation, retour à l'ancien état", error);
@@ -129,7 +124,6 @@ export class MecanicienList implements OnInit {
     this.MecanocienService.getCharge().subscribe({
       next: (response) => {
         this.chargesData = response.data;
-        console.log('Données de charge injectées :', this.chargesData);
       },
       error: (error) => {
         console.error('Erreur lors de getCharge mecaniciens', error);

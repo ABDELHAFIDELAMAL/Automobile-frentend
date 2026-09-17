@@ -1,47 +1,186 @@
-<div class="dashboard">
+<div class="min-h-screen bg-slate-50 p-4 md:p-8 space-y-8">
+
+  <header class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div>
+      <h1 class="text-2xl font-bold tracking-tight text-slate-900">Tableau de Bord Atelier</h1>
+      <p class="text-sm text-slate-500 mt-1">Vue d'ensemble de l'activité et des alertes de restitution</p>
+    </div>
+    <button
+      (click)="loadDashboardData()"
+      class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-900 hover:bg-slate-800 active:bg-black text-white text-sm font-semibold rounded-xl shadow-xs transition-all duration-200 cursor-pointer self-start sm:self-auto"
+    >
+      <span class="material-symbols-outlined text-lg">refresh</span>
+      <span>Actualiser</span>
+    </button>
+  </header>
 
   @if (loading()) {
-    <div class="loading-state">
-      <span class="material-symbols-outlined">donut_large</span>
-      <span>Chargement des statistiques...</span>
-    </div>
-  }
-  @if (stats(); as s) {
-    <div class="stats-grid">
+  <div class="flex flex-col items-center justify-center py-20 space-y-4">
+    <div class="w-10 h-10 border-4 border-slate-200 border-t-slate-900 rounded-full animate-spin"></div>
+    <p class="text-sm text-slate-500 font-medium">Chargement des données...</p>
+  </div>
+  } @else if (errorMessage()) {
+  <div class="p-4 bg-rose-50 border border-rose-200/80 rounded-2xl flex items-center gap-3 text-rose-700 text-sm">
+    <span class="material-symbols-outlined text-xl text-rose-500">error</span>
+    <span class="font-medium">{{ errorMessage() }}</span>
+  </div>
+  } @else {
 
-      <div class="stat-card total-card">
-        <div class="stat-card-top">
-          <h1>Recu Aujourdhui</h1>
-          <span class="material-symbols-outlined">calendar_today</span>
-        </div>
-        <p class="stat-number">{{ s.recuesAujourdhui }}</p>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between">
+      <div class="space-y-1">
+        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Reçues Aujourd'hui</p>
+        <p class="text-3xl font-extrabold text-slate-900">{{ stats()?.recuesAujourdhui ?? 0 }}</p>
       </div>
-
-      <div class="stat-card diagnostic-card">
-        <div class="stat-card-top">
-          <h1>En Diagnostique</h1>
-          <span class="material-symbols-outlined">car_repair</span>
-        </div>
-        <p class="stat-number">{{ s.enDiagnostic }}</p>
+      <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100">
+        <span class="material-symbols-outlined text-2xl">input</span>
       </div>
-
-      <div class="stat-card repair-card">
-        <div class="stat-card-top">
-          <h1>En Réparation</h1>
-          <span class="material-symbols-outlined">car_repair</span>
-        </div>
-        <p class="stat-number">{{ s.enReparation }}</p>
-      </div>
-
-      <div class="stat-card finished-card">
-        <div class="stat-card-top">
-          <h1>terminées</h1>
-          <span class="material-symbols-outlined">assignment_turned_in</span>
-        </div>
-        <p class="stat-number">{{ s.terminees }}</p>
-      </div>
-
     </div>
 
+    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between">
+      <div class="space-y-1">
+        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">En Diagnostic</p>
+        <p class="text-3xl font-extrabold text-slate-900">{{ stats()?.enDiagnostic ?? 0 }}</p>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center border border-amber-100">
+        <span class="material-symbols-outlined text-2xl">search</span>
+      </div>
+    </div>
+
+    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between">
+      <div class="space-y-1">
+        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">En Réparation</p>
+        <p class="text-3xl font-extrabold text-slate-900">{{ stats()?.enReparation ?? 0 }}</p>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center border border-indigo-100">
+        <span class="material-symbols-outlined text-2xl">build</span>
+      </div>
+    </div>
+
+    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between">
+      <div class="space-y-1">
+        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Terminées</p>
+        <p class="text-3xl font-extrabold text-slate-900">{{ stats()?.terminees ?? 0 }}</p>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100">
+        <span class="material-symbols-outlined text-2xl">check_circle</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+    <div class="lg:col-span-2 space-y-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <h2 class="text-lg font-bold text-slate-900">Retards de Restitution</h2>
+          <span class="px-2.5 py-0.5 text-xs font-extrabold bg-rose-100 text-rose-700 rounded-full border border-rose-200">
+              {{ retards().length }}
+            </span>
+        </div>
+      </div>
+
+      @if (retards().length === 0) {
+      <div class="bg-white rounded-2xl p-8 text-center border border-slate-200/80 shadow-xs">
+        <span class="material-symbols-outlined text-4xl text-emerald-400 mb-2">verified</span>
+        <p class="text-slate-600 font-medium text-sm">Aucun retard de restitution à signaler.</p>
+      </div>
+      } @else {
+      <div class="space-y-4">
+        @for (item of retards(); track item.id) {
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs space-y-4 hover:border-slate-300 transition-all">
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold text-slate-400">#{{ item.id }}</span>
+                <h3 class="text-base font-bold text-slate-900 capitalize">{{ item.description }}</h3>
+              </div>
+              <p class="text-xs text-slate-500 font-medium">Type: <span class="text-slate-700 font-semibold">{{ item.type }}</span></p>
+            </div>
+
+            <div class="flex items-center gap-2">
+                    <span [class]="{
+                      'bg-rose-50 text-rose-700 border-rose-200': item.priorite === 'HAUTE',
+                      'bg-amber-50 text-amber-700 border-amber-200': item.priorite === 'MOYENNE',
+                      'bg-slate-50 text-slate-700 border-slate-200': item.priorite === 'BASSE'
+                    }" class="px-2.5 py-1 rounded-full text-xs font-bold border">
+                      {{ item.priorite }}
+                    </span>
+
+              <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-800 border border-slate-200">
+                      {{ item.status }}
+                    </span>
+            </div>
+          </div>
+
+          @if (item.diagnostic) {
+          <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs text-slate-600">
+            <span class="font-bold text-slate-700">Diagnostic : </span>{{ item.diagnostic }}
+          </div>
+          }
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2 border-t border-slate-100 text-xs">
+            <div>
+              <p class="text-slate-400 font-medium">Coût Estimé</p>
+              <p class="font-bold text-slate-900 mt-0.5">{{ item.coutEstime }} DH</p>
+            </div>
+            <div>
+              <p class="text-slate-400 font-medium">Date Dépôt</p>
+              <p class="font-semibold text-slate-700 mt-0.5">{{ item.dateDepot | date:'dd/MM/yyyy HH:mm' }}</p>
+            </div>
+            <div class="col-span-2 sm:col-span-1">
+              <p class="text-slate-400 font-medium">Restitution Prévue</p>
+              <p class="font-bold text-rose-600 mt-0.5">
+                {{ (item.dateRestitutionPrevue.startsWith('+') ? 'Date Invalide' : (item.dateRestitutionPrevue | date:'dd/MM/yyyy HH:mm')) }}
+              </p>
+            </div>
+          </div>
+
+          @if (item.historiqueInterventionList && item.historiqueInterventionList.length > 0) {
+          <div class="pt-3 border-t border-slate-100 space-y-2">
+            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Dernier Historique</p>
+            <div class="text-xs text-slate-600 space-y-1">
+              @for (hist of item.historiqueInterventionList; track hist.id) {
+              <div class="flex items-center justify-between bg-slate-50/80 p-2 rounded-lg">
+                          <span>
+                            <strong class="text-slate-800">{{ hist.auteur }}</strong> : {{ hist.ancienStatus }} &rarr; {{ hist.nouveauStatus }}
+                          </span>
+                <span class="text-[10px] text-slate-400">{{ hist.date | date:'dd/MM HH:mm' }}</span>
+              </div>
+              }
+            </div>
+          </div>
+          }
+        </div>
+        }
+      </div>
+      }
+    </div>
+
+    <div class="space-y-4">
+      <h2 class="text-lg font-bold text-slate-900">Charge par Mécanicien</h2>
+      <div class="bg-white p-5 rounded border border-slate-200/80 shadow-xs space-y-3">
+        @if (stats()?.chargeParMecanicien && (stats()?.chargeParMecanicien | keyvalue)?.length! > 0) {
+        @for (item of stats()?.chargeParMecanicien | keyvalue; track item.key) {
+        <div class="flex items-center justify-between p-3 rounded bg-slate-50 border border-slate-100">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-slate-400 text-lg">person</span>
+            <span class="text-xs font-bold text-slate-700">Mécanicien {{ item.key }}</span>
+          </div>
+          <span class="px-2.5 py-1 text-xs font-bold bg-slate-200 text-slate-800 rounded-md">
+                  {{ item.value }} Tâche(s)
+                </span>
+        </div>
+        }
+        } @else {
+        <div class="py-8 text-center text-slate-400 text-xs font-medium">
+          Aucune tâche assignée pour le moment.
+        </div>
+        }
+      </div>
+    </div>
+
+  </div>
   }
+
 </div>
