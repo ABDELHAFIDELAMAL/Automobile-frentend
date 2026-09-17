@@ -21,7 +21,7 @@ export class UtilisateurService {
   }
 
   createUtilisateur(utilisateur: Utilisateur): Observable<ApiResponse<Utilisateur>> {
-    return this.http.post<ApiResponse<Utilisateur>>(`${this.apiUrl}`, utilisateur);
+    return this.http.post<ApiResponse<Utilisateur>>(`${this.apiUrl}/add`, utilisateur);
   }
 
   updateUtilisateur(id: number, utilisateur: Utilisateur): Observable<ApiResponse<Utilisateur>> {
@@ -29,7 +29,7 @@ export class UtilisateurService {
   }
 
   deleteUtilisateur(id: number): Observable<ApiResponse<void>> {
-    return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/${id}`);
+    return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/delete/${id}`);
   }
 
   changeStatutUtilisateur(id: number, activer: boolean): Observable<ApiResponse<Utilisateur>> {

@@ -52,4 +52,18 @@ export class UtilisateurList implements OnInit {
       }
     })
   }
+
+
+  deleteUtilisateur(id : number){
+    if(confirm("Estez-vous sur supprimer ce utilisateur ?")){
+      this.utilisateurService.deleteUtilisateur(id).subscribe({
+        next: (response) => {
+          this.loadUtilisateurs();
+        },
+        error: (error) => {
+          console.log("Erreur lors de supprimer l utlisateur " , error);
+        },
+      })
+    }
+  }
 }
