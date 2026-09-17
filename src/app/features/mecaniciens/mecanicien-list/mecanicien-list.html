@@ -148,26 +148,26 @@
           </td>
           <td class="py-4 px-6">
             <div class="flex items-center justify-end gap-3">
-              <div class="relative flex items-center p-1 bg-slate-100 rounded-xl w-40 select-none border border-slate-200/60">
+              <div class="relative inline-flex items-center p-1 bg-slate-100/80 rounded-full w-38 select-none shadow-inner">
                 <div
-                  [ngClass]="mecano.disponible ? 'translate-x-0' : 'translate-x-[76px]'"
-                  class="absolute top-1 bottom-1 left-1 w-[72px] bg-white rounded-lg shadow-xs transition-transform duration-300 ease-out pointer-events-none"
+                  [ngClass]="mecano.disponible ? 'translate-x-0 bg-emerald-500' : 'translate-x-[68px] bg-slate-400'"
+                  class="absolute top-1 bottom-1 left-1 w-[72px] rounded-full shadow-md transition-all duration-300 ease-out pointer-events-none"
                 ></div>
                 <button
                   type="button"
                   (click)="!mecano.disponible && toggleStatut(mecano)"
-                  [ngClass]="mecano.disponible ? 'text-slate-900 font-bold' : 'text-slate-400 font-medium'"
-                  class="relative z-10 w-[72px] py-1 text-[11px] tracking-wider text-center transition-colors duration-200 focus:outline-none"
+                  [ngClass]="mecano.disponible ? 'text-white font-bold' : 'text-slate-400 hover:text-slate-600 font-medium'"
+                  class="relative z-10 w-[64px] py-1 text-[10px] uppercase tracking-wider text-center transition-colors duration-200 focus:outline-none"
                 >
-                  Activer
+                  Activ
                 </button>
                 <button
                   type="button"
                   (click)="mecano.disponible && toggleStatut(mecano)"
-                  [ngClass]="!mecano.disponible ? 'text-slate-900 font-bold' : 'text-slate-400 font-medium'"
-                  class="relative z-10 w-[72px] py-1 text-[11px] tracking-wider text-center transition-colors duration-200 focus:outline-none"
+                  [ngClass]="!mecano.disponible ? 'text-white font-bold' : 'text-slate-400 hover:text-slate-600 font-medium'"
+                  class="relative z-10 w-[64px] uppercase py-2 px-2 text-[10px] tracking-wider text-center transition-colors duration-200 focus:outline-none"
                 >
-                  Désactiver
+                  Desactiv
                 </button>
               </div>
               <button
