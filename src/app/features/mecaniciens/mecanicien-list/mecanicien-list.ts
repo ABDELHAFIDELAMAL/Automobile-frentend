@@ -96,7 +96,6 @@ export class MecanicienList implements OnInit {
     }
   }
 
-
   toggleStatut(mecanicien: any): void {
     const ancienEtat = mecanicien.disponible;
     mecanicien.disponible = !mecanicien.disponible;
@@ -123,4 +122,17 @@ export class MecanicienList implements OnInit {
     }
   }
 
+  chargesData: any = {};
+
+  getCharges(): void {
+    this.MecanocienService.getCharge().subscribe({
+      next: (response) => {
+        this.chargesData = response.data;
+        console.log('Données de charge injectées :', this.chargesData);
+      },
+      error: (error) => {
+        console.error('Erreur lors de getCharge mecaniciens', error);
+      },
+    });
+  }
 }
