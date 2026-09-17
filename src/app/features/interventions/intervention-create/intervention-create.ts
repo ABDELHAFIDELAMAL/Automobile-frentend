@@ -63,7 +63,6 @@ export class InterventionCreate implements OnInit {
       ? parseFloat(formValue.coutEstime.toString())
       : 0.0;
 
-    // Reconstruction propre du JSON avec des valeurs par défaut pour les types primitifs
     const interventionPayload: any = {
       vehicule: {
         id: Number(this.vehiculeId() || formValue.vehicule),

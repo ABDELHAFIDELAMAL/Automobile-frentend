@@ -3,9 +3,10 @@ import { MecanicienService } from '../services/mecanicien';
 import { Mecanicien } from '../../../entities/Mecanicien';
 import { Specialite } from '../../../enums/Specialite.enum';
 import { NgClass } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
-  imports: [NgClass],
+  imports: [NgClass, RouterLink],
   selector: 'app-mecanicien-list',
   styleUrl: './mecanicien-list.css',
   templateUrl: './mecanicien-list.html',
