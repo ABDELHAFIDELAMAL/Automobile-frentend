@@ -59,13 +59,34 @@
               </td>
               <td>
                 <div class="actions-wrapper">
-                  <button type="button" class="btn-toggle">
-                    {{ user.enabled ? 'Désactiver' : 'Activer' }}
-                  </button>
+                  <div class="relative inline-flex items-center p-1 bg-slate-200/80 rounded-full w-44 select-none">
+                    <div
+                      [ngClass]="user.enabled ? 'translate-x-0' : 'translate-x-[84px]'"
+                      class="absolute top-1 bottom-1 left-1 w-[88px] bg-white rounded-full shadow-sm transition-transform duration-300 ease-out pointer-events-none"
+                    ></div>
+
+                    <button
+                      type="button"
+                      (click)="!user.enabled && changeStatutUtilisateur(user.id!, true)"
+                      [ngClass]="user.enabled ? 'text-slate-800 font-extrabold' : 'text-slate-500 font-bold'"
+                      class="relative z-10 w-[88px] py-1 text-[11px] tracking-wider text-center transition-colors duration-200 focus:outline-none"
+                    >
+                      Activer
+                    </button>
+
+                    <button
+                      type="button"
+                      (click)="user.enabled && changeStatutUtilisateur(user.id!, false)"
+                      [ngClass]="!user.enabled ? 'text-slate-800 font-extrabold' : 'text-slate-500 font-bold'"
+                      class="relative z-10 w-[88px] py-1 text-[11px] tracking-wider text-center transition-colors duration-200 focus:outline-none"
+                    >
+                      Désactiver
+                    </button>
+                  </div>
                   <button type="button" class="btn-delete" (click)="deleteUtilisateur(user.id!)">
                     Supprimer
                   </button>
-                  <button type="button" class="bg-blue-300 py-1 rounded shadow px-2" routerLink="/profile">
+                  <button type="button" [routerLink]="['/profile', user.id]" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-xl shadow-sm transition-colors duration-200">
                     Profile
                   </button>
                 </div>

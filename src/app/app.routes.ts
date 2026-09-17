@@ -14,7 +14,6 @@ import { MecanicienDetail } from './features/mecaniciens/mecanicien-detail/mecan
 import { VehiculeCreate } from './features/vehicules/vehicule-create/vehicule-create';
 import { UtilisateurList } from './features/utilisateur/utilisateur-list/utilisateur-list';
 import { UtilisateurCreate } from './features/utilisateur/utilisateur-create/utilisateur-create';
-import { UtilisateurDetail } from './features/utilisateur/utilisateur-detail/utilisateur-detail';
 import { Home } from './shared/components/home/home';
 import { ChangePassword } from './features/utilisateur/ChangePassword/change-password/change-password';
 import { Profile } from './shared/components/profile/profile';
@@ -51,12 +50,9 @@ export const routes: Routes = [
   { path: 'utilisateurs/create', component: UtilisateurCreate, data: { title: 'Create Utilisateur' }, },
   { path: 'utilisateurs/update/:id', component: VehiculeCreate, data: { title: 'Update Utilisateur' }, },
   { path: 'utilisateurs/password/change/:id', component: ChangePassword, data: { title: 'Change password' }, },
-  { path: 'utilisateurs/details/:id', component: UtilisateurDetail, data: { title: 'Details' } },
-
-  { path : 'profile', component: Profile, data : { title : 'Profile' } },
+  { path : 'profile/:id', component: Profile, data : { title : 'Profile' } },
   {
-    path: 'admin',
-    component: Admin,
+    path: 'admin', component: Admin,
     children: [],
   },
 ];

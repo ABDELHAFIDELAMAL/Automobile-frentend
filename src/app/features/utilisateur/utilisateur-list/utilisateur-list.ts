@@ -61,9 +61,23 @@ export class UtilisateurList implements OnInit {
           this.loadUtilisateurs();
         },
         error: (error) => {
-          console.log("Erreur lors de supprimer l utlisateur " , error);
+          console.log('Erreur lors de supprimer l utlisateur ', error);
         },
       })
     }
   }
+
+  changeStatutUtilisateur(id: number , active : boolean): void {
+    this.utilisateurService.changeStatutUtilisateur(id, active).subscribe({
+      next: (response) => {
+        this.loadUtilisateurs();
+      },
+      error: (error) => {
+        console.log("Erreur lors de change status utlisateur " , error);
+      }
+    })
+  }
+
+
+
 }
