@@ -1,5 +1,5 @@
 <div class="users-page">
-  <div class="users-header p-4">
+  <header class="users-header p-4">
     <div>
       <h1>Utilisateurs </h1>
       <h2 class="text-rose-500">{{ Utilisateurs().length }}</h2>
@@ -12,7 +12,11 @@
       <h1>Utlisateurs Available</h1>
       <h2>{{ coutNonEnabled() }}</h2>
     </div>
-  </div>
+    <button routerLink="/utilisateurs/create">
+      <span class="material-symbols-outlined">add</span>
+      <p>new Utilisateur</p>
+    </button>
+  </header>
 
   <div class="table-container">
     <div class="responsive-wrapper">
@@ -58,7 +62,7 @@
                   <button type="button" class="btn-toggle">
                     {{ user.enabled ? 'Désactiver' : 'Activer' }}
                   </button>
-                  <button type="button" class="btn-delete">
+                  <button type="button" class="btn-delete" (click)="deleteUtilisateur(user.id!)">
                     Supprimer
                   </button>
                   <button type="button" class="bg-blue-300 py-1 rounded shadow px-2" routerLink="/profile">

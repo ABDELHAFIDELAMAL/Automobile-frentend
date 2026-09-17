@@ -2,21 +2,24 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Utilisateur } from '../../../entities/Utilisateur';
 import { UtilisateurService } from '../services/utilisateur';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-utilisateur-create',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf],
+  imports: [ReactiveFormsModule, NgIf, RouterLink],
   templateUrl: './utilisateur-create.html',
   styleUrl: './utilisateur-create.css',
 })
 export class UtilisateurCreate implements OnInit {
   private readonly utilisateurService = inject(UtilisateurService);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
   utilisateurForm!: FormGroup;
+  utilisateurId: number | null = null;
+  errorMessage: string | null = null;
 
   ngOnInit(): void {
     this.utilisateurForm = new FormGroup({
@@ -31,26 +34,95 @@ export class UtilisateurCreate implements OnInit {
       role: new FormControl('', [Validators.required]),
       enabled: new FormControl(true),
     });
+
+    const idParam = this.route.snapshot.paramMap.get('id');
+    if (idParam) {
+      this.utilisateurId = +idParam;
+      this.utilisateurForm.get('password')?.clearValidators();
+      this.utilisateurForm.get('password')?.updateValueAndValidity();
+
+      this.utilisateurService.getUtilisateurById(this.utilisateurId).subscribe({
+        next: (response) => {
+          this.utilisateurForm.patchValue({
+            nom: response.data.nom,
+            prenom: response.data.prenom,
+            email: response.data.email,
+            role: response.data.role,
+            enabled: response.data.enabled,
+          });
+        },
+        error: (error) => console.error(error),
+      });
+    }
   }
 
   onSubmit(): void {
-    if (this.utilisateurForm.valid) {
-      console.log('Utilisateur cree : ', this.utilisateurForm.value);
-      this.utilisateurService.createUtilisateur(this.utilisateurForm.value).subscribe({
-        next: (response) => {
-
-          console.log('Utilisateur cree avec succes !', response);
-
-          this.router.navigate(['/utilisateurs']).then((navigated) => {
-            if (navigated) {
-              console.log('Redirection vers la liste des utilisateurs réussie');
-            }
-          });
-        },
-        error: (err) => {
-          console.error("Erreur lors de la création de l'utilisateur :", err);
-        },
-      });
+    if (this.utilisateurForm.invalid) {
+      this.utilisateurForm.markAllAsTouched();
+      return;
     }
+
+    this.errorMessage = null;
+    const valueForm = this.utilisateurForm.value;
+
+    const utilisateurPayload: any = {
+      nom: valueForm.nom,
+      prenom: valueForm.prenom,
+      email: valueForm.email,
+      role: valueForm.role,
+      enabled: valueForm.enabled,
+    };
+
+    if (valueForm.password) {
+      utilisateurPayload.password = valueForm.password;
+    }
+
+    if (this.utilisateurId) {
+      this.updateUtlisateur(this.utilisateurId, utilisateurPayload);
+    } else {
+      this.createUtilisateur(utilisateurPayload);
+    }
+  }
+
+  createUtilisateur(utilisateur: Utilisateur): void {
+    this.utilisateurService.createUtilisateur(utilisateur).subscribe({
+      next: (response) => {
+        alert('Utilisateur créé avec succès');
+        this.router.navigate(['/utilisateurs']);
+      },
+      error: (error) => {
+        if (
+          error.status === 409 ||
+          error.error?.message?.includes('déjà') ||
+          error.error?.message?.includes('exists')
+        ) {
+          this.errorMessage = 'Cet utilisateur ou cet email existe déjà !';
+          alert(this.errorMessage);
+        } else {
+          console.log("Erreur lors de la création de l'utilisateur : ", error);
+        }
+      },
+    });
+  }
+
+  updateUtlisateur(id: number, utilisateur: Utilisateur): void {
+    this.utilisateurService.updateUtilisateur(id, utilisateur).subscribe({
+      next: (response) => {
+        alert('Utilisateur modifié avec succès');
+        this.router.navigate(['/utilisateurs']);
+      },
+      error: (error) => {
+        if (
+          error.status === 409 || error.status === 500 ||
+          error.error?.message?.includes('déjà') ||
+          error.error?.message?.includes('exists')
+        ) {
+          this.errorMessage = 'Cet utilisateur ou cet email existe déjà !';
+          alert(this.errorMessage);
+        } else {
+          console.log("Erreur lors de la modification de l'utilisateur : ", error);
+        }
+      },
+    });
   }
 }
