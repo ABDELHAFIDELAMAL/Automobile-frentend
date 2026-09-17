@@ -1,117 +1,197 @@
-<div class="container">
-
-  <header class="flex items-center justify-between text-sm px-6">
-    <div>
-      <h2>Liste des Mécaniciens</h2>
+<div class="w-full mx-auto space-y-4 bg-slate-50 min-h-screen">
+  <header class="bg-white w-full p-4 md:p-6 shadow border border-slate-200/80 flex flex-col md:flex-row items-center justify-between gap-4">
+    <div class="w-full md:w-auto text-center md:text-left">
+      <h2 class="text-xl md:text-2xl font-bold tracking-tight text-slate-800">Liste des Mécaniciens</h2>
+      <p class="text-xs md:text-sm text-slate-500 mt-0.5">Gérez la disponibilité et les affectations</p>
     </div>
-
-    <div class="w-full sm:w-64">
-      <label>
-        <select
-          (change)="onDisponibiliteChange($event)"
-          class="w-full px-4 py-2 border border-slate-200 rounded-xl bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-sm text-slate-700 cursor-pointer shadow-sm"
+    <div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+      <div class="w-full sm:w-48">
+        <label class="block">
+          <select
+            (change)="onDisponibiliteChange($event)"
+            class="w-full px-3.5 py-2.5 text-xs md:text-sm border border-slate-200 rounded-xl bg-slate-50/50 hover:bg-white focus:bg-white focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none text-slate-700 font-medium cursor-pointer transition-all shadow-xs"
+          >
+            <option value="" selected>Tous les mécaniciens</option>
+            <option value="disponible">Mécaniciens Disponibles</option>
+            <option value="non_disponible">Mécaniciens Non Disponibles</option>
+          </select>
+        </label>
+      </div>
+      <div class="w-full sm:w-48">
+        <label class="block">
+          <select
+            (change)="onSpecialiteChange($event)"
+            class="w-full px-3.5 py-2.5 text-xs md:text-sm border border-slate-200 rounded-xl bg-slate-50/50 hover:bg-white focus:bg-white focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none text-slate-700 font-medium cursor-pointer transition-all shadow-xs"
+          >
+            <option value="" selected>Toutes les spécialités</option>
+            @for (specialite of specialities; track specialite) {
+            <option [value]="specialite">
+              {{ specialite }}
+            </option>
+            }
+          </select>
+        </label>
+      </div>
+      <div class="w-full sm:w-auto">
+        <button
+          type="button"
+          routerLink="/mecaniciens/create"
+          class="w-full sm:w-auto flex items-center justify-center gap-2 py-2.5 px-4 bg-slate-900 hover:bg-slate-800 active:bg-black text-white text-xs md:text-sm font-semibold rounded-xl shadow-sm transition-all duration-200"
         >
-          <option value="" selected>Tous les mécaniciens</option>
-          <option value="disponible">Mécaniciens Disponibles</option>
-          <option value="non_disponible">Mécaniciens Non Disponibles</option>
-        </select>
-      </label>
-    </div>
-
-    <div class="w-full sm:w-64">
-      <label>
-        <select
-          (change)="onSpecialiteChange($event)"
-          class="w-full px-4 py-2 border border-slate-200 rounded-xl bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-sm text-slate-700 cursor-pointer shadow-sm"
-        >
-          <option value="" selected>Toutes les spécialités</option>
-          @for (specialite of specialities; track specialite) {
-          <option [value]="specialite">
-            {{ specialite }}
-          </option>
-          }
-        </select>
-      </label>
-    </div>
-
-    <div routerLink="/mecaniciens/create">
-      <button type="button"
-              class="flex font-semibold gap-2 items-center justify-center py-2 px-4 bg-black text-white rounded-md hover:bg-gray-800"
-      >
-        <span class="material-symbols-outlined">add</span>
-        <p>Créer Mécanicien</p>
-      </button>
+          <span class="material-symbols-outlined text-lg">add</span>
+          <span>Créer Mécanicien</span>
+        </button>
+      </div>
     </div>
   </header>
 
   <main>
     @if (Mecaniciens().length === 0) {
-    <p class="empty-message">Aucun mécanicien trouvé.</p>
+    <div class="bg-white p-12 text-center border border-slate-200/80 shadow-sm">
+      <span class="material-symbols-outlined text-4xl text-slate-300 mb-2">person_off</span>
+      <p class="text-slate-500 font-medium text-sm">Aucun mécanicien trouvé.</p>
+    </div>
     } @else {
-    <table class="mecano-table">
-      <thead>
-      <tr>
-        <th>Nom</th>
-        <th>Spécialité</th>
-        <th>Disponibilité</th>
-        <th>Charge (Tâches)</th>
-        <th>Opérations</th>
-      </tr>
-      </thead>
-      <tbody>
+    <div class="block lg:hidden space-y-4">
       @for (mecano of Mecaniciens(); track mecano.id) {
-      <tr>
-        <td>{{ mecano.nom }}</td>
-        <td>{{ mecano.specialite }}</td>
-        <td>
-          @if (mecano.disponible) {
-          <span class="badge disponible">Disponible</span>
-          } @else {
-          <span class="badge occupe">Occupé</span>
-          }
-        </td>
-        <td>
-            <span class="font-semibold text-slate-700">
-              {{ mecano.interventions?.length ?? 0 }}
-            </span>
-        </td>
-
-        <td class="flex gap-4">
-          <button [disabled]="mecano.disponible" type="button" (click)="deleteMecanicien(mecano.id)" class="text-red-500 hover:cursor-pointer disabled:text-gray-400 disabled:cursor-not-allowed">
-            <span class="material-symbols-outlined">delete</span>
-          </button>
-          <button class="text-blue-500">
-            <span class="material-symbols-outlined">update</span>
-          </button>
-
-          <div class="relative flex items-center p-1 bg-slate-200/80 rounded-full w-44 select-none">
+      <div class="bg-white p-5 border border-slate-200/80 shadow-sm space-y-4 ">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <h3 class="font-bold text-slate-800 text-base">{{ mecano.nom }}</h3>
+            <p class="text-xs font-medium text-slate-500 mt-0.5">{{ mecano.specialite }}</p>
+          </div>
+          <div>
+            @if (mecano.disponible) {
+            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/60">Disponible</span>
+            } @else {
+            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200/60">Occupé</span>
+            }
+          </div>
+        </div>
+        <div class="flex items-center justify-between text-xs py-2 border-y border-slate-100">
+          <span class="text-slate-500 font-medium">Charge (Tâches)</span>
+          <span class="font-bold text-slate-800 px-2.5 py-0.5 bg-slate-100 rounded-md">
+{{ mecano.interventions?.length ?? 0 }}
+</span>
+        </div>
+        <div class="flex items-center justify-between gap-2 pt-1">
+          <div class="relative flex items-center p-1 bg-slate-100 rounded-xl w-36 select-none border border-slate-200/60">
             <div
-              [ngClass]="mecano.disponible ? 'translate-x-0' : 'translate-x-[84px]'"
-              class="absolute top-1 bottom-1 left-1 w-[88px] bg-white rounded-full shadow-sm transition-transform duration-300 ease-out pointer-events-none"
+              [ngClass]="mecano.disponible ? 'translate-x-0' : 'translate-x-[68px]'"
+              class="absolute top-1 bottom-1 left-1 w-[64px] bg-white rounded-lg shadow-xs transition-transform duration-300 ease-out pointer-events-none"
             ></div>
             <button
               type="button"
               (click)="!mecano.disponible && toggleStatut(mecano)"
-              [ngClass]="mecano.disponible ? 'text-slate-800 font-extrabold' : 'text-slate-500 font-bold'"
-              class="relative z-10 w-[88px] py-1 text-[11px] tracking-wider text-center transition-colors duration-200 focus:outline-none"
+              [ngClass]="mecano.disponible ? 'text-slate-900 font-bold' : 'text-slate-400 font-medium'"
+              class="relative z-10 w-[64px] py-1 text-[10px] tracking-wider text-center transition-colors duration-200 focus:outline-none"
             >
               Activer
             </button>
             <button
               type="button"
               (click)="mecano.disponible && toggleStatut(mecano)"
-              [ngClass]="!mecano.disponible ? 'text-slate-800 font-extrabold' : 'text-slate-500 font-bold'"
-              class="relative z-10 w-[88px] py-1 text-[11px] tracking-wider text-center transition-colors duration-200 focus:outline-none"
+              [ngClass]="!mecano.disponible ? 'text-slate-900 font-bold' : 'text-slate-400 font-medium'"
+              class="relative z-10 w-[64px] py-1 text-[10px] tracking-wider text-center transition-colors duration-200 focus:outline-none"
             >
               Désactiver
             </button>
           </div>
-        </td>
-      </tr>
+          <div class="flex items-center gap-1">
+            <button
+              type="button"
+              [routerLink]="['/mecaniciens/update', mecano.id]"
+              class="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
+            >
+              <span class="material-symbols-outlined text-xl">edit</span>
+            </button>
+            <button
+              [disabled]="mecano.disponible"
+              type="button"
+              (click)="deleteMecanicien(mecano.id)"
+              class="p-2 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-lg transition-colors disabled:text-slate-300 disabled:bg-transparent disabled:cursor-not-allowed"
+            >
+              <span class="material-symbols-outlined text-xl">delete</span>
+            </button>
+          </div>
+        </div>
+      </div>
       }
-      </tbody>
-    </table>
+    </div>
+    <div class="hidden lg:block bg-white border border-slate-200/80 shadow-sm overflow-hidden">
+      <table class="w-full text-left border-collapse">
+        <thead>
+        <tr class="bg-slate-50/80 border-b border-slate-200/80 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+          <th class="py-4 px-6">Nom</th>
+          <th class="py-4 px-6">Spécialité</th>
+          <th class="py-4 px-6">Disponibilité</th>
+          <th class="py-4 px-6">Charge (Tâches)</th>
+          <th class="py-4 px-6 text-right">Opérations</th>
+        </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 text-sm font-medium text-slate-700">
+        @for (mecano of Mecaniciens(); track mecano.id) {
+        <tr class="hover:bg-slate-50/50 transition-colors">
+          <td class="py-4 px-6 font-semibold text-slate-900">{{ mecano.nom }}</td>
+          <td class="py-4 px-6 text-slate-600">{{ mecano.specialite }}</td>
+          <td class="py-4 px-6">
+            @if (mecano.disponible) {
+            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/60">Disponible</span>
+            } @else {
+            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200/60">Occupé</span>
+            }
+          </td>
+          <td class="py-4 px-6">
+            <span class="inline-flex items-center justify-center px-2.5 py-1 text-xs font-bold text-slate-700 bg-slate-100 rounded-md">
+              {{ mecano.interventions?.length ?? 0 }}
+            </span>
+          </td>
+          <td class="py-4 px-6">
+            <div class="flex items-center justify-end gap-3">
+              <div class="relative flex items-center p-1 bg-slate-100 rounded-xl w-40 select-none border border-slate-200/60">
+                <div
+                  [ngClass]="mecano.disponible ? 'translate-x-0' : 'translate-x-[76px]'"
+                  class="absolute top-1 bottom-1 left-1 w-[72px] bg-white rounded-lg shadow-xs transition-transform duration-300 ease-out pointer-events-none"
+                ></div>
+                <button
+                  type="button"
+                  (click)="!mecano.disponible && toggleStatut(mecano)"
+                  [ngClass]="mecano.disponible ? 'text-slate-900 font-bold' : 'text-slate-400 font-medium'"
+                  class="relative z-10 w-[72px] py-1 text-[11px] tracking-wider text-center transition-colors duration-200 focus:outline-none"
+                >
+                  Activer
+                </button>
+                <button
+                  type="button"
+                  (click)="mecano.disponible && toggleStatut(mecano)"
+                  [ngClass]="!mecano.disponible ? 'text-slate-900 font-bold' : 'text-slate-400 font-medium'"
+                  class="relative z-10 w-[72px] py-1 text-[11px] tracking-wider text-center transition-colors duration-200 focus:outline-none"
+                >
+                  Désactiver
+                </button>
+              </div>
+              <button
+                type="button"
+                [routerLink]="['/mecaniciens/update', mecano.id]"
+                class="p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition-colors"
+              >
+                <span class="material-symbols-outlined text-lg">edit</span>
+              </button>
+              <button
+                [disabled]="mecano.disponible"
+                type="button"
+                (click)="deleteMecanicien(mecano.id)"
+                class="p-2 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-xl transition-colors disabled:text-slate-300 disabled:bg-transparent disabled:cursor-not-allowed"
+              >
+                <span class="material-symbols-outlined text-lg">delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+        }
+        </tbody>
+      </table>
+    </div>
     }
   </main>
-
 </div>
