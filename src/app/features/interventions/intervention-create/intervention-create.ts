@@ -41,15 +41,23 @@ export class InterventionCreate implements OnInit {
   }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.vehiculeId.set(+id);
-    } else {
-      alert("Erreur : Aucun véhicule n'a été spécifié dans l'URL.");
-      this.router.navigate(['/vehicules']);
-      return;
-    }
     this.initForm();
+    const idParam = this.route.snapshot.paramMap.get('id');
+    const isUpdateRoute = this.router.url.includes('/update');
+
+    if (idParam) {
+      if (isUpdateRoute) {
+        this.interventionId = +idParam;
+        this.loadInterventionDetails(this.interventionId);
+      } else {
+        const parsedId = +idParam;
+        this.vehiculeId.set(parsedId);
+        this.interventionForm.get('vehicule')?.setValue(parsedId);
+      }
+    } else {
+      alert("Erreur : Aucun identifiant n'a été spécifié dans l'URL.");
+      this.router.navigate(['/vehicules']);
+    }
   }
 
   onSubmit(): void {
@@ -66,7 +74,7 @@ export class InterventionCreate implements OnInit {
     const interventionPayload: any = {
       vehicule: {
         id: Number(this.vehiculeId() || formValue.vehicule),
-        clientFictif: false, // Évite le crash si Spring Boot inspecte l'objet véhicule complet
+        clientFictif: false,
       },
       type: formValue.type,
       description: formValue.description,
@@ -99,11 +107,45 @@ export class InterventionCreate implements OnInit {
     this.interventionsService.getInterventionById(id).subscribe({
       next: (response) => {
         if (response.data) {
+          const idVehicule = response.data.vehicule?.id ? Number(response.data.vehicule.id) : null;
+
+          if (idVehicule) {
+            this.vehiculeId.set(idVehicule);
+          }
+
+          const formatDateForInput = (dateValue: any): string => {
+            if (!dateValue) return '';
+            if (typeof dateValue === 'string') {
+              return dateValue.split('T')[0];
+            }
+            if (dateValue instanceof Date) {
+              return dateValue.toISOString().split('T')[0];
+            }
+            return '';
+          };
+
+          const dateDepotClean = formatDateForInput(response.data.dateDepot);
+          const dateRestitutionClean = formatDateForInput(response.data.dateRestitutionPrevue);
+          const dateClotureClean = formatDateForInput(response.data.dateCloture);
+
           this.interventionForm.patchValue({
             ...response.data,
-            vehicule: response.data.vehicule?.id,
-            mecanicien: response.data.mecanicien?.id,
+            vehicule: idVehicule,
+            mecanicien: response.data.mecanicien?.id || null,
+            dateDepot: dateDepotClean,
+            dateRestitutionPrevue: dateRestitutionClean,
+            dateCloture: dateClotureClean,
           });
+
+          console.log('Formulaire valide ?', this.interventionForm.valid);
+          if (!this.interventionForm.valid) {
+            console.log(
+              'Champs invalides :',
+              Object.keys(this.interventionForm.controls).filter(
+                (key) => this.interventionForm.controls[key].invalid,
+              ),
+            );
+          }
         }
       },
       error: (error) => {
@@ -116,7 +158,7 @@ export class InterventionCreate implements OnInit {
     this.interventionsService.createIntervention(intervention).subscribe({
       next: (response) => {
         console.log('Intervention sent to server : ', this.interventionForm.value);
-        alert(response.message || 'Intervention créée avec succès !');
+        alert(response.message);
         this.router.navigate(['/vehicules/details', this.vehiculeId()]);
       },
       error: (error) => {
@@ -128,7 +170,7 @@ export class InterventionCreate implements OnInit {
   updateIntervention(id: number, intervention: Intervention): void {
     this.interventionsService.updateIntervention(id, intervention).subscribe({
       next: (response) => {
-        alert(response.message || 'Intervention mise à jour !');
+        alert(response.message);
         this.router.navigate(['/vehicules/details', this.vehiculeId()]);
       },
       error: (error) => {

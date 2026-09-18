@@ -38,22 +38,11 @@ export class VehicleService {
     return this.http.get<ApiResponse<Vehicule>>(`${this.baseUrl}/by/matricule`, { params });
   }
 
-  restituerVehicule(
-    id: number,
-    username: string,
-    userRole: string,
-  ): Observable<ApiResponse<Vehicule>> {
+  restituerVehicule(id: number, username: string, userRole: string,): Observable<ApiResponse<Vehicule>> {
     const params = new HttpParams().set('username', username).set('userRole', userRole);
     return this.http.patch<ApiResponse<Vehicule>>(`${this.baseUrl}/restituer/${id}`, null, {
       params,
     });
-  }
-
-  affecterMecanicien(idVehicle: number, idMechanic: number): Observable<ApiResponse<Vehicule>> {
-    return this.http.patch<ApiResponse<Vehicule>>(
-      `${this.baseUrl}/${idVehicle}/affecter/mecanicien/${idMechanic}`,
-      null,
-    );
   }
 
   getVehicleByStatus(status: string): Observable<ApiResponse<Vehicule[]>> {

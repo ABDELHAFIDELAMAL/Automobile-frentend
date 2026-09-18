@@ -89,17 +89,4 @@ export class VehiculeList implements OnInit {
   }
 
 
-  affecterMecanicien(idVehicle: number, idMechanic: number){
-    this.vehicleService.affecterMecanicien(idVehicle, idMechanic).subscribe({
-      next: (response) => {
-        alert('Mecanicien affecte');
-        console.log('Mecanicien affecte :' , response.data);
-        this.loadVehicules();
-      },
-      error: (err) => {
-        console.error('Error lors de l affectation :', err);
-      }
-    })
-  }
-
 }
