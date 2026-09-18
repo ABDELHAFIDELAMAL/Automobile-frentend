@@ -12,6 +12,10 @@ import { Intervention } from '../../../entities/Interventions';
   templateUrl: './intervention-create.html',
   styleUrl: './intervention-create.css',
 })
+
+
+
+
 export class InterventionCreate implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -67,13 +71,20 @@ export class InterventionCreate implements OnInit {
     }
 
     const formValue = this.interventionForm.value;
+    const currentVehiculeId = this.vehiculeId() || formValue.vehicule;
+
+    if (!currentVehiculeId) {
+      alert("Erreur : Aucun véhicule n'est associé à cette intervention.");
+      return;
+    }
+
     const parsedCoutEstime = formValue.coutEstime
       ? parseFloat(formValue.coutEstime.toString())
       : 0.0;
 
     const interventionPayload: any = {
       vehicule: {
-        id: Number(this.vehiculeId() || formValue.vehicule),
+        id: Number(currentVehiculeId),
         clientFictif: false,
       },
       type: formValue.type,
@@ -106,11 +117,12 @@ export class InterventionCreate implements OnInit {
   private loadInterventionDetails(id: number): void {
     this.interventionsService.getInterventionById(id).subscribe({
       next: (response) => {
-        if (response.data) {
+        if (response?.data) {
           const idVehicule = response.data.vehicule?.id ? Number(response.data.vehicule.id) : null;
 
           if (idVehicule) {
             this.vehiculeId.set(idVehicule);
+            this.interventionForm.get('vehicule')?.setValue(idVehicule);
           }
 
           const formatDateForInput = (dateValue: any): string => {
@@ -124,58 +136,37 @@ export class InterventionCreate implements OnInit {
             return '';
           };
 
-          const dateDepotClean = formatDateForInput(response.data.dateDepot);
-          const dateRestitutionClean = formatDateForInput(response.data.dateRestitutionPrevue);
-          const dateClotureClean = formatDateForInput(response.data.dateCloture);
-
           this.interventionForm.patchValue({
             ...response.data,
             vehicule: idVehicule,
             mecanicien: response.data.mecanicien?.id || null,
-            dateDepot: dateDepotClean,
-            dateRestitutionPrevue: dateRestitutionClean,
-            dateCloture: dateClotureClean,
+            dateDepot: formatDateForInput(response.data.dateDepot),
+            dateRestitutionPrevue: formatDateForInput(response.data.dateRestitutionPrevue),
+            dateCloture: formatDateForInput(response.data.dateCloture),
           });
-
-          console.log('Formulaire valide ?', this.interventionForm.valid);
-          if (!this.interventionForm.valid) {
-            console.log(
-              'Champs invalides :',
-              Object.keys(this.interventionForm.controls).filter(
-                (key) => this.interventionForm.controls[key].invalid,
-              ),
-            );
-          }
         }
       },
-      error: (error) => {
-        console.log(error);
-      },
+      error: (error) => console.error(error),
     });
   }
 
   createIntervention(intervention: Intervention): void {
     this.interventionsService.createIntervention(intervention).subscribe({
       next: (response) => {
-        console.log('Intervention sent to server : ', this.interventionForm.value);
-        alert(response.message);
+        alert(response.message || 'Intervention créée avec succès');
         this.router.navigate(['/vehicules/details', this.vehiculeId()]);
       },
-      error: (error) => {
-        console.log(error);
-      },
+      error: (error) => console.error(error),
     });
   }
 
   updateIntervention(id: number, intervention: Intervention): void {
     this.interventionsService.updateIntervention(id, intervention).subscribe({
       next: (response) => {
-        alert(response.message);
+        alert(response.message || 'Intervention mise à jour');
         this.router.navigate(['/vehicules/details', this.vehiculeId()]);
       },
-      error: (error) => {
-        console.log(error);
-      },
+      error: (error) => console.error(error),
     });
   }
 }

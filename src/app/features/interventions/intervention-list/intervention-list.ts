@@ -352,4 +352,18 @@ export class InterventionList implements OnInit {
       },
     });
   }
+
+
+
+  getInterventionsEnRetard() : void {
+    this.interventionService.getEnRetard().subscribe({
+      next : ( response ) => {
+        console.log("La liste de interventions en retard est : " , response.data);
+        this.interventions.set(response.data);
+      },
+      error: (err) => {
+        alert(err.message);
+      }
+    })
+  }
 }

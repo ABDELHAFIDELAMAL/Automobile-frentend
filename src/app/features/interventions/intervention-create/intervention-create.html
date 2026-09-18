@@ -6,14 +6,10 @@
 
 
     <div>
-      <input type="hidden" formControlName="vehicule">
-    </div>
-
-    <div>
       <label>Type Intervention</label>
       <select formControlName="type">
         <option value="">-- Choisir un type --</option>
-        <option value="REVISION">Révision (Entretien)</option> <!-- Changé ENTRETIEN en REVISION -->
+        <option value="REVISION">Révision (Entretien)</option>
         <option value="REPARATION">Réparation</option>
         <option value="DIAGNOSTIC">Diagnostic</option>
         <option value="CONTROLE">Contrôle</option>
@@ -35,7 +31,7 @@
 
     <div>
       <label>Initial Diagnostic</label>
-      <input type="text" formControlName="diagnostic" placeholder="e.g., Engine misfire detected...">
+      <input type="text" formControlName="diagnostic" placeholder="Engine misfire detected...">
     </div>
 
     <div>
@@ -57,12 +53,15 @@
 
     <div>
       <label>Priority</label>
-      <select formControlName="priorite">
-        <option value="" disabled selected>Select priority</option>
-        <option value="BASSE">BASSE</option>
-        <option value="MOYENNE">MOYENNE</option>
-        <option value="HAUTE">HAUTE</option>
-      </select>
+      <label>
+        <select formControlName="priorite">
+          <option value="" disabled selected>Select priority</option>
+          <option value="BASSE">BASSE</option>
+          <option value="MOYENNE">MOYENNE</option>
+          <option value="HAUTE">HAUTE</option>
+          <option value="URGENT">URGENT</option>
+        </select>
+      </label>
       <div class="text-red-500" *ngIf="interventionForm.get('priorite')?.touched && interventionForm.get('priorite')?.invalid">
         <small *ngIf="interventionForm.get('priorite')?.errors?.['required']">Priority level is required.</small>
       </div>
