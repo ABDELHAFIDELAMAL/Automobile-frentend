@@ -9,11 +9,12 @@ import { MecanicienService } from '../../mecaniciens/services/mecanicien';
 import { TypeIntervention } from '../../../enums/TypeIntervention.enum';
 import { ApiResponse } from '../../../entities/ApiResponse';
 import { RouterLink } from '@angular/router';
+import { Priorite } from '../../../enums/Priorite.enum';
 
 @Component({
   selector: 'app-intervention-list',
   standalone: true,
-  imports: [CommonModule, DatePipe, CurrencyPipe, FormsModule , RouterLink],
+  imports: [CommonModule, DatePipe, CurrencyPipe, FormsModule, RouterLink],
   templateUrl: './intervention-list.html',
   styleUrl: './intervention-list.css',
 })
@@ -82,7 +83,6 @@ export class InterventionList implements OnInit {
     });
   }
 
-
   changerStatus(id: number, statusCible: Status): void {
     const interventionActuelle = this.interventions().find((item) => item.id === id);
     const nomAuteur = interventionActuelle?.mecanicien?.nom || 'SYSTEM';
@@ -111,7 +111,6 @@ export class InterventionList implements OnInit {
       },
     });
   }
-
 
   terminerIntervention(id: number): void {
     this.interventionService.terminer(id).subscribe({
@@ -353,17 +352,37 @@ export class InterventionList implements OnInit {
     });
   }
 
-
-
-  getInterventionsEnRetard() : void {
+  getInterventionsEnRetard(): void {
     this.interventionService.getEnRetard().subscribe({
-      next : ( response ) => {
-        console.log("La liste de interventions en retard est : " , response.data);
+      next: (response) => {
+        console.log('La liste de interventions en retard est : ', response.data);
         this.interventions.set(response.data);
       },
       error: (err) => {
         alert(err.message);
-      }
-    })
+      },
+    });
+  }
+
+  onChangePriorite(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+    const value = selectElement.value;
+
+    if (!value) {
+      this.loadInterventions();
+    } else {
+      this.getInterventionsByPriorite(value as Priorite);
+    }
+  }
+
+  getInterventionsByPriorite(priorite: Priorite): void {
+    this.interventionService.getInterventionsByPriorite(priorite).subscribe({
+      next: (response) => {
+        this.interventions.set(response.data);
+      },
+      error: (err) => {
+        alert(err.message);
+      },
+    });
   }
 }

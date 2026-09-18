@@ -40,11 +40,6 @@
 
 
 
-
-
-
-
-
   <header>
     <div class="title">
       <div>
@@ -81,12 +76,24 @@
       <label>
         <select
           (change)="onTypeChange($event)"
-          class="px-4 py-2 border border-gray-300 rounded-lg"
+          class="px-4 py-2 border border-gray-300 rounded"
         >
           <option value="">Tous les types</option>
           @for (type of typesInterventions; track type) {
           <option [value]="type">{{ type }}</option>
           }
+        </select>
+      </label>
+      <label>
+        <select
+          (change)="onChangePriorite($event)"
+          class="px-4 py-2 border border-gray-300 rounded"
+        >
+          <option value="">Tous les priorites</option>
+          <option value="BASSE">BASSE</option>
+          <option value="MOYENNE">MOYENNE</option>
+          <option value="HAUTE">HAUTE</option>
+          <option value="URGENT">URGENT</option>
         </select>
       </label>
       <button type="button" (click)="getInterventionsEnRetard()">Les interventions en retard</button>
