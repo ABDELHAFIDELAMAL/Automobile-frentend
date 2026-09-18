@@ -48,7 +48,7 @@ export const routes: Routes = [
 
   { path: 'utilisateurs', component: UtilisateurList, data: { title: 'Utilisateurs' } },
   { path: 'utilisateurs/create', component: UtilisateurCreate, data: { title: 'Create Utilisateur' }, },
-  { path: 'utilisateurs/update/:id', component: VehiculeCreate, data: { title: 'Update Utilisateur' }, },
+  { path: 'utilisateurs/update/:id', component: UtilisateurCreate, data: { title: 'Update Utilisateur' }, },
   { path: 'utilisateurs/password/change/:id', component: ChangePassword, data: { title: 'Change password' }, },
   { path : 'profile/:id', component: Profile, data : { title : 'Profile' } },
   {
