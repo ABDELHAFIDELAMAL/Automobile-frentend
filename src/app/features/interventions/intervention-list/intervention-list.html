@@ -168,15 +168,6 @@
 
       <div class="ListButtons">
 
-        @if (intervention.status === Status.DIAGNOSTIC_EN_COURS && !intervention.diagnostic) {
-        <button
-          type="button"
-          (click)="addDiagnostic(intervention.id, 'Nouveau diagnostic à rédiger')" class="bg-rose-500"
-          >
-           Rédiger le Diagnostic
-        </button>
-        }
-
         @if (intervention.status !== Status.TERMINEE && intervention.status !== Status.RESTITUEE) {
         <div class="assignment-container">
           @let disponibles = getMecaniciensDisponibles();
@@ -196,7 +187,11 @@
             }
             }
           </select>
+
         </div>
+        <button type="button" [routerLink]="['/interventions', 'update', intervention.id]" class="bg-#ecfeff"  >
+          Modifier
+        </button>
         }
       </div>
 

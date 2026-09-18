@@ -8,11 +8,12 @@ import { Mecanicien } from '../../../entities/Mecanicien';
 import { MecanicienService } from '../../mecaniciens/services/mecanicien';
 import { TypeIntervention } from '../../../enums/TypeIntervention.enum';
 import { ApiResponse } from '../../../entities/ApiResponse';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-intervention-list',
   standalone: true,
-  imports: [CommonModule, DatePipe, CurrencyPipe, FormsModule],
+  imports: [CommonModule, DatePipe, CurrencyPipe, FormsModule , RouterLink],
   templateUrl: './intervention-list.html',
   styleUrl: './intervention-list.css',
 })
@@ -244,6 +245,8 @@ export class InterventionList implements OnInit {
           type: 'success',
         });
         setTimeout(() => this.notification.set(null), 4000);
+
+        this.getMecaniciensDisponibles();
       },
       error: (err) => {
         console.error("Erreur lors de l'assignation :", err);
