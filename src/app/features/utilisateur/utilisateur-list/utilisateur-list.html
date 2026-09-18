@@ -83,11 +83,14 @@
                       Désactiver
                     </button>
                   </div>
-                  <button type="button" class="btn-delete" (click)="deleteUtilisateur(user.id!)">
-                    Supprimer
+                  <button type="button" class="btn-delete" (click)="deleteUtilisateur(user.id!)" >
+                    <span class="material-symbols-outlined">delete</span>
                   </button>
-                  <button type="button" [routerLink]="['/profile', user.id]" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-xl shadow-sm transition-colors duration-200">
-                    Profile
+                  <button type="button" [routerLink]="['/utilisateurs/update', user.id]">
+                    <span class="material-symbols-outlined">edit</span>
+                  </button>
+                  <button type="button" [routerLink]="['/profile', user.id]" class="text-blue-500">
+                    <span class="material-symbols-outlined">account_circle</span>
                   </button>
                 </div>
               </td>

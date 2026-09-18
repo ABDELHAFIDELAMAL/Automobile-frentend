@@ -1,5 +1,11 @@
 <div class="form-container">
-  <h2>Créer un Utilisateur</h2>
+  <h2>
+    {{ utilisateurId ? 'Modifier' : 'Créer' }} un Utilisateur
+  </h2>
+
+  <div *ngIf="errorMessage" class="error-msg-global">
+    {{ errorMessage }}
+  </div>
 
   <form [formGroup]="utilisateurForm" (ngSubmit)="onSubmit()" class="bg-blue-100 p-4">
 
@@ -31,8 +37,8 @@
     </div>
 
     <div class="form-group">
-      <label for="password">Mot de passe</label>
-      <input id="password" type="password" formControlName="password">
+      <label for="password">Mot de passe {{ utilisateurId ? '(Optionnel)' : '' }}</label>
+      <input id="password" type="password" formControlName="password" [placeholder]="utilisateurId ? 'Laisser vide pour ne pas modifier' : ''">
       <div *ngIf="utilisateurForm.get('password')?.touched && utilisateurForm.get('password')?.invalid" class="error-msg">
         <span *ngIf="utilisateurForm.get('password')?.errors?.['required']">Le mot de passe est obligatoire.</span>
         <span *ngIf="utilisateurForm.get('password')?.errors?.['minlength']">Le mot de passe doit faire au moins 6 caractères.</span>
@@ -43,8 +49,7 @@
     <div class="form-group">
       <label for="role">Rôle</label>
       <select id="role" formControlName="role">
-        <option value="" disabled selected>Choisir un rôle</option>
-        <option value="ADMIN">Utilisateur</option>
+        <option value="" disabled>Choisir un rôle</option>
         <option value="ADMIN">Administrateur</option>
         <option value="MECANICIEN">Mécanicien</option>
         <option value="CLIENT">Client</option>
@@ -57,8 +62,8 @@
     <div class="form-group">
       <label for="enabled">Statut du compte</label>
       <select id="enabled" formControlName="enabled">
-        <option [ngValue]="true">Actif</option>
-        <option [ngValue]="false">Inactif</option>
+        <option value="true">Activer</option>
+        <option value="false">Desactiver</option>
       </select>
       <div *ngIf="utilisateurForm.get('enabled')?.touched && utilisateurForm.get('enabled')?.invalid" class="error-msg">
         <span *ngIf="utilisateurForm.get('enabled')?.errors?.['required']">Le statut est obligatoire.</span>
@@ -66,7 +71,7 @@
     </div>
 
     <div class="form-actions">
-      <button type="submit" [disabled]="utilisateurForm.invalid">Enregistrer</button>
+      <button type="submit">Enregistrer</button>
     </div>
 
   </form>
