@@ -21,7 +21,7 @@ import { Profile } from './shared/components/profile/profile';
 
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'home', component: Home, data: { title: 'Home' } },
 
   { path: 'login', component: Login, data: { title: 'Login' } },

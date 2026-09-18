@@ -6,6 +6,7 @@ import { ApiResponse } from '../../../entities/ApiResponse';
 import { environment } from '../../../environment/environment';
 import { Mecanicien } from '../../../entities/Mecanicien';
 import { TypeIntervention } from '../../../enums/TypeIntervention.enum';
+import { Priorite } from '../../../enums/Priorite.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -96,5 +97,14 @@ export class InterventionService {
         type: type,
       },
     });
+  }
+
+
+  getInterventionsByPriorite(priorite : Priorite) : Observable<ApiResponse<Intervention[]>>{
+    return this.http.get<ApiResponse<Intervention[]>>(`${this.baseUrl}/by/priorite` , {
+      params: {
+        priorite : priorite,
+      }
+    })
   }
 }
