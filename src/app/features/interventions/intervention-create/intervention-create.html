@@ -1,109 +1,148 @@
-<div class="cont">
-  <form [formGroup]="interventionForm" (ngSubmit)="onSubmit()">
-    <div>
-      <h1>{{ interventionId ? 'Update' : 'Create' }} Intervention</h1>
+<div class="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+  <div class="max-w-2xl w-full bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
+
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-blue-600 to-indigo-700 px-6 py-6 sm:px-8">
+      <h1 class="text-2xl font-bold text-white tracking-wide">
+        {{ interventionId ? 'Mettre à jour' : 'Créer' }} une Intervention
+      </h1>
+      <p class="text-blue-100 text-sm mt-1">
+        Remplissez les détails ci-dessous pour gérer l'intervention du véhicule.
+      </p>
     </div>
 
+    <!-- Formulaire -->
+    <form [formGroup]="interventionForm" (ngSubmit)="onSubmit()" class="p-6 sm:p-8 space-y-6">
 
-    <div>
-      <label>Type Intervention</label>
-      <select formControlName="type">
-        <option value="">-- Choisir un type --</option>
-        <option value="REVISION">Révision (Entretien)</option>
-        <option value="REPARATION">Réparation</option>
-        <option value="DIAGNOSTIC">Diagnostic</option>
-        <option value="CONTROLE">Contrôle</option>
-        <option value="PNEUMATIQUES">Pneumatiques</option>
-        <option value="AUTRE">Autre</option>
-      </select>
-      <div class="text-red-500" *ngIf="interventionForm.get('type')?.touched && interventionForm.get('type')?.invalid">
-        <small *ngIf="interventionForm.get('type')?.errors?.['required']">Type is required.</small>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Type Intervention -->
+        <div class="space-y-1.5">
+          <label class="block text-sm font-semibold text-slate-700">Type d'Intervention <span class="text-red-500">*</span></label>
+          <select formControlName="type"
+                  class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm">
+            <option value="">-- Choisir un type --</option>
+            <option value="REVISION">Révision (Entretien)</option>
+            <option value="REPARATION">Réparation</option>
+            <option value="DIAGNOSTIC">Diagnostic</option>
+            <option value="CONTROLE">Contrôle</option>
+            <option value="PNEUMATIQUES">Pneumatiques</option>
+            <option value="AUTRE">Autre</option>
+          </select>
+          <div *ngIf="interventionForm.get('type')?.touched && interventionForm.get('type')?.invalid" class="text-red-500 text-xs font-medium mt-1">
+            <span *ngIf="interventionForm.get('type')?.errors?.['required']">Le type est obligatoire.</span>
+          </div>
+        </div>
+
+        <!-- Priority -->
+        <div class="space-y-1.5">
+          <label class="block text-sm font-semibold text-slate-700">Priorité <span class="text-red-500">*</span></label>
+          <select formControlName="priorite"
+                  class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm">
+            <option value="" disabled>Sélectionner la priorité</option>
+            <option value="BASSE">Basse</option>
+            <option value="MOYENNE">Moyenne</option>
+            <option value="HAUTE">Haute</option>
+            <option value="URGENT">Urgent</option>
+          </select>
+          <div *ngIf="interventionForm.get('priorite')?.touched && interventionForm.get('priorite')?.invalid" class="text-red-500 text-xs font-medium mt-1">
+            <span *ngIf="interventionForm.get('priorite')?.errors?.['required']">La priorité est obligatoire.</span>
+          </div>
+        </div>
+
       </div>
-    </div>
 
-    <div>
-      <label>Description</label>
-      <input type="text" formControlName="description" placeholder="Describe the vehicle problem...">
-      <div class="text-red-500" *ngIf="interventionForm.get('description')?.touched && interventionForm.get('description')?.invalid">
-        <small *ngIf="interventionForm.get('description')?.errors?.['required']">Description is required.</small>
+      <!-- Description (Full width) -->
+      <div class="space-y-1.5">
+        <label class="block text-sm font-semibold text-slate-700">Description <span class="text-red-500">*</span></label>
+        <input type="text" formControlName="description" placeholder="Décrire le problème du véhicule..."
+               class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm">
+        <div *ngIf="interventionForm.get('description')?.touched && interventionForm.get('description')?.invalid" class="text-red-500 text-xs font-medium mt-1">
+          <span *ngIf="interventionForm.get('description')?.errors?.['required']">La description est obligatoire.</span>
+        </div>
       </div>
-    </div>
 
-    <div>
-      <label>Initial Diagnostic</label>
-      <input type="text" formControlName="diagnostic" placeholder="Engine misfire detected...">
-    </div>
-
-    <div>
-      <label>Status</label>
-      <select formControlName="status">
-        <option value="" disabled selected>Select status</option>
-        <option value="RECUE">RECUE</option>
-        <option value="DIAGNOSTIC_EN_COURS">DIAGNOSTIC EN COURS</option>
-        <option value="DEVIS_A_VALIDER">DEVIS A VALIDER</option>
-        <option value="EN_REPARATION">EN REPARATION</option>
-        <option value="TERMINER">TERMINER</option>
-        <option value="RESTITUEE">RESTITUEE</option>
-        <option value="ANNULEE">ANNULEE</option>
-      </select>
-      <div class="text-red-500" *ngIf="interventionForm.get('status')?.touched && interventionForm.get('status')?.invalid">
-        <small *ngIf="interventionForm.get('status')?.errors?.['required']">Status is required.</small>
+      <!-- Initial Diagnostic (Full width) -->
+      <div class="space-y-1.5">
+        <label class="block text-sm font-semibold text-slate-700">Diagnostic Initial</label>
+        <input type="text" formControlName="diagnostic" placeholder="Ratés moteur détectés..."
+               class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm">
       </div>
-    </div>
 
-    <div>
-      <label>Priority</label>
-      <label>
-        <select formControlName="priorite">
-          <option value="" disabled selected>Select priority</option>
-          <option value="BASSE">BASSE</option>
-          <option value="MOYENNE">MOYENNE</option>
-          <option value="HAUTE">HAUTE</option>
-          <option value="URGENT">URGENT</option>
-        </select>
-      </label>
-      <div class="text-red-500" *ngIf="interventionForm.get('priorite')?.touched && interventionForm.get('priorite')?.invalid">
-        <small *ngIf="interventionForm.get('priorite')?.errors?.['required']">Priority level is required.</small>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Status -->
+        <div class="space-y-1.5">
+          <label class="block text-sm font-semibold text-slate-700">Statut <span class="text-red-500">*</span></label>
+          <select formControlName="status"
+                  class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm">
+            <option value="" disabled>Sélectionner le statut</option>
+            <option value="RECUE">Reçue</option>
+            <option value="DIAGNOSTIC_EN_COURS">Diagnostic en cours</option>
+            <option value="DEVIS_A_VALIDER">Devis à valider</option>
+            <option value="EN_REPARATION">En réparation</option>
+            <option value="TERMINER">Terminée</option>
+            <option value="RESTITUEE">Restituée</option>
+            <option value="ANNULEE">Annulée</option>
+          </select>
+          <div *ngIf="interventionForm.get('status')?.touched && interventionForm.get('status')?.invalid" class="text-red-500 text-xs font-medium mt-1">
+            <span *ngIf="interventionForm.get('status')?.errors?.['required']">Le statut est obligatoire.</span>
+          </div>
+        </div>
+
+        <!-- Estimated Cost -->
+        <div class="space-y-1.5">
+          <label class="block text-sm font-semibold text-slate-700">Coût Estimé (DHs) <span class="text-red-500">*</span></label>
+          <input type="number" formControlName="coutEstime" placeholder="0.00"
+                 class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm">
+          <div *ngIf="interventionForm.get('coutEstime')?.touched && interventionForm.get('coutEstime')?.invalid" class="text-red-500 text-xs font-medium mt-1">
+            <span *ngIf="interventionForm.get('coutEstime')?.errors?.['required']">Le coût estimé est obligatoire.</span>
+            <span *ngIf="interventionForm.get('coutEstime')?.errors?.['min']">Le coût ne peut pas être négatif.</span>
+          </div>
+        </div>
+
       </div>
-    </div>
 
-    <div>
-      <label>Estimated Cost (DHs)</label>
-      <input type="number" formControlName="coutEstime">
-      <div class="text-red-500" *ngIf="interventionForm.get('coutEstime')?.touched && interventionForm.get('coutEstime')?.invalid">
-        <small *ngIf="interventionForm.get('coutEstime')?.errors?.['required']">Estimated cost is required.</small>
-        <small *ngIf="interventionForm.get('coutEstime')?.errors?.['min']">Cost cannot be negative.</small>
+      <!-- Dates Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+
+        <!-- Deposit Date -->
+        <div class="space-y-1.5">
+          <label class="block text-xs font-semibold text-slate-700">Date Dépôt <span class="text-red-500">*</span></label>
+          <input type="date" formControlName="dateDepot"
+                 class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm">
+          <div *ngIf="interventionForm.get('dateDepot')?.touched && interventionForm.get('dateDepot')?.invalid" class="text-red-500 text-xs font-medium mt-1">
+            <span *ngIf="interventionForm.get('dateDepot')?.errors?.['required']">Date obligatoire.</span>
+          </div>
+        </div>
+
+        <!-- Date Cloture -->
+        <div class="space-y-1.5">
+          <label class="block text-xs font-semibold text-slate-700">Date Clôture</label>
+          <input type="date" formControlName="dateCloture"
+                 class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm">
+        </div>
+
+        <!-- Expected Return Date -->
+        <div class="space-y-1.5">
+          <label class="block text-xs font-semibold text-slate-700">Restitution Prévue <span class="text-red-500">*</span></label>
+          <input type="date" formControlName="dateRestitutionPrevue"
+                 class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm">
+          <div *ngIf="interventionForm.get('dateRestitutionPrevue')?.touched && interventionForm.get('dateRestitutionPrevue')?.invalid" class="text-red-500 text-xs font-medium mt-1">
+            <span *ngIf="interventionForm.get('dateRestitutionPrevue')?.errors?.['required']">Date obligatoire.</span>
+          </div>
+        </div>
+
       </div>
-    </div>
 
-    <div>
-      <label>Deposit Date</label>
-      <input type="date" formControlName="dateDepot">
-      <div class="text-red-500" *ngIf="interventionForm.get('dateDepot')?.touched && interventionForm.get('dateDepot')?.invalid">
-        <small *ngIf="interventionForm.get('dateDepot')?.errors?.['required']">Deposit date is required.</small>
+      <!-- Action Button -->
+      <div class="pt-4">
+        <button type="submit" [disabled]="interventionForm.invalid"
+                class="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-indigo-600 cursor-pointer">
+          {{ interventionId ? 'Mettre à jour' : 'Créer' }} l'Intervention
+        </button>
       </div>
-    </div>
 
-    <div>
-      <label>Date Cloture </label>
-      <input type="date" formControlName="dateCloture">
-      <div class="text-red-500" *ngIf="interventionForm.get('dateCloture')?.touched && interventionForm.get('dateCloture')?.invalid">
-        <small *ngIf="interventionForm.get('dateCloture')?.errors?.['required']">Date Cloture required.</small>
-      </div>
-    </div>
-
-    <div>
-      <label>Expected Return Date</label>
-      <input type="date" formControlName="dateRestitutionPrevue">
-      <div class="text-red-500" *ngIf="interventionForm.get('dateRestitutionPrevue')?.touched && interventionForm.get('dateRestitutionPrevue')?.invalid">
-        <small *ngIf="interventionForm.get('dateRestitutionPrevue')?.errors?.['required']">Expected return date is required.</small>
-      </div>
-    </div>
-
-    <div>
-      <button type="submit" [disabled]="interventionForm.invalid">
-        {{ interventionId ? 'Update' : 'Create' }} Intervention
-      </button>
-    </div>
-  </form>
+    </form>
+  </div>
 </div>
