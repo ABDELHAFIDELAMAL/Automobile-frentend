@@ -10,7 +10,7 @@ import { ApiResponse } from '../../../entities/ApiResponse';
   providedIn: 'root',
 })
 export class VehicleService {
-  private baseUrl = `${environment.baseUrl}/vehicules`;
+  private baseUrl = `${environment.baseUrl}/vehicles`;
   private http = inject(HttpClient);
 
   getAllVehicles(): Observable<ApiResponse<Vehicule[]>> {

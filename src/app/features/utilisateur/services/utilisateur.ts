@@ -10,7 +10,7 @@ import { environment } from '../../../environment/environment';
 })
 export class UtilisateurService {
   private http = inject(HttpClient);
-  private readonly apiUrl = `${environment.baseUrl}/utilisateurs`;
+  private readonly apiUrl = `${environment.baseUrl}/users`;
 
   getAllUtilisateurs(): Observable<ApiResponse<Utilisateur[]>> {
     return this.http.get<ApiResponse<Utilisateur[]>>(`${this.apiUrl}`);

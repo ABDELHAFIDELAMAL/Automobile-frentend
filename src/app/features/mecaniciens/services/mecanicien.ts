@@ -11,7 +11,7 @@ import { Specialite } from '../../../enums/Specialite.enum';
   providedIn: 'root',
 })
 export class MecanicienService {
-  private baseUrl = `${environment.baseUrl}/mecaniciens`;
+  private baseUrl = `${environment.baseUrl}/mechanics`;
   private readonly http = inject(HttpClient);
 
   getAllMechanicals(): Observable<ApiResponse<Mecanicien[]>> {
@@ -60,7 +60,7 @@ export class MecanicienService {
 
   getMecaniciensBySpecialite(specialite: Specialite): Observable<ApiResponse<Mecanicien[]>> {
     return this.http.get<ApiResponse<Mecanicien[]>>(`${this.baseUrl}/by/specialite`, {
-      params: { specialite: specialite.toString() }
+      params: { specialite: specialite.toString() },
     });
   }
 }
