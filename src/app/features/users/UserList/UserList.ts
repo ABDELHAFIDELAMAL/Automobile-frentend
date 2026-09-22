@@ -13,7 +13,6 @@ import { UserService } from '../services/UserService';
 })
 export class UserList implements OnInit {
   private readonly userService = inject(UserService);
-
   users = signal<User[]>([]);
 
   ngOnInit(): void {
@@ -41,7 +40,6 @@ export class UserList implements OnInit {
 
   toggleUserStatus(id: number, active: boolean): void {
     const status$ = active ? this.userService.activate(id) : this.userService.deactivate(id);
-
     status$.subscribe({
       next: () => {
         this.loadUsers();

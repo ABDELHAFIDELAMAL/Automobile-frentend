@@ -23,7 +23,7 @@ export class UserService {
 
   getUserByUsername(username: string): Observable<ApiResponce<User>> {
     const params = new HttpParams().set('username', username);
-    return this.http.get<ApiResponce<User>>(`${this.apiUrl}/username`, { params });
+    return this.http.get<ApiResponce<User>>(`${this.apiUrl}/by/username`, { params });
   }
 
   createUser(user: User): Observable<ApiResponce<User>> {
@@ -57,7 +57,7 @@ export class UserService {
 
   assignRole(id: number, role: Role): Observable<ApiResponce<void>> {
     return this.http.put<ApiResponce<void>>(
-      `${this.apiUrl}/assign-role/${id}`,
+      `${this.apiUrl}/assign/role/${id}`,
       JSON.stringify(role),
       {
         headers: { 'Content-Type': 'application/json' },

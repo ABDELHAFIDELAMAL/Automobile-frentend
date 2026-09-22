@@ -64,7 +64,7 @@
           </span>
 
         <span class="text-sm font-mono font-bold text-black">
-            {{ vehicle()?.immatriculation }}
+            {{ vehicle()?.matricule }}
           </span>
       </div>
 
@@ -74,7 +74,7 @@
           </span>
 
         <span class="text-sm font-bold text-black">
-            {{ vehicle()?.annee }}
+            {{ vehicle()?.year }}
           </span>
       </div>
 
@@ -84,7 +84,7 @@
           </span>
 
         <span class="text-sm font-bold text-black">
-            {{ vehicle()?.kilometrage | number }} km
+            {{ vehicle()?.mileage | number }} km
           </span>
       </div>
 
@@ -102,7 +102,7 @@
                   : 'bg-emerald-50 text-emerald-800 border-emerald-200'
               "
             >
-              {{ vehicle()?.clientFictif ? 'Yes' : 'No' }}
+              {{ vehicle()?.dummyClient ? 'Yes' : 'No' }}
             </span>
         </div>
       </div>
@@ -156,9 +156,8 @@
             {{ item.description }}
           </p>
 
-          @if (item.mecanicien) {
+          @if (item.mechanic) {
           <div class="mb-3 flex items-center gap-1.5 text-xs font-medium text-slate-500">
-
                   <span class="material-symbols-outlined text-sm text-slate-700">
                     badge
                   </span>
@@ -166,7 +165,7 @@
             <span>Mechanic:</span>
 
             <span class="font-bold text-black">
-                    {{ item.mecanicien.nom }}
+                    {{ item.mechanic.nom }}
                   </span>
 
           </div>
@@ -181,7 +180,7 @@
               </span>
 
           <span class="text-sm font-bold text-black">
-                {{ item.coutEstime | currency:'MAD':'symbol':'1.2-2':'en-MA' }}
+                {{ item.estimatedCost | currency:'MAD':'symbol':'1.2-2':'en-MA' }}
               </span>
 
         </div>
@@ -266,34 +265,20 @@
         </div>
 
         <div class="flex items-center justify-between border-t border-slate-200/80 pt-3 text-[11px] text-slate-500">
-
-              <span>
-                Closed on:
-              </span>
-
+          <span>Closed on:</span>
           <span class="font-bold text-black">
-                {{ (item.dateCloture || item.dateRestitutionPrevue) | date:'dd/MM/yyyy' }}
-              </span>
-
+            {{ (item.closureDate || item.estimatedReturnDate) | date:'dd/MM/yyyy' }}
+          </span>
         </div>
-
       </div>
-
       } @empty {
-
       <div class="col-span-full rounded-2xl border border-dashed border-slate-200 bg-slate-50 py-10 text-center">
-
         <p class="text-xs font-bold text-slate-500">
           No intervention history recorded for this vehicle.
         </p>
-
       </div>
-
       }
-
     </div>
-
   </div>
-
 </div>
 }

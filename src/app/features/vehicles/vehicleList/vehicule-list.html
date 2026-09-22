@@ -3,7 +3,6 @@
     <div>
       <p>Number of vehicles: {{ vehicles().length }}</p>
     </div>
-
     <div>
       <label>
         <input
@@ -47,20 +46,20 @@
       </h2>
 
       <p>
-        License Plate: {{ vehicle.immatriculation }}
+        License Plate: {{ vehicle.matriucle }}
       </p>
 
       <p>
-        Year: {{ vehicle.annee }}
+        Year: {{ vehicle.year }}
       </p>
 
       <p>
-        Mileage: {{ vehicle.kilometrage | number }} km
+        Mileage: {{ vehicle.mileage | number }} km
       </p>
 
       <p>
         Fictitious Client:
-        <span>{{ vehicle.clientFictif ? 'Yes' : 'No' }}</span>
+        <span>{{ vehicle.dummyClient ? 'Yes' : 'No' }}</span>
       </p>
 
       <h3>

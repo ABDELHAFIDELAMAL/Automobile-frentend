@@ -112,10 +112,9 @@ export class VehicleCreate implements OnInit {
       next: () => {
         this.router.navigate(['/vehicles']);
       },
-
       error: (error: HttpErrorResponse) => {
         if (error.status === 409) {
-          alert('This license plate already exists.');
+          alert('This matricule already exists.');
         } else {
           console.error('Error creating vehicle:', error);
         }
