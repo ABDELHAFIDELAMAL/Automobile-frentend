@@ -1,15 +1,14 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { Intervention } from '../../../entities/Interventions';
 import { InterventionService } from '../services/intervention';
 import { Status } from '../../../enums/Status.enum';
-import { Mecanicien } from '../../../entities/Mechanic';
-import { MecanicienService } from '../../mechanics/services/mecanicien';
-import { TypeIntervention } from '../../../enums/InterventionType.enum';
-import { ApiResponce } from '../../../entities/ApiResponce';
-import { RouterLink } from '@angular/router';
-import { Priorite } from '../../../enums/Priority.enum';
+import { Mechanic } from '../../../entities/Mechanic';
+import { MechanicService } from '../../mechanics/services/mecanicien';
+import { InterventionType } from '../../../enums/InterventionType.enum';
+import { Priority } from '../../../enums/Priority.enum';
 
 @Component({
   selector: 'app-intervention-list',
@@ -20,16 +19,16 @@ import { Priorite } from '../../../enums/Priority.enum';
 })
 export class InterventionList implements OnInit {
   private readonly interventionService = inject(InterventionService);
-  private readonly mecanicienService = inject(MecanicienService);
+  private readonly mechanicService = inject(MechanicService);
 
   protected readonly Status = Status;
   statuses: Status[] = Object.values(Status);
 
-  typesInterventions: TypeIntervention[] = Object.values(TypeIntervention);
+  interventionTypes: InterventionType[] = Object.values(InterventionType);
 
   interventions = signal<Intervention[]>([]);
-  mecaniciens = signal<Mecanicien[]>([]);
-  coutTotal = signal<number>(0);
+  mechanics = signal<Mechanic[]>([]);
+  totalCost = signal<number>(0);
 
   notification = signal<{ message: string; type: 'success' | 'error' } | null>(null);
 
@@ -38,27 +37,27 @@ export class InterventionList implements OnInit {
   }
 
   totalDiagnostics = () => {
-    return this.interventions().filter((item) => item.type === 'DIAGNOSTIC').length;
+    return this.interventions().filter((item) => item.type === InterventionType.DIAGNOSTIC).length;
   };
 
-  totalReparations = () => {
-    return this.interventions().filter((item) => item.type === 'REPARATION').length;
+  totalRepairs = () => {
+    return this.interventions().filter((item) => item.type === InterventionType.REPAIR).length;
   };
 
-  coutTotalEstime = () => {
-    return this.interventions().reduce((sum, item) => sum + (item.coutEstime || 0), 0);
+  estimatedTotalCost = () => {
+    return this.interventions().reduce((sum, item) => sum + (item.estimatedCost || 0), 0);
   };
 
-  totalDatesInvalides = () => {
+  invalidDateCount = () => {
     return this.interventions().filter(
-      (item) => item.dateRestitutionPrevue && item.dateRestitutionPrevue.toString().startsWith('+'),
+      (item) => item.estimatedReturnDate && item.estimatedReturnDate.toString().startsWith('+'),
     ).length;
   };
 
   ngOnInit(): void {
     this.loadInterventions();
-    this.loadMecaniciens();
-    this.calculerCoutTotal();
+    this.loadMechanics();
+    this.calculateTotalCost();
   }
 
   loadInterventions(): void {
@@ -67,36 +66,38 @@ export class InterventionList implements OnInit {
         this.interventions.set(response.data || response);
       },
       error: (error) => {
-        console.log('Erreur loard de load interventions : ', error);
+        console.error('Error loading interventions: ', error);
       },
     });
   }
 
-  loadMecaniciens(): void {
-    this.mecanicienService.getAllMechanicals().subscribe({
+  loadMechanics(): void {
+    this.mechanicService.getAllMechanics().subscribe({
       next: (response) => {
-        this.mecaniciens.set(response.data || response);
+        this.mechanics.set(response.data || response);
       },
       error: (error) => {
-        console.error('Erreur lors du chargement des mécaniciens :', error);
+        console.error('Error loading mechanics:', error);
       },
     });
   }
 
-  changerStatus(id: number, statusCible: Status): void {
-    const interventionActuelle = this.interventions().find((item) => item.id === id);
-    const nomAuteur = interventionActuelle?.mecanicien?.nom || 'SYSTEM';
-    const statusStr = statusCible.toString();
+  changeStatus(id: number, targetStatus: Status): void {
+    const currentIntervention = this.interventions().find((item) => item.id === id);
+    const authorName = currentIntervention?.mechanicId
+      ? `MECHANIC_${currentIntervention.mechanicId}`
+      : 'SYSTEM';
+    const statusStr = targetStatus.toString();
 
-    this.interventionService.changerStatus(id, statusStr, nomAuteur).subscribe({
-      next: (response: ApiResponce<Intervention>) => {
+    this.interventionService.changeStatus(id, statusStr, authorName).subscribe({
+      next: () => {
         this.interventions.update((list) =>
           list.map((item) =>
-            item.id === id ? ({ ...item, status: statusCible } as typeof item) : item,
+            item.id === id ? ({ ...item, status: targetStatus } as typeof item) : item,
           ),
         );
         this.notification.set({
-          message: `Le statut a été mis à jour vers "${statusCible}" avec succès !`,
+          message: `Status successfully updated to "${targetStatus}"!`,
           type: 'success',
         });
         setTimeout(() => this.notification.set(null), 4000);
@@ -104,7 +105,7 @@ export class InterventionList implements OnInit {
       error: (err) => {
         console.error(err);
         this.notification.set({
-          message: err.error?.message || 'Transition de statut refusée par les règles du workflow.',
+          message: err.error?.message || 'Status transition rejected by workflow rules.',
           type: 'error',
         });
         setTimeout(() => this.notification.set(null), 4000);
@@ -112,25 +113,24 @@ export class InterventionList implements OnInit {
     });
   }
 
-  terminerIntervention(id: number): void {
-    this.interventionService.terminer(id).subscribe({
+  completeIntervention(id: number): void {
+    this.interventionService.complete(id).subscribe({
       next: () => {
         this.interventions.update((list) =>
           list.map((item) =>
-            item.id === id ? ({ ...item, status: Status.TERMINEE } as typeof item) : item,
+            item.id === id ? ({ ...item, status: Status.COMPLETED } as typeof item) : item,
           ),
         );
         this.notification.set({
-          message: 'Le véhicule a été terminé avec succès !',
+          message: 'Vehicle intervention completed successfully!',
           type: 'success',
         });
         setTimeout(() => this.notification.set(null), 4000);
       },
       error: (err) => {
-        console.error("Erreur lors de la clôture de l'intervention :", err);
+        console.error('Error closing intervention:', err);
         this.notification.set({
-          message:
-            err.error?.message || "Une erreur est survenue lors de la clôture de l'intervention.",
+          message: err.error?.message || 'An error occurred while closing the intervention.',
           type: 'error',
         });
         setTimeout(() => this.notification.set(null), 4000);
@@ -138,24 +138,24 @@ export class InterventionList implements OnInit {
     });
   }
 
-  restituer(id: number): void {
-    this.interventionService.restituer(id).subscribe({
+  returnVehicle(id: number): void {
+    this.interventionService.returnIntervention(id).subscribe({
       next: () => {
         this.interventions.update((list) =>
           list.map((item) =>
-            item.id === id ? ({ ...item, status: Status.RESTITUEE } as typeof item) : item,
+            item.id === id ? ({ ...item, status: Status.RETURNED } as typeof item) : item,
           ),
         );
         this.notification.set({
-          message: 'Le véhicule a été restitué avec succès !',
+          message: 'Vehicle returned successfully!',
           type: 'success',
         });
         setTimeout(() => this.notification.set(null), 4000);
       },
       error: (err) => {
-        console.error('Erreur lors de la restitution du véhicule :', err);
+        console.error('Error returning vehicle:', err);
         this.notification.set({
-          message: err.error?.message || 'Une erreur est survenue lors de la restitution.',
+          message: err.error?.message || 'An error occurred while returning the vehicle.',
           type: 'error',
         });
         setTimeout(() => this.notification.set(null), 4000);
@@ -163,95 +163,94 @@ export class InterventionList implements OnInit {
     });
   }
 
-  getInterventionByMecanicien(idMecanicien: number) {
-    this.interventionService.getInterventionByMecanicien(idMecanicien).subscribe({
+  getInterventionsByMechanic(mechanicId: number): void {
+    this.interventionService.getInterventionsByMechanic(mechanicId).subscribe({
       next: (response) => {
         this.interventions.set(response.data || response);
       },
       error: (err) => {
-        console.error('Erreur lors de la récupération des interventions du mécanicien :', err);
+        console.error('Error fetching mechanic interventions:', err);
       },
     });
   }
 
-  getInterventionByVehicule(idVehicule: number) {
-    this.interventionService.getInterventionByVehicule(idVehicule).subscribe({
+  getInterventionsByVehicle(vehicleId: number): void {
+    this.interventionService.getInterventionsByVehicle(vehicleId).subscribe({
       next: (response) => {
         this.interventions.set(response.data || response);
       },
       error: (err) => {
-        console.error('Erreur lors de la récupération des interventions du vehicule :', err);
+        console.error('Error fetching vehicle interventions:', err);
       },
     });
   }
 
-  calculerCoutTotal(): void {
-    this.interventionService.calculerCoutTotal().subscribe({
+  calculateTotalCost(): void {
+    this.interventionService.calculateTotalCost().subscribe({
       next: (response) => {
         const rawTotal = response.data !== undefined ? response.data : response;
         if (rawTotal !== null && rawTotal !== undefined) {
           const cleanTotal = Number(rawTotal);
           if (!isNaN(cleanTotal)) {
-            this.coutTotal.set(cleanTotal);
+            this.totalCost.set(cleanTotal);
           }
         }
       },
       error: (err) => {
-        console.error('Erreur lors du calcul du coût Total : ', err);
+        console.error('Error calculating total cost: ', err);
       },
     });
   }
 
-  getEnRetard() {
-    this.interventionService.getEnRetard().subscribe({
+  getOverdueInterventions(): void {
+    this.interventionService.getDelayedInterventions().subscribe({
       next: (response) => {
         this.interventions.set(response.data || response);
       },
       error: (err) => {
-        console.log('Erreur lors de la récupération des interventions en retard : ', err);
+        console.error('Error fetching overdue interventions: ', err);
         this.interventions.set([]);
       },
     });
   }
 
-  assignMecanicien(interventionId: number, event: Event): void {
+  assignMechanic(interventionId: number, event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
-    const mecanicienId = Number(selectElement.value);
+    const mechanicId = Number(selectElement.value);
 
-    const mecanicienSelectionne = this.mecaniciens().find((m) => m.id === mecanicienId);
+    const selectedMechanic = this.mechanics().find((m) => m.id === mechanicId);
 
-    if (!mecanicienSelectionne) {
-      console.error('Mécanicien introuvable dans la liste');
+    if (!selectedMechanic) {
+      console.error('Mechanic not found in local list');
       this.notification.set({
-        message: 'Mécanicien introuvable dans la liste locale.',
+        message: 'Mechanic not found in local list.',
         type: 'error',
       });
       setTimeout(() => this.notification.set(null), 4000);
       return;
     }
 
-    this.interventionService.assignMecanicien(interventionId, mecanicienSelectionne).subscribe({
-      next: (response: ApiResponce<Intervention>) => {
+    this.interventionService.assignMechanic(interventionId, selectedMechanic).subscribe({
+      next: () => {
         this.interventions.update((list) =>
           list.map((item) =>
             item.id === interventionId
-              ? ({ ...item, mecanicien: mecanicienSelectionne } as typeof item)
+              ? ({ ...item, mechanicId: mechanicId, vehicleId: item.vehicleId } as typeof item)
               : item,
           ),
         );
         this.notification.set({
-          message: 'Mécanicien assigné avec succès !',
+          message: 'Mechanic assigned successfully!',
           type: 'success',
         });
         setTimeout(() => this.notification.set(null), 4000);
 
-        this.getMecaniciensDisponibles();
+        this.getAvailableMechanics();
       },
       error: (err) => {
-        console.error("Erreur lors de l'assignation :", err);
+        console.error('Error assigning mechanic:', err);
         this.notification.set({
-          message:
-            err.error?.message || "Une erreur est survenue lors de l'assignation du mécanicien.",
+          message: err.error?.message || 'An error occurred while assigning the mechanic.',
           type: 'error',
         });
         setTimeout(() => this.notification.set(null), 4000);
@@ -259,29 +258,29 @@ export class InterventionList implements OnInit {
     });
   }
 
-  getMecaniciensDisponibles(): Mecanicien[] {
-    return this.mecaniciens().filter((mecanicien) => mecanicien.disponible);
+  getAvailableMechanics(): Mechanic[] {
+    return this.mechanics().filter((m) => m.available);
   }
 
-  setCoutEstime(id: number, coutEstime: number): void {
-    this.interventionService.setCoutEstime(id, coutEstime).subscribe({
+  setEstimatedCost(id: number, estimatedCost: number): void {
+    this.interventionService.setEstimatedCost(id, estimatedCost).subscribe({
       next: () => {
         this.interventions.update((list) =>
           list.map((item) =>
-            item.id === id ? ({ ...item, coutEstime: coutEstime } as typeof item) : item,
+            item.id === id ? ({ ...item, estimatedCost: estimatedCost } as typeof item) : item,
           ),
         );
-        this.calculerCoutTotal();
+        this.calculateTotalCost();
         this.notification.set({
-          message: 'Coût estimé mis à jour avec succès !',
+          message: 'Estimated cost updated successfully!',
           type: 'success',
         });
         setTimeout(() => this.notification.set(null), 4000);
       },
       error: (err) => {
-        console.log('Erreur lors de la mise à jour du coût estimé : ', err);
+        console.error('Error updating estimated cost: ', err);
         this.notification.set({
-          message: err.error?.message || 'Une erreur est survenue lors de la mise à jour du coût.',
+          message: err.error?.message || 'An error occurred while updating the cost.',
           type: 'error',
         });
         setTimeout(() => this.notification.set(null), 4000);
@@ -298,15 +297,15 @@ export class InterventionList implements OnInit {
           ),
         );
         this.notification.set({
-          message: 'Diagnostic ajouté avec succès !',
+          message: 'Diagnostic added successfully!',
           type: 'success',
         });
         setTimeout(() => this.notification.set(null), 4000);
       },
       error: (err) => {
-        console.log("Erreur lors de l'ajout du diagnostic : ", err);
+        console.error('Error adding diagnostic: ', err);
         this.notification.set({
-          message: err.error?.message || "Une erreur est survenue lors de l'ajout du diagnostic.",
+          message: err.error?.message || 'An error occurred while adding the diagnostic.',
           type: 'error',
         });
         setTimeout(() => this.notification.set(null), 4000);
@@ -325,7 +324,7 @@ export class InterventionList implements OnInit {
         (item) =>
           item.type.toString().toLowerCase().includes(term.toLowerCase()) ||
           item.description?.toLowerCase().includes(term.toLowerCase()) ||
-          item.vehicule?.immatriculation.toLowerCase().includes(term.toLowerCase()),
+          item.vehicle?.matricule?.toLowerCase().includes(term.toLowerCase()),
       ),
     );
   }
@@ -337,46 +336,34 @@ export class InterventionList implements OnInit {
     if (!value) {
       this.loadInterventions();
     } else {
-      this.getInterventionByType(value as TypeIntervention);
+      this.getInterventionsByType(value as InterventionType);
     }
   }
 
-  getInterventionByType(type: TypeIntervention): void {
+  getInterventionsByType(type: InterventionType): void {
     this.interventionService.getInterventionsByType(type).subscribe({
       next: (response) => {
         this.interventions.set(response.data || response);
       },
       error: (err) => {
-        console.error('Erreur lors de getInterventionsByType', err);
+        console.error('Error fetching interventions by type:', err);
       },
     });
   }
 
-  getInterventionsEnRetard(): void {
-    this.interventionService.getEnRetard().subscribe({
-      next: (response) => {
-        console.log('La liste de interventions en retard est : ', response.data);
-        this.interventions.set(response.data);
-      },
-      error: (err) => {
-        alert(err.message);
-      },
-    });
-  }
-
-  onChangePriorite(event: Event): void {
+  onChangePriority(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
     const value = selectElement.value;
 
     if (!value) {
       this.loadInterventions();
     } else {
-      this.getInterventionsByPriorite(value as Priorite);
+      this.getInterventionsByPriority(value as Priority);
     }
   }
 
-  getInterventionsByPriorite(priorite: Priorite): void {
-    this.interventionService.getInterventionsByPriorite(priorite).subscribe({
+  getInterventionsByPriority(priority: Priority): void {
+    this.interventionService.getInterventionsByPriority(priority).subscribe({
       next: (response) => {
         this.interventions.set(response.data);
       },
