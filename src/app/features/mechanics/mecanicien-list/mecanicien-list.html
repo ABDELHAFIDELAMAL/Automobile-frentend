@@ -46,22 +46,22 @@
   </header>
 
   <main>
-    @if (Mecaniciens().length === 0) {
+    @if (mechanics().length === 0) {
     <div class="bg-white p-12 text-center border border-slate-200/80 shadow-sm">
       <span class="material-symbols-outlined text-4xl text-slate-300 mb-2">person_off</span>
       <p class="text-slate-500 font-medium text-sm">Aucun mécanicien trouvé.</p>
     </div>
     } @else {
     <div class="block lg:hidden space-y-4">
-      @for (mecano of Mecaniciens(); track mecano.id) {
-      <div class="bg-white p-5 border border-slate-200/80 shadow-sm space-y-4 ">
+      @for (mecano of mechanics(); track mecano.id) {
+      <div class="bg-white p-5 border border-slate-200/80 shadow-sm space-y-4">
         <div class="flex items-start justify-between gap-3">
           <div>
-            <h3 class="font-bold text-slate-800 text-base">{{ mecano.nom }}</h3>
-            <p class="text-xs font-medium text-slate-500 mt-0.5">{{ mecano.specialite }}</p>
+            <h3 class="font-bold text-slate-800 text-base">{{ mecano.name }}</h3>
+            <p class="text-xs font-medium text-slate-500 mt-0.5">{{ mecano.specialty }}</p>
           </div>
           <div>
-            @if (mecano.disponible) {
+            @if (mecano.available) {
             <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/60">Disponible</span>
             } @else {
             <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200/60">Occupé</span>
@@ -71,27 +71,27 @@
         <div class="flex items-center justify-between text-xs py-2 border-y border-slate-100">
           <span class="text-slate-500 font-medium">Charge (Tâches)</span>
           <span class="font-bold text-slate-800 px-2.5 py-0.5 bg-slate-100 rounded-md">
-{{ mecano.interventions?.length ?? 0 }}
-</span>
+            {{ mecano.interventions?.length ?? chargesData[mecano.id] ?? 0 }}
+          </span>
         </div>
         <div class="flex items-center justify-between gap-2 pt-1">
           <div class="relative flex items-center p-1 bg-slate-100 rounded-xl w-36 select-none border border-slate-200/60">
             <div
-              [ngClass]="mecano.disponible ? 'translate-x-0' : 'translate-x-[68px]'"
+              [ngClass]="mecano.available ? 'translate-x-0' : 'translate-x-[68px]'"
               class="absolute top-1 bottom-1 left-1 w-[64px] bg-white rounded-lg shadow-xs transition-transform duration-300 ease-out pointer-events-none"
             ></div>
             <button
               type="button"
-              (click)="!mecano.disponible && toggleStatut(mecano)"
-              [ngClass]="mecano.disponible ? 'text-slate-900 font-bold' : 'text-slate-400 font-medium'"
+              (click)="!mecano.available && toggleStatut(mecano)"
+              [ngClass]="mecano.available ? 'text-slate-900 font-bold' : 'text-slate-400 font-medium'"
               class="relative z-10 w-[64px] py-1 text-[10px] tracking-wider text-center transition-colors duration-200 focus:outline-none"
             >
               Activer
             </button>
             <button
               type="button"
-              (click)="mecano.disponible && toggleStatut(mecano)"
-              [ngClass]="!mecano.disponible ? 'text-slate-900 font-bold' : 'text-slate-400 font-medium'"
+              (click)="mecano.available && toggleStatut(mecano)"
+              [ngClass]="!mecano.available ? 'text-slate-900 font-bold' : 'text-slate-400 font-medium'"
               class="relative z-10 w-[64px] py-1 text-[10px] tracking-wider text-center transition-colors duration-200 focus:outline-none"
             >
               Désactiver
@@ -106,9 +106,9 @@
               <span class="material-symbols-outlined text-xl">edit</span>
             </button>
             <button
-              [disabled]="mecano.disponible"
+              [disabled]="mecano.available"
               type="button"
-              (click)="deleteMecanicien(mecano.id)"
+              (click)="deleteMechanic(mecano.id)"
               class="p-2 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-lg transition-colors disabled:text-slate-300 disabled:bg-transparent disabled:cursor-not-allowed"
             >
               <span class="material-symbols-outlined text-xl">delete</span>
@@ -130,41 +130,41 @@
         </tr>
         </thead>
         <tbody class="divide-y divide-slate-100 text-sm font-medium text-slate-700">
-        @for (mecano of Mecaniciens(); track mecano.id) {
+        @for (mecano of mechanics(); track mecano.id) {
         <tr class="hover:bg-slate-50/50 transition-colors">
-          <td class="py-4 px-6 font-semibold text-slate-900">{{ mecano.nom }}</td>
-          <td class="py-4 px-6 text-slate-600">{{ mecano.specialite }}</td>
+          <td class="py-4 px-6 font-semibold text-slate-900">{{ mecano.name }}</td>
+          <td class="py-4 px-6 text-slate-600">{{ mecano.specialty }}</td>
           <td class="py-4 px-6">
-            @if (mecano.disponible) {
+            @if (mecano.available) {
             <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/60">Disponible</span>
             } @else {
             <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200/60">Occupé</span>
             }
           </td>
           <td class="py-4 px-6">
-            <span class="inline-flex items-center justify-center px-2.5 py-1 text-xs font-bold text-slate-700 bg-slate-100 rounded-md">
-              {{ mecano.interventions?.length ?? 0 }}
-            </span>
+              <span class="inline-flex items-center justify-center px-2.5 py-1 text-xs font-bold text-slate-700 bg-slate-100 rounded-md">
+                {{ mecano.interventions?.length ?? chargesData[mecano.id] ?? 0 }}
+              </span>
           </td>
           <td class="py-4 px-6">
             <div class="flex items-center justify-end gap-3">
               <div class="relative inline-flex items-center p-1 bg-slate-100/80 rounded-full w-38 select-none shadow-inner">
                 <div
-                  [ngClass]="mecano.disponible ? 'translate-x-0 bg-emerald-500' : 'translate-x-[68px] bg-slate-400'"
+                  [ngClass]="mecano.available ? 'translate-x-0 bg-emerald-500' : 'translate-x-[68px] bg-slate-400'"
                   class="absolute top-1 bottom-1 left-1 w-[72px] rounded-full shadow-md transition-all duration-300 ease-out pointer-events-none"
                 ></div>
                 <button
                   type="button"
-                  (click)="!mecano.disponible && toggleStatut(mecano)"
-                  [ngClass]="mecano.disponible ? 'text-white font-bold' : 'text-slate-400 hover:text-slate-600 font-medium'"
+                  (click)="!mecano.available && toggleStatut(mecano)"
+                  [ngClass]="mecano.available ? 'text-white font-bold' : 'text-slate-400 hover:text-slate-600 font-medium'"
                   class="relative z-10 w-[64px] py-1 text-[10px] uppercase tracking-wider text-center transition-colors duration-200 focus:outline-none"
                 >
                   Activ
                 </button>
                 <button
                   type="button"
-                  (click)="mecano.disponible && toggleStatut(mecano)"
-                  [ngClass]="!mecano.disponible ? 'text-white font-bold' : 'text-slate-400 hover:text-slate-600 font-medium'"
+                  (click)="mecano.available && toggleStatut(mecano)"
+                  [ngClass]="!mecano.available ? 'text-white font-bold' : 'text-slate-400 hover:text-slate-600 font-medium'"
                   class="relative z-10 w-[64px] uppercase py-2 px-2 text-[10px] tracking-wider text-center transition-colors duration-200 focus:outline-none"
                 >
                   Desactiv
@@ -178,9 +178,9 @@
                 <span class="material-symbols-outlined text-lg">edit</span>
               </button>
               <button
-                [disabled]="mecano.disponible"
+                [disabled]="mecano.available"
                 type="button"
-                (click)="deleteMecanicien(mecano.id)"
+                (click)="deleteMechanic(mecano.id)"
                 class="p-2 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-xl transition-colors disabled:text-slate-300 disabled:bg-transparent disabled:cursor-not-allowed"
               >
                 <span class="material-symbols-outlined text-lg">delete</span>
