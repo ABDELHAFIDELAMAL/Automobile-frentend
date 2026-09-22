@@ -12,7 +12,7 @@ import { MecanicienCreate } from './features/mechanics/mecanicien-create/mecanic
 import { VehiculeDetail } from './features/vehicles/vehicule-detail/vehicule-detail';
 import { MecanicienDetail } from './features/users/mecanicien-detail/mecanicien-detail';
 import { VehiculeCreate } from './features/vehicles/vehicule-create/vehicule-create';
-import { UtilisateurList } from './features/users/utilisateur-list/utilisateur-list';
+import { UtilisateurList } from './features/users/UserList/UserList';
 import { UtilisateurCreate } from './features/users/utilisateur-create/utilisateur-create';
 import { Home } from './shared/components/home/home';
 import { ChangePassword } from './features/users/change-password/change-password';
