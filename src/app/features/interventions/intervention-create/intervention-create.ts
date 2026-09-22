@@ -12,10 +12,6 @@ import { Intervention } from '../../../entities/Interventions';
   templateUrl: './intervention-create.html',
   styleUrl: './intervention-create.css',
 })
-
-
-
-
 export class InterventionCreate implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -23,24 +19,23 @@ export class InterventionCreate implements OnInit {
 
   interventionForm!: FormGroup;
   interventionId?: number;
-  vehiculeId = signal<number | null>(null);
+  vehicleId = signal<number | null>(null);
 
   private initForm(): void {
-    const dateDuJour = new Date().toISOString().split('T')[0];
+    const today = new Date().toISOString().split('T')[0];
 
     this.interventionForm = new FormGroup({
-      vehicule: new FormControl(this.vehiculeId(), [Validators.required]),
-      mecanicien: new FormControl(null),
-      historique: new FormControl([]),
+      vehicleId: new FormControl(this.vehicleId(), [Validators.required]),
+      mechanicId: new FormControl(null),
       type: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required]),
       diagnostic: new FormControl(''),
       status: new FormControl('RECUE', [Validators.required]),
-      priorite: new FormControl('', [Validators.required]),
-      coutEstime: new FormControl(0, [Validators.required, Validators.min(0)]),
-      dateDepot: new FormControl(dateDuJour, [Validators.required]),
-      dateRestitutionPrevue: new FormControl('', [Validators.required]),
-      dateCloture: new FormControl(''),
+      priority: new FormControl('', [Validators.required]),
+      estimatedCost: new FormControl(0, [Validators.required, Validators.min(0)]),
+      depositDate: new FormControl(today, [Validators.required]),
+      estimatedReturnDate: new FormControl('', [Validators.required]),
+      closureDate: new FormControl(''),
     });
   }
 
@@ -55,12 +50,12 @@ export class InterventionCreate implements OnInit {
         this.loadInterventionDetails(this.interventionId);
       } else {
         const parsedId = +idParam;
-        this.vehiculeId.set(parsedId);
-        this.interventionForm.get('vehicule')?.setValue(parsedId);
+        this.vehicleId.set(parsedId);
+        this.interventionForm.get('vehicleId')?.setValue(parsedId);
       }
     } else {
-      alert("Erreur : Aucun identifiant n'a été spécifié dans l'URL.");
-      this.router.navigate(['/vehicules']);
+      alert("Erreur : Aucun identifiant specified in l'URL.");
+      this.router.navigate(['/vehicles']);
     }
   }
 
@@ -71,40 +66,37 @@ export class InterventionCreate implements OnInit {
     }
 
     const formValue = this.interventionForm.value;
-    const currentVehiculeId = this.vehiculeId() || formValue.vehicule;
+    const currentVehicleId = this.vehicleId() || formValue.vehicleId;
 
-    if (!currentVehiculeId) {
+    if (!currentVehicleId) {
       alert("Erreur : Aucun véhicule n'est associé à cette intervention.");
       return;
     }
 
-    const parsedCoutEstime = formValue.coutEstime
-      ? parseFloat(formValue.coutEstime.toString())
+    const parsedCost = formValue.estimatedCost
+      ? parseFloat(formValue.estimatedCost.toString())
       : 0.0;
 
-    const interventionPayload: any = {
-      vehicule: {
-        id: Number(currentVehiculeId),
-        clientFictif: false,
-      },
+    const interventionPayload: Intervention = {
+      vehicleId: Number(currentVehicleId),
       type: formValue.type,
       description: formValue.description,
-      diagnostic: formValue.diagnostic || null,
+      diagnostic: formValue.diagnostic || undefined,
       status: formValue.status,
-      priorite: formValue.priorite,
-      coutEstime: isNaN(parsedCoutEstime) ? 0.0 : parsedCoutEstime,
-      dateDepot: formValue.dateDepot ? `${formValue.dateDepot}T00:00:00` : null,
-      dateRestitutionPrevue: formValue.dateRestitutionPrevue
-        ? `${formValue.dateRestitutionPrevue}T00:00:00`
-        : null,
+      priority: formValue.priority,
+      estimatedCost: isNaN(parsedCost) ? 0.0 : parsedCost,
+      depositDate: formValue.depositDate ? `${formValue.depositDate}T00:00:00` : undefined,
+      estimatedReturnDate: formValue.estimatedReturnDate
+        ? `${formValue.estimatedReturnDate}T00:00:00`
+        : undefined,
     };
 
-    if (formValue.mecanicien) {
-      interventionPayload.mecanicien = { id: Number(formValue.mecanicien) };
+    if (formValue.mechanicId) {
+      interventionPayload.mechanicId = Number(formValue.mechanicId);
     }
 
-    if (formValue.dateCloture) {
-      interventionPayload.dateCloture = `${formValue.dateCloture}T00:00:00`;
+    if (formValue.closureDate) {
+      interventionPayload.closureDate = `${formValue.closureDate}T00:00:00`;
     }
 
     if (this.interventionId) {
@@ -118,43 +110,46 @@ export class InterventionCreate implements OnInit {
     this.interventionsService.getInterventionById(id).subscribe({
       next: (response) => {
         if (response?.data) {
-          const idVehicule = response.data.vehicule?.id ? Number(response.data.vehicule.id) : null;
+          const data = response.data;
+          const currentVehId = data.vehicle?.id || data.vehicleId || null;
 
-          if (idVehicule) {
-            this.vehiculeId.set(idVehicule);
-            this.interventionForm.get('vehicule')?.setValue(idVehicule);
+          if (currentVehId) {
+            this.vehicleId.set(Number(currentVehId));
           }
 
           const formatDateForInput = (dateValue: any): string => {
             if (!dateValue) return '';
-            if (typeof dateValue === 'string') {
-              return dateValue.split('T')[0];
-            }
-            if (dateValue instanceof Date) {
-              return dateValue.toISOString().split('T')[0];
-            }
+            if (typeof dateValue === 'string') return dateValue.split('T')[0];
+            if (dateValue instanceof Date) return dateValue.toISOString().split('T')[0];
             return '';
           };
 
           this.interventionForm.patchValue({
-            ...response.data,
-            vehicule: idVehicule,
-            mecanicien: response.data.mecanicien?.id || null,
-            dateDepot: formatDateForInput(response.data.dateDepot),
-            dateRestitutionPrevue: formatDateForInput(response.data.dateRestitutionPrevue),
-            dateCloture: formatDateForInput(response.data.dateCloture),
+            vehicleId: currentVehId,
+            mechanicId: data.mechanicId || data.mechanicId || null,
+            type: data.type,
+            description: data.description,
+            diagnostic: data.diagnostic,
+            status: data.status,
+            priority: data.priority || data.priority,
+            estimatedCost: data.estimatedCost ?? data.estimatedCost,
+            depositDate: formatDateForInput(data.depositDate || data.depositDate),
+            estimatedReturnDate: formatDateForInput(
+              data.estimatedReturnDate || data.estimatedReturnDate,
+            ),
+            closureDate: formatDateForInput(data.closureDate || data.closureDate),
           });
         }
       },
-      error: (error) => console.error(error),
+      error: (error) => console.error('Erreur the chargement :', error),
     });
   }
 
   createIntervention(intervention: Intervention): void {
     this.interventionsService.createIntervention(intervention).subscribe({
       next: (response) => {
-        alert(response.message || 'Intervention créée avec succès');
-        this.router.navigate(['/vehicules/details', this.vehiculeId()]);
+        alert(response.message || 'Intervention created with succes');
+        this.goBackToVehicle();
       },
       error: (error) => console.error(error),
     });
@@ -163,10 +158,19 @@ export class InterventionCreate implements OnInit {
   updateIntervention(id: number, intervention: Intervention): void {
     this.interventionsService.updateIntervention(id, intervention).subscribe({
       next: (response) => {
-        alert(response.message || 'Intervention mise à jour');
-        this.router.navigate(['/vehicules/details', this.vehiculeId()]);
+        alert(response.message || 'Intervention updated');
+        this.goBackToVehicle();
       },
       error: (error) => console.error(error),
     });
+  }
+
+  private goBackToVehicle(): void {
+    const currentId = this.vehicleId();
+    if (currentId) {
+      this.router.navigate(['/vehicles/details', currentId]);
+    } else {
+      this.router.navigate(['/vehicles']);
+    }
   }
 }

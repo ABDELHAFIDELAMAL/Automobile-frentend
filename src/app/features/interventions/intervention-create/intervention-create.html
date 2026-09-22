@@ -1,7 +1,6 @@
 <div class="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
   <div class="max-w-2xl w-full bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
 
-    <!-- Header -->
     <div class="bg-gradient-to-r from-blue-600 to-indigo-700 px-6 py-6 sm:px-8">
       <h1 class="text-2xl font-bold text-white tracking-wide">
         {{ interventionId ? 'Mettre à jour' : 'Créer' }} une Intervention
@@ -11,12 +10,10 @@
       </p>
     </div>
 
-    <!-- Formulaire -->
     <form [formGroup]="interventionForm" (ngSubmit)="onSubmit()" class="p-6 sm:p-8 space-y-6">
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-        <!-- Type Intervention -->
         <div class="space-y-1.5">
           <label class="block text-sm font-semibold text-slate-700">Type d'Intervention <span class="text-red-500">*</span></label>
           <select formControlName="type"
@@ -34,10 +31,9 @@
           </div>
         </div>
 
-        <!-- Priority -->
         <div class="space-y-1.5">
           <label class="block text-sm font-semibold text-slate-700">Priorité <span class="text-red-500">*</span></label>
-          <select formControlName="priorite"
+          <select formControlName="priority"
                   class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm">
             <option value="" disabled>Sélectionner la priorité</option>
             <option value="BASSE">Basse</option>
@@ -45,14 +41,13 @@
             <option value="HAUTE">Haute</option>
             <option value="URGENT">Urgent</option>
           </select>
-          <div *ngIf="interventionForm.get('priorite')?.touched && interventionForm.get('priorite')?.invalid" class="text-red-500 text-xs font-medium mt-1">
-            <span *ngIf="interventionForm.get('priorite')?.errors?.['required']">La priorité est obligatoire.</span>
+          <div *ngIf="interventionForm.get('priority')?.touched && interventionForm.get('priority')?.invalid" class="text-red-500 text-xs font-medium mt-1">
+            <span *ngIf="interventionForm.get('priority')?.errors?.['required']">La priorité est obligatoire.</span>
           </div>
         </div>
 
       </div>
 
-      <!-- Description (Full width) -->
       <div class="space-y-1.5">
         <label class="block text-sm font-semibold text-slate-700">Description <span class="text-red-500">*</span></label>
         <input type="text" formControlName="description" placeholder="Décrire le problème du véhicule..."
@@ -62,7 +57,6 @@
         </div>
       </div>
 
-      <!-- Initial Diagnostic (Full width) -->
       <div class="space-y-1.5">
         <label class="block text-sm font-semibold text-slate-700">Diagnostic Initial</label>
         <input type="text" formControlName="diagnostic" placeholder="Ratés moteur détectés..."
@@ -71,7 +65,6 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-        <!-- Status -->
         <div class="space-y-1.5">
           <label class="block text-sm font-semibold text-slate-700">Statut <span class="text-red-500">*</span></label>
           <select formControlName="status"
@@ -90,52 +83,47 @@
           </div>
         </div>
 
-        <!-- Estimated Cost -->
         <div class="space-y-1.5">
           <label class="block text-sm font-semibold text-slate-700">Coût Estimé (DHs) <span class="text-red-500">*</span></label>
-          <input type="number" formControlName="coutEstime" placeholder="0.00"
+          <input type="number" formControlName="estimatedCost" placeholder="0.00"
                  class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm">
-          <div *ngIf="interventionForm.get('coutEstime')?.touched && interventionForm.get('coutEstime')?.invalid" class="text-red-500 text-xs font-medium mt-1">
-            <span *ngIf="interventionForm.get('coutEstime')?.errors?.['required']">Le coût estimé est obligatoire.</span>
-            <span *ngIf="interventionForm.get('coutEstime')?.errors?.['min']">Le coût ne peut pas être négatif.</span>
+          <div *ngIf="interventionForm.get('estimatedCost')?.touched && interventionForm.get('estimatedCost')?.invalid" class="text-red-500 text-xs font-medium mt-1">
+            <span *ngIf="interventionForm.get('estimatedCost')?.errors?.['required']">Le coût estimé est obligatoire.</span>
+            <span *ngIf="interventionForm.get('estimatedCost')?.errors?.['min']">Le coût ne peut pas être négatif.</span>
           </div>
         </div>
 
       </div>
 
-      <!-- Dates Grid -->
+
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
 
-        <!-- Deposit Date -->
         <div class="space-y-1.5">
           <label class="block text-xs font-semibold text-slate-700">Date Dépôt <span class="text-red-500">*</span></label>
-          <input type="date" formControlName="dateDepot"
+          <input type="date" formControlName="depositDate"
                  class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm">
-          <div *ngIf="interventionForm.get('dateDepot')?.touched && interventionForm.get('dateDepot')?.invalid" class="text-red-500 text-xs font-medium mt-1">
-            <span *ngIf="interventionForm.get('dateDepot')?.errors?.['required']">Date obligatoire.</span>
+          <div *ngIf="interventionForm.get('depositDate')?.touched && interventionForm.get('depositDate')?.invalid" class="text-red-500 text-xs font-medium mt-1">
+            <span *ngIf="interventionForm.get('depositDate')?.errors?.['required']">Date obligatoire.</span>
           </div>
         </div>
 
-        <!-- Date Cloture -->
         <div class="space-y-1.5">
           <label class="block text-xs font-semibold text-slate-700">Date Clôture</label>
-          <input type="date" formControlName="dateCloture"
+          <input type="date" formControlName="closureDate"
                  class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm">
         </div>
 
-        <!-- Expected Return Date -->
         <div class="space-y-1.5">
           <label class="block text-xs font-semibold text-slate-700">Restitution Prévue <span class="text-red-500">*</span></label>
-          <input type="date" formControlName="dateRestitutionPrevue"
+          <input type="date" formControlName="estimatedReturnDate"
                  class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm">
-          <div *ngIf="interventionForm.get('dateRestitutionPrevue')?.touched && interventionForm.get('dateRestitutionPrevue')?.invalid" class="text-red-500 text-xs font-medium mt-1">
-            <span *ngIf="interventionForm.get('dateRestitutionPrevue')?.errors?.['required']">Date obligatoire.</span>
+          <div *ngIf="interventionForm.get('estimatedReturnDate')?.touched && interventionForm.get('estimatedReturnDate')?.invalid" class="text-red-500 text-xs font-medium mt-1">
+            <span *ngIf="interventionForm.get('estimatedReturnDate')?.errors?.['required']">Date obligatoire.</span>
           </div>
         </div>
 
       </div>
 
-      <!-- Action Button -->
       <div class="pt-4">
         <button type="submit" [disabled]="interventionForm.invalid"
                 class="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-indigo-600 cursor-pointer">
