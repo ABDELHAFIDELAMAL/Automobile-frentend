@@ -62,7 +62,7 @@
         <tr class="hover:bg-slate-50/60 transition-colors duration-150">
           <td class="py-4 px-6">
             <div class="w-10 h-10 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 font-bold flex items-center justify-center shadow-xs">
-              {{ user.prenom?.charAt(0)?.toUpperCase() }}{{ user.nom?.charAt(0)?.toUpperCase() }}
+              {{ user.firstName?.charAt(0)?.toUpperCase() }}{{ user.lastName?.charAt(0)?.toUpperCase() }}
             </div>
           </td>
 
@@ -80,7 +80,7 @@
           </td>
 
           <td class="py-4 px-6 font-medium text-slate-900 whitespace-nowrap">
-            {{ user.prenom }} {{ user.nom }}
+            {{ user.firstName }} {{ user.lastName }}
           </td>
 
           <td class="py-4 px-6 text-slate-500 whitespace-nowrap">
@@ -91,8 +91,8 @@
             <div class="flex flex-wrap gap-1.5">
               @for (role of user.role; track role) {
               <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200/60">
-                      {{ role }}
-                    </span>
+                {{ role }}
+              </span>
               }
             </div>
           </td>

@@ -3,7 +3,7 @@ import { RouterModule, RouterOutlet } from '@angular/router';
 import { SidebarComponent } from './shared/components/sidebar/sidebar';
 import { Header } from './shared/components/header/header';
 import { Footer } from './shared/components/footer/footer';
-import { VehiculeList } from './features/vehicles/vehicule-list/vehicule-list';
+import { VehiculeList } from './features/vehicles/vehicleList/vehicule-list';
 import { Login } from './features/auth/login/login';
 import { Dashboard } from './features/dashboard/dashboard/dashboard';
 

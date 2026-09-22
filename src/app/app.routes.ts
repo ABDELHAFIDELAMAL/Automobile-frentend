@@ -2,18 +2,18 @@ import { Routes } from '@angular/router';
 import { Dashboard } from './features/dashboard/dashboard/dashboard';
 import { Login } from './features/auth/login/login';
 import { InterventionList } from './features/interventions/intervention-list/intervention-list';
-import { VehiculeList } from './features/vehicles/vehicule-list/vehicule-list';
+import { VehiculeList } from './features/vehicles/vehicleList/vehicule-list';
 import { MecanicienList } from './features/mechanics/mecanicien-list/mecanicien-list';
 import { InterventionHistory } from './features/historique/historique-list/intervention-history';
 import { Register } from './features/auth/register/register';
 import { Admin } from './features/admin/admin';
 import { InterventionCreate } from './features/interventions/intervention-create/intervention-create';
 import { MecanicienCreate } from './features/mechanics/mecanicien-create/mecanicien-create';
-import { VehiculeDetail } from './features/vehicles/vehicule-detail/vehicule-detail';
+import { VehiculeDetail } from './features/vehicles/vehicleDetails/vehicule-detail';
 import { MecanicienDetail } from './features/users/mecanicien-detail/mecanicien-detail';
-import { VehiculeCreate } from './features/vehicles/vehicule-create/vehicule-create';
+import { VehiculeCreate } from './features/vehicles/createVehicle/vehicule-create';
 import { UtilisateurList } from './features/users/UserList/UserList';
-import { UtilisateurCreate } from './features/users/utilisateur-create/utilisateur-create';
+import { CreateUser } from './features/users/CreateUser/createUser';
 import { Home } from './shared/components/home/home';
 import { ChangePassword } from './features/users/change-password/change-password';
 import { Profile } from './shared/components/profile/profile';
@@ -47,8 +47,8 @@ export const routes: Routes = [
   { path: 'histories/intervention/:id', component: InterventionHistory, data: { title: 'Details' }, },
 
   { path: 'users', component: UtilisateurList, data: { title: 'Users' } },
-  { path: 'users/create', component: UtilisateurCreate, data: { title: 'Create User' }, },
-  { path: 'users/update/:id', component: UtilisateurCreate, data: { title: 'Update User' }, },
+  { path: 'users/create', component: CreateUser, data: { title: 'Create User' }, },
+  { path: 'users/update/:id', component: CreateUser, data: { title: 'Update User' }, },
   { path: 'users/password/change/:id', component: ChangePassword, data: { title: 'Change password' }, },
   { path : 'profile/:id', component: Profile, data : { title : 'Profile' } },
   {

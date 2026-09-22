@@ -15,13 +15,9 @@ import { Status } from '../../../enums/Status.enum';
 })
 export class VehicleList implements OnInit {
   vehicles = signal<Vehicle[]>([]);
-
   searchTerm = '';
-
   statuses = Object.values(Status);
-
   selectedStatus: Status | null = null;
-
   constructor(private vehicleService: VehicleService) {}
 
   ngOnInit() {
@@ -42,12 +38,9 @@ export class VehicleList implements OnInit {
   }
 
   deleteVehicle(id: number): void {
-    console.log('Delete Vehicle called');
-
     if (!confirm('Are you sure you want to delete this vehicle?')) {
       return;
     }
-
     this.vehicleService.deleteVehicle(id).subscribe({
       next: () => {
         this.loadVehicles();

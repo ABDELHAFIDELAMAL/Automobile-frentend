@@ -1,6 +1,6 @@
 <div class="form-container">
   <h2>
-    {{ utilisateurId ? 'Modifier' : 'Créer' }} un User
+    {{ userId ? 'Update' : 'Create' }} User
   </h2>
 
   <div *ngIf="errorMessage" class="error-msg-global">
@@ -10,7 +10,7 @@
   <form [formGroup]="utilisateurForm" (ngSubmit)="onSubmit()" class="bg-blue-100 p-4">
 
     <div class="form-group">
-      <label for="nom">Nom</label>
+      <label for="nom">lastName</label>
       <input id="nom" type="text" formControlName="nom">
       <div *ngIf="utilisateurForm.get('nom')?.touched && utilisateurForm.get('nom')?.invalid" class="error-msg">
         <span *ngIf="utilisateurForm.get('nom')?.errors?.['required']">Le nom est obligatoire.</span>
