@@ -1,91 +1,94 @@
-import { Component, OnInit, signal } from '@angular/core';
-import { MecanicienService } from '../services/mecanicien';
-import { Mecanicien } from '../../../entities/Mechanic';
-import { Specialite } from '../../../enums/Specialty.enum';
+import { Component, OnInit, signal, inject } from '@angular/core';
+import { MechanicService } from '../services/mecanicien';
+import { Mechanic } from '../../../entities/Mechanic';
+import { Specialty } from '../../../enums/Specialty.enum';
 import { NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 @Component({
-  imports: [NgClass, RouterLink],
   selector: 'app-mecanicien-list',
-  styleUrl: './mecanicien-list.css',
-  templateUrl: './mecanicien-list.html',
   standalone: true,
+  imports: [NgClass, RouterLink],
+  templateUrl: './mecanicien-list.html',
+  styleUrl: './mecanicien-list.css',
 })
-export class MecanicienList implements OnInit {
-  Mecaniciens = signal<Mecanicien[]>([]);
+export class MechanicList implements OnInit {
+  mechanics = signal<Mechanic[]>([]);
+  specialities: Specialty[] = Object.values(Specialty);
+  chargesData: Record<number, number> = {};
 
-  specialities: Specialite[] = Object.values(Specialite);
-  constructor(private MecanocienService: MecanicienService) {}
+  private readonly mechanicService = inject(MechanicService);
 
   ngOnInit(): void {
-    this.loadMecaniciens();
+    this.loadMechanics();
+    this.getCharges();
   }
 
-  loadMecaniciens() {
-    this.MecanocienService.getAllMechanicals().subscribe({
+  loadMechanics(): void {
+    this.mechanicService.getAllMechanics().subscribe({
       next: (response) => {
-        this.Mecaniciens.set(response.data);
+        this.mechanics.set(response.data);
       },
       error: (error) => {
-        console.log('Error de L API', error);
+        console.error('Erreur API lors du chargement des mécaniciens:', error);
       },
     });
   }
 
   onSpecialiteChange(event: Event): void {
     const target = event.target as HTMLSelectElement;
-    const valeur = target.value;
+    const value = target.value;
 
-    if (valeur === '') {
-      this.loadMecaniciens();
+    if (value === '') {
+      this.loadMechanics();
     } else {
-      const specialiteSelectionnee = valeur as Specialite;
-      this.getMecaniciensBySpecialite(specialiteSelectionnee);
+      const selectedSpecialty = value as Specialty;
+      this.getMechanicsBySpecialty(selectedSpecialty);
     }
   }
 
-  getMecaniciensBySpecialite(specialite: Specialite) {
-    this.MecanocienService.getMecaniciensBySpecialite(specialite).subscribe({
+  getMechanicsBySpecialty(specialty: Specialty): void {
+    this.mechanicService.getMechanicsBySpecialty(specialty).subscribe({
       next: (response) => {
-        this.Mecaniciens.set(response.data);
-        },
+        this.mechanics.set(response.data);
+      },
       error: (error) => {
-        console.log('Error lors de GetMecaniciensBySpecialite', error.message);
+        console.error('Erreur lors de getMechanicsBySpecialty:', error.message);
       },
     });
   }
 
   onDisponibiliteChange(event: Event): void {
     const target = event.target as HTMLSelectElement;
-    const valeur = target.value;
-    if (valeur === '') {
-      this.loadMecaniciens();
+    const value = target.value;
+
+    if (value === '') {
+      this.loadMechanics();
     } else {
-      const estDisponible = valeur === 'disponible';
-      this.getMecaniciensDisponible(estDisponible);
+      const isAvailable = value === 'disponible';
+      this.getAvailableMechanics(isAvailable);
     }
   }
 
-  getMecaniciensDisponible(disponible: boolean) {
-    this.MecanocienService.getMechanicalsDisponibles(disponible).subscribe({
+  getAvailableMechanics(available: boolean): void {
+    this.mechanicService.getAvailableMechanics(available).subscribe({
       next: (response) => {
-        this.Mecaniciens.set(response.data);
-       },
+        this.mechanics.set(response.data);
+      },
       error: (error) => {
-        console.log('Erreur lors de get mecaniciens disponible : ', error.message);
+        console.error('Erreur lors de getAvailableMechanics:', error.message);
       },
     });
   }
 
-  deleteMecanicien(id: number): void {
+  deleteMechanic(id: number): void {
     if (confirm('Êtes-vous sûr de vouloir supprimer ce mécanicien ?')) {
-      this.MecanocienService.deleteMecanicien(id).subscribe({
+      this.mechanicService.deleteMechanic(id).subscribe({
         next: () => {
-          this.Mecaniciens.update((listeActuelle) =>
-            listeActuelle.filter((mecanicien) => mecanicien.id !== id),
+          this.mechanics.update((currentList) =>
+            currentList.filter((mechanic) => mechanic.id !== id),
           );
-         },
+        },
         error: (error) => {
           console.error('Erreur lors de la suppression du mécanicien :', error.message);
         },
@@ -93,40 +96,36 @@ export class MecanicienList implements OnInit {
     }
   }
 
-  toggleStatut(mecanicien: any): void {
-    const ancienEtat = mecanicien.disponible;
-    mecanicien.disponible = !mecanicien.disponible;
-    if (mecanicien.disponible) {
-      this.MecanocienService.activer(mecanicien.id).subscribe({
-        next: (response) => {
-        },
+  toggleStatut(mechanic: Mechanic): void {
+    const previousState = mechanic.available;
+    mechanic.available = !mechanic.available;
+
+    if (mechanic.available) {
+      this.mechanicService.activate(mechanic.id).subscribe({
+        next: (response) => {},
         error: (error) => {
           console.error("Erreur d'activation, retour à l'ancien état", error);
-          mecanicien.disponible = ancienEtat;
+          mechanic.available = previousState;
         },
       });
     } else {
-      this.MecanocienService.desactiver(mecanicien.id).subscribe({
-        next: (response) => {
-
-        },
+      this.mechanicService.deactivate(mechanic.id).subscribe({
+        next: (response) => {},
         error: (error) => {
           console.error("Erreur de désactivation, retour à l'ancien état", error);
-          mecanicien.disponible = ancienEtat;
+          mechanic.available = previousState;
         },
       });
     }
   }
 
-  chargesData: any = {};
-
   getCharges(): void {
-    this.MecanocienService.getCharge().subscribe({
+    this.mechanicService.getWorkload().subscribe({
       next: (response) => {
         this.chargesData = response.data;
       },
       error: (error) => {
-        console.error('Erreur lors de getCharge mecaniciens', error);
+        console.error('Erreur lors de getWorkload:', error);
       },
     });
   }
