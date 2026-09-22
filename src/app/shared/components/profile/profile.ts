@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Role } from '../../../enums/Role.enum';
 import { CommonModule } from '@angular/common';
-import { UtilisateurService } from '../../../features/utilisateur/services/utilisateur';
+import { UtilisateurService } from '../../../features/users/services/utilisateur';
 
 @Component({
   imports: [CommonModule],

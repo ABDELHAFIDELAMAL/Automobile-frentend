@@ -1,0 +1,105 @@
+<div class="vehicles">
+  <header>
+    <div>
+      <p>Number of vehicles: {{ vehicles().length }}</p>
+    </div>
+
+    <div>
+      <label>
+        <input
+          type="search"
+          [(ngModel)]="searchTerm"
+          (input)="search()"
+          placeholder="Search..."
+        />
+      </label>
+    </div>
+
+    <div>
+      <select
+        [(ngModel)]="selectedStatus"
+        (change)="onStatusChange()"
+        class="status-select"
+      >
+        <option [ngValue]="null">All statuses</option>
+
+        @for (status of statuses; track status) {
+        <option [ngValue]="status">
+          {{ status }}
+        </option>
+        }
+      </select>
+    </div>
+
+    <div>
+      <button type="button" routerLink="/vehicles/create">
+        <span class="material-symbols-outlined">add_2</span>
+        Create Vehicle
+      </button>
+    </div>
+  </header>
+
+  <main>
+    @for (vehicle of vehicles(); track vehicle.id) {
+    <div>
+      <h2>
+        Vehicle: {{ vehicle.marque }} {{ vehicle.modele }}
+      </h2>
+
+      <p>
+        License Plate: {{ vehicle.immatriculation }}
+      </p>
+
+      <p>
+        Year: {{ vehicle.annee }}
+      </p>
+
+      <p>
+        Mileage: {{ vehicle.kilometrage | number }} km
+      </p>
+
+      <p>
+        Fictitious Client:
+        <span>{{ vehicle.clientFictif ? 'Yes' : 'No' }}</span>
+      </p>
+
+      <h3>
+        Number of Interventions: {{ vehicle.interventions.length }}
+
+        <span
+          class="material-symbols-outlined cursor-pointer text-gray-500 transition-colors duration-200 hover:text-blue-600 hover:scale-110 transform"
+          [routerLink]="['/vehicles/details', vehicle.id]"
+        >
+            arrow_right_alt
+          </span>
+      </h3>
+
+      <div>
+        <button [routerLink]="['/vehicles/update', vehicle.id]">
+          <span class="material-symbols-outlined">autorenew</span>
+          <span>Edit</span>
+        </button>
+
+        <button (click)="deleteVehicle(vehicle.id)">
+          <span class="material-symbols-outlined">delete</span>
+          <span>Delete</span>
+        </button>
+
+        <button
+          [routerLink]="['/interventions/create', vehicle.id]"
+          class="btn-intervention"
+        >
+          <span class="material-symbols-outlined">add_2</span>
+          Create Intervention
+        </button>
+      </div>
+    </div>
+
+    <hr />
+    }
+
+    @empty {
+    <h4>No vehicles found...</h4>
+    }
+  </main>
+</div>
