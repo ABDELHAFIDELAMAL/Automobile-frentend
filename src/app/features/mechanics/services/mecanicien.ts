@@ -1,66 +1,62 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Mecanicien } from '../../../entities/Mechanic';
 import { Intervention } from '../../../entities/Interventions';
-import { ApiResponce } from '../../../entities/ApiResponce';
 import { environment } from '../../../environment/environment';
-import { Specialite } from '../../../enums/Specialty.enum';
+import { Mechanic } from '../../../entities/Mechanic';
+import { ApiResponce } from '../../../entities/ApiResponce';
+import { Specialty } from '../../../enums/Specialty.enum';
 
 @Injectable({
   providedIn: 'root',
 })
-export class MecanicienService {
-  private baseUrl = `${environment.baseUrl}/mechanics`;
+export class MechanicService {
+  private readonly baseUrl = `${environment.baseUrl}/api/v1/mechanics`;
   private readonly http = inject(HttpClient);
 
-  getAllMechanicals(): Observable<ApiResponce<Mecanicien[]>> {
-    return this.http.get<ApiResponce<Mecanicien[]>>(this.baseUrl);
+  getAllMechanics(): Observable<ApiResponce<Mechanic[]>> {
+    return this.http.get<ApiResponce<Mechanic[]>>(this.baseUrl);
   }
 
-  getMechanicalsDisponibles(disponible: boolean): Observable<ApiResponce<Mecanicien[]>> {
-    const params = new HttpParams().set('disponible', disponible.toString());
-    return this.http.get<ApiResponce<Mecanicien[]>>(`${this.baseUrl}/disponibles`, { params });
+  getAvailableMechanics(available: boolean): Observable<ApiResponce<Mechanic[]>> {
+    const params = new HttpParams().set('available', available.toString());
+    return this.http.get<ApiResponce<Mechanic[]>>(`${this.baseUrl}/available`, { params });
   }
 
-  getMecanicienById(id: number): Observable<ApiResponce<Mecanicien>> {
-    return this.http.get<ApiResponce<Mecanicien>>(`${this.baseUrl}/${id}`);
+  getMechanicById(id: number): Observable<ApiResponce<Mechanic>> {
+    return this.http.get<ApiResponce<Mechanic>>(`${this.baseUrl}/${id}`);
   }
 
-  createMecanicien(mecanicien: Partial<Mecanicien>): Observable<ApiResponce<Mecanicien>> {
-    return this.http.post<ApiResponce<Mecanicien>>(`${this.baseUrl}/create`, mecanicien);
+  createMechanic(mechanic: Partial<Mechanic>): Observable<ApiResponce<Mechanic>> {
+    return this.http.post<ApiResponce<Mechanic>>(`${this.baseUrl}/create`, mechanic);
   }
 
-  updateMecanicien(
-    id: number,
-    mecanicien: Partial<Mecanicien>,
-  ): Observable<ApiResponce<Mecanicien>> {
-    return this.http.put<ApiResponce<Mecanicien>>(`${this.baseUrl}/update/${id}`, mecanicien);
+  updateMechanic(id: number, mechanic: Partial<Mechanic>): Observable<ApiResponce<Mechanic>> {
+    return this.http.put<ApiResponce<Mechanic>>(`${this.baseUrl}/update/${id}`, mechanic);
   }
 
-  deleteMecanicien(id: number): Observable<ApiResponce<void>> {
+  deleteMechanic(id: number): Observable<ApiResponce<void>> {
     return this.http.delete<ApiResponce<void>>(`${this.baseUrl}/delete/${id}`);
   }
 
-  activer(id: number): Observable<ApiResponce<Mecanicien>> {
-    return this.http.patch<ApiResponce<Mecanicien>>(`${this.baseUrl}/activer/${id}`, null);
+  activate(id: number): Observable<ApiResponce<Mechanic>> {
+    return this.http.patch<ApiResponce<Mechanic>>(`${this.baseUrl}/activate/${id}`, null);
   }
 
-  desactiver(id: number): Observable<ApiResponce<Mecanicien>> {
-    return this.http.patch<ApiResponce<Mecanicien>>(`${this.baseUrl}/desactiver/${id}`, null);
+  deactivate(id: number): Observable<ApiResponce<Mechanic>> {
+    return this.http.patch<ApiResponce<Mechanic>>(`${this.baseUrl}/deactivate/${id}`, null);
   }
 
   getInterventions(id: number): Observable<ApiResponce<Intervention[]>> {
     return this.http.get<ApiResponce<Intervention[]>>(`${this.baseUrl}/${id}/interventions`);
   }
 
-  getCharge(): Observable<ApiResponce<Record<number, number>>> {
-    return this.http.get<ApiResponce<Record<number, number>>>(`${this.baseUrl}/charge`);
+  getWorkload(): Observable<ApiResponce<Record<number, number>>> {
+    return this.http.get<ApiResponce<Record<number, number>>>(`${this.baseUrl}/workload`);
   }
 
-  getMecaniciensBySpecialite(specialite: Specialite): Observable<ApiResponce<Mecanicien[]>> {
-    return this.http.get<ApiResponce<Mecanicien[]>>(`${this.baseUrl}/by/specialite`, {
-      params: { specialite: specialite.toString() },
-    });
+  getMechanicsBySpecialty(specialty: Specialty | string): Observable<ApiResponce<Mechanic[]>> {
+    const params = new HttpParams().set('specialty', specialty.toString());
+    return this.http.get<ApiResponce<Mechanic[]>>(`${this.baseUrl}/by/specialty`, { params });
   }
 }

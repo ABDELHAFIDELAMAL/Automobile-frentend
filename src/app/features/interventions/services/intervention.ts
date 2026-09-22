@@ -1,18 +1,18 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Intervention } from '../../../entities/Interventions';
 import { ApiResponce } from '../../../entities/ApiResponce';
 import { environment } from '../../../environment/environment';
-import { Mecanicien } from '../../../entities/Mechanic';
-import { TypeIntervention } from '../../../enums/InterventionType.enum';
-import { Priorite } from '../../../enums/Priority.enum';
+import { Mechanic } from '../../../entities/Mechanic';
+import { InterventionType } from '../../../enums/InterventionType.enum';
+import { Priority } from '../../../enums/Priority.enum';
 
 @Injectable({
   providedIn: 'root',
 })
 export class InterventionService {
-  private baseUrl = `${environment.baseUrl}/interventions`;
+  private readonly baseUrl = `${environment.baseUrl}/api/v1/interventions`;
   private readonly http = inject(HttpClient);
 
   getAllInterventions(): Observable<ApiResponce<Intervention[]>> {
@@ -23,7 +23,7 @@ export class InterventionService {
     return this.http.get<ApiResponce<Intervention>>(`${this.baseUrl}/${id}`);
   }
 
-  createIntervention(intervention: Intervention): Observable<ApiResponce<Intervention>> {
+  createIntervention(intervention: Partial<Intervention>): Observable<ApiResponce<Intervention>> {
     return this.http.post<ApiResponce<Intervention>>(`${this.baseUrl}/create`, intervention);
   }
 
@@ -34,77 +34,71 @@ export class InterventionService {
     return this.http.put<ApiResponce<Intervention>>(`${this.baseUrl}/update/${id}`, intervention);
   }
 
-  assignMecanicien(id: number, mecanicien: Mecanicien): Observable<ApiResponce<Intervention>> {
-    return this.http.patch<ApiResponce<Intervention>>(`${this.baseUrl}/assign/${id}`, mecanicien);
+  assignMechanic(id: number, mechanic: Mechanic): Observable<ApiResponce<Intervention>> {
+    return this.http.patch<ApiResponce<Intervention>>(`${this.baseUrl}/assign/${id}`, mechanic);
   }
 
-  setCoutEstime(id: number, cout: number): Observable<ApiResponce<Intervention>> {
-    const params = new HttpParams().set('coutEstime', cout.toString());
-    return this.http.post<ApiResponce<Intervention>>(`${this.baseUrl}/setcout/${id}`, null, {
+  setEstimatedCost(id: number, cost: number): Observable<ApiResponce<Intervention>> {
+    const params = new HttpParams().set('estimatedCost', cost.toString());
+    return this.http.post<ApiResponce<Intervention>>(`${this.baseUrl}/set-cost/${id}`, null, {
       params,
     });
   }
 
   addDiagnostic(id: number, diagnostic: string): Observable<ApiResponce<Intervention>> {
     const params = new HttpParams().set('diagnostic', diagnostic);
-    return this.http.post<ApiResponce<Intervention>>(
-      `${this.baseUrl}/ajouter/diagnostic/${id}`,
-      null,
+    return this.http.post<ApiResponce<Intervention>>(`${this.baseUrl}/add-diagnostic/${id}`, null, {
+      params,
+    });
+  }
+
+  changeStatus(
+    id: number,
+    statusIntervention: string,
+    author: string,
+  ): Observable<ApiResponce<Intervention>> {
+    const params = new HttpParams().set('author', author);
+    return this.http.patch<ApiResponce<Intervention>>(
+      `${this.baseUrl}/change-status/${id}`,
+      JSON.stringify(statusIntervention),
       {
+        headers: { 'Content-Type': 'application/json' },
         params,
       },
     );
   }
 
-  changerStatus(id: number, statusIntervention: string, auteur: string,
-  ): Observable<ApiResponce<Intervention>> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-     const params = new HttpParams().set('auteur', auteur);
-    return this.http.patch<ApiResponce<Intervention>>(
-      `${this.baseUrl}/change/status/${id}`,
-      JSON.stringify(statusIntervention),
-      { headers, params },
-    );
+  complete(id: number): Observable<ApiResponce<Intervention>> {
+    return this.http.patch<ApiResponce<Intervention>>(`${this.baseUrl}/complete/${id}`, null);
   }
 
-  terminer(id: number): Observable<ApiResponce<Intervention>> {
-    return this.http.patch<ApiResponce<Intervention>>(`${this.baseUrl}/terminer/${id}`, null);
+  returnIntervention(id: number): Observable<ApiResponce<Intervention>> {
+    return this.http.patch<ApiResponce<Intervention>>(`${this.baseUrl}/return/${id}`, null);
   }
 
-  restituer(id: number): Observable<ApiResponce<Intervention>> {
-    return this.http.patch<ApiResponce<Intervention>>(`${this.baseUrl}/restituer/${id}`, null);
+  getInterventionsByMechanic(id: number): Observable<ApiResponce<Intervention[]>> {
+    return this.http.get<ApiResponce<Intervention[]>>(`${this.baseUrl}/by/mechanic/${id}`);
   }
 
-  getInterventionByMecanicien(id: number): Observable<ApiResponce<Intervention[]>> {
-    return this.http.get<ApiResponce<Intervention[]>>(`${this.baseUrl}/by/mecanicien/${id}`);
+  getInterventionsByVehicle(id: number): Observable<ApiResponce<Intervention[]>> {
+    return this.http.get<ApiResponce<Intervention[]>>(`${this.baseUrl}/by/vehicle/${id}`);
   }
 
-  getInterventionByVehicule(id: number): Observable<ApiResponce<Intervention[]>> {
-    return this.http.get<ApiResponce<Intervention[]>>(`${this.baseUrl}/by/vehicule/${id}`);
+  getDelayedInterventions(): Observable<ApiResponce<Intervention[]>> {
+    return this.http.get<ApiResponce<Intervention[]>>(`${this.baseUrl}/delayed`);
   }
 
-  getEnRetard(): Observable<ApiResponce<Intervention[]>> {
-    return this.http.get<ApiResponce<Intervention[]>>(`${this.baseUrl}/en/retard`);
+  calculateTotalCost(): Observable<ApiResponce<number>> {
+    return this.http.get<ApiResponce<number>>(`${this.baseUrl}/calculate-total-cost`);
   }
 
-  calculerCoutTotal(): Observable<ApiResponce<number>> {
-    return this.http.get<ApiResponce<number>>(`${this.baseUrl}/calculer/cout/total`);
+  getInterventionsByType(type: InterventionType | string): Observable<ApiResponce<Intervention[]>> {
+    const params = new HttpParams().set('type', type.toString());
+    return this.http.get<ApiResponce<Intervention[]>>(`${this.baseUrl}/by/type`, { params });
   }
 
-  getInterventionsByType(type: TypeIntervention): Observable<ApiResponce<Intervention[]>> {
-    return this.http.get<ApiResponce<Intervention[]>>(`${this.baseUrl}/by/type`, {
-      params: {
-        type: type,
-      },
-    });
-  }
-
-
-  getInterventionsByPriorite(priorite : Priorite) : Observable<ApiResponce<Intervention[]>>{
-    return this.http.get<ApiResponce<Intervention[]>>(`${this.baseUrl}/by/priorite` , {
-      params: {
-        priorite : priorite,
-      }
-    })
+  getInterventionsByPriority(priority: Priority | string): Observable<ApiResponce<Intervention[]>> {
+    const params = new HttpParams().set('priority', priority.toString());
+    return this.http.get<ApiResponce<Intervention[]>>(`${this.baseUrl}/by/priority`, { params });
   }
 }
