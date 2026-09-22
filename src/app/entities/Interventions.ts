@@ -1,23 +1,23 @@
+import { Vehicle } from './Vehicle';
+import { InterventionType } from '../enums/InterventionType.enum';
 import { Status } from '../enums/Status.enum';
-import { TypeIntervention } from '../enums/TypeIntervention.enum';
-import { Mecanicien } from './Mecanicien';
-import { Vehicule } from './Vehicule';
-import { Priorite } from '../enums/Priorite.enum';
-import { Historique } from './Historique';
+import { Priority } from '../enums/Priority.enum';
+import { InterventionHistory } from './InterventionHistory';
 
 
 export interface Intervention {
-  id : number ;
-  vehicule : Vehicule ;
-  type : TypeIntervention ;
-  description : string;
-  diagnostic : string;
-  status : Status ;
-  priorite : Priorite;
-  mecanicien : Mecanicien;
-  coutEstime : number;
-  dateDepot : Date ;
-  dateRestitutionPrevue : Date ;
-  dateCloture : Date;
-  historique : Historique[] ;
+  id?: number;
+  vehicle?: Vehicle;
+  vehicleId?: number;
+  type: InterventionType;
+  description?: string;
+  diagnostic?: string;
+  status?: Status;
+  priority?: Priority;
+  mechanicId?: number;
+  estimatedCost?: number;
+  depositDate?: string | Date;
+  estimatedReturnDate?: string | Date;
+  closureDate?: string | Date;
+  interventionHistoryList?: InterventionHistory[];
 }

@@ -4,12 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { Intervention } from '../../../entities/Interventions';
 import { InterventionService } from '../services/intervention';
 import { Status } from '../../../enums/Status.enum';
-import { Mecanicien } from '../../../entities/Mecanicien';
-import { MecanicienService } from '../../mecaniciens/services/mecanicien';
-import { TypeIntervention } from '../../../enums/TypeIntervention.enum';
-import { ApiResponse } from '../../../entities/ApiResponse';
+import { Mecanicien } from '../../../entities/Mechanic';
+import { MecanicienService } from '../../mechanics/services/mecanicien';
+import { TypeIntervention } from '../../../enums/InterventionType.enum';
+import { ApiResponce } from '../../../entities/ApiResponce';
 import { RouterLink } from '@angular/router';
-import { Priorite } from '../../../enums/Priorite.enum';
+import { Priorite } from '../../../enums/Priority.enum';
 
 @Component({
   selector: 'app-intervention-list',
@@ -89,7 +89,7 @@ export class InterventionList implements OnInit {
     const statusStr = statusCible.toString();
 
     this.interventionService.changerStatus(id, statusStr, nomAuteur).subscribe({
-      next: (response: ApiResponse<Intervention>) => {
+      next: (response: ApiResponce<Intervention>) => {
         this.interventions.update((list) =>
           list.map((item) =>
             item.id === id ? ({ ...item, status: statusCible } as typeof item) : item,
@@ -231,7 +231,7 @@ export class InterventionList implements OnInit {
     }
 
     this.interventionService.assignMecanicien(interventionId, mecanicienSelectionne).subscribe({
-      next: (response: ApiResponse<Intervention>) => {
+      next: (response: ApiResponce<Intervention>) => {
         this.interventions.update((list) =>
           list.map((item) =>
             item.id === interventionId

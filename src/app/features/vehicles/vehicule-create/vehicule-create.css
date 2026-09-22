@@ -1,0 +1,56 @@
+@reference "tailwindcss";
+
+.cont {
+  @apply mx-auto flex min-h-screen flex-col items-center justify-center bg-slate-50 p-4;
+}
+
+.cont form {
+  @apply flex w-full max-w-md flex-col gap-5 rounded-2xl border border-slate-100 bg-white p-6 shadow-xl sm:p-10;
+}
+
+.cont form h1 {
+  @apply mt-2 mb-4 text-center text-2xl font-extrabold tracking-tight text-slate-800 sm:text-3xl;
+}
+
+.cont form > div:not(:first-of-type):not(:last-of-type),
+.divInput {
+  @apply flex flex-col gap-1;
+}
+
+.cont form label {
+  @apply mb-1 block text-xs font-bold uppercase tracking-wider text-slate-600;
+}
+
+.cont form input[type="text"],
+.cont form input[type="number"] {
+  @apply mt-1 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-sm text-slate-900 outline-hidden transition-all duration-200;
+  @apply focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10;
+}
+
+.cont form div:has(input[type="checkbox"]) {
+  @apply mt-2 mb-1 flex items-center gap-2.5;
+}
+
+.cont form div:has(input[type="checkbox"]) label {
+  @apply order-2 mb-0 cursor-pointer text-sm font-medium normal-case tracking-normal text-slate-600;
+}
+
+.cont form input[type="checkbox"] {
+  @apply order-1 h-4 w-4 cursor-pointer rounded border-slate-300 bg-slate-50 text-blue-600 transition-all duration-150;
+  @apply focus:ring-4 focus:ring-blue-500/10 focus:ring-offset-0;
+}
+
+.text-red-500 {
+  @apply mt-1.5 flex flex-col gap-1 px-1;
+}
+
+.text-red-500 small {
+  @apply block text-xs font-medium tracking-wide text-red-500;
+}
+
+.cont form button[type="submit"] {
+  @apply mt-4 w-full cursor-pointer rounded-xl bg-blue-600 px-4 py-3.5 text-sm font-bold tracking-wide text-white shadow-md transition-all duration-200 ease-in-out;
+  @apply hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/20;
+  @apply active:scale-[0.98];
+  @apply disabled:cursor-not-allowed disabled:scale-100 disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none;
+}

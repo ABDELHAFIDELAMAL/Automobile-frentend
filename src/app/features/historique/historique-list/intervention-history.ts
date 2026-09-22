@@ -1,5 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { Historique } from '../../../entities/Historique';
+import { Historique } from '../../../entities/InterventionHistory';
 import { HistoriqueService } from '../service/historique-service';
 import { DatePipe, NgClass } from '@angular/common';
 
