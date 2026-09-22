@@ -1,17 +1,18 @@
-import { inject, Service } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiResponce } from '../../../entities/ApiResponce';
-import { DashboardStats } from '../../../entities/Dashboard';
+import { Dashboard } from '../../../entities/Dashboard';
 import { environment } from '../../../environment/environment';
 
-
-@Service()
+@Injectable({
+  providedIn: 'root',
+})
 export class DashboardService {
-  private baseUrl = `${environment.baseUrl}/dashboard`;
-  private http = inject(HttpClient);
+  private readonly baseUrl = `${environment.baseUrl}/api/v1/dashboard`;
+  private readonly http = inject(HttpClient);
 
-  getAtelierStats(): Observable<ApiResponce<DashboardStats>> {
-    return this.http.get<ApiResponce<DashboardStats>>(`${this.baseUrl}/stats`);
+  getAtelierStats(): Observable<ApiResponce<Dashboard>> {
+    return this.http.get<ApiResponce<Dashboard>>(`${this.baseUrl}/stats`);
   }
 }

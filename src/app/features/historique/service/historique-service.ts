@@ -2,33 +2,36 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiResponce } from '../../../entities/ApiResponce';
-import { Historique } from '../../../entities/InterventionHistory';
+import { InterventionHistory } from '../../../entities/InterventionHistory';
 import { environment } from '../../../environment/environment';
 
 @Injectable({
   providedIn: 'root',
 })
-export class HistoriqueService {
-  private baseUrl = `${environment.baseUrl}/histories`;
+export class InterventionHistoryService {
+  private readonly baseUrl = `${environment.baseUrl}/api/v1/histories`;
   private readonly http = inject(HttpClient);
 
-  getAllHistoriques(): Observable<ApiResponce<Historique[]>> {
-    return this.http.get<ApiResponce<Historique[]>>(this.baseUrl);
+  getAllHistories(): Observable<ApiResponce<InterventionHistory[]>> {
+    return this.http.get<ApiResponce<InterventionHistory[]>>(this.baseUrl);
   }
 
-  getHistoriqueByInterventionId(interventionId: number): Observable<ApiResponce<Historique[]>> {
-    return this.http.get<ApiResponce<Historique[]>>(
+  getHistoryByInterventionId(
+    interventionId: number,
+  ): Observable<ApiResponce<InterventionHistory[]>> {
+    return this.http.get<ApiResponce<InterventionHistory[]>>(
       `${this.baseUrl}/by/intervention/${interventionId}`,
     );
   }
 
-  createHistorique(historique: Partial<Historique>): Observable<ApiResponce<Historique>> {
-    return this.http.post<ApiResponce<Historique>>(`${this.baseUrl}/create`, historique);
+  createHistory(
+    history: Partial<InterventionHistory>,
+  ): Observable<ApiResponce<InterventionHistory>> {
+    return this.http.post<ApiResponce<InterventionHistory>>(`${this.baseUrl}/create`, history);
   }
 
-
-  getHistoriquesByDate(date: string): Observable<ApiResponce<Historique[]>> {
+  getHistoriesByDate(date: string): Observable<ApiResponce<InterventionHistory[]>> {
     const params = new HttpParams().set('date', date);
-    return this.http.get<ApiResponce<Historique[]>>(`${this.baseUrl}/by/date`, { params });
+    return this.http.get<ApiResponce<InterventionHistory[]>>(`${this.baseUrl}/by/date`, { params });
   }
 }
