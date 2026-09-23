@@ -9,8 +9,8 @@ import { RouterLink } from '@angular/router';
   selector: 'app-mecanicien-list',
   standalone: true,
   imports: [NgClass, RouterLink],
-  templateUrl: './mecanicien-list.html',
-  styleUrl: './mecanicien-list.css',
+  templateUrl: './mechanic-list.html',
+  styleUrl: './mechanic-list.css',
 })
 export class MechanicList implements OnInit {
   mechanics = signal<Mechanic[]>([]);
@@ -30,7 +30,7 @@ export class MechanicList implements OnInit {
         this.mechanics.set(response.data);
       },
       error: (error) => {
-        console.error('Erreur API lors du chargement des mécaniciens:', error);
+        console.error('API Error while loading mechanics:', error);
       },
     });
   }
@@ -53,7 +53,7 @@ export class MechanicList implements OnInit {
         this.mechanics.set(response.data);
       },
       error: (error) => {
-        console.error('Erreur lors de getMechanicsBySpecialty:', error.message);
+        console.error('Error during getMechanicsBySpecialty:', error.message);
       },
     });
   }
@@ -65,7 +65,7 @@ export class MechanicList implements OnInit {
     if (value === '') {
       this.loadMechanics();
     } else {
-      const isAvailable = value === 'disponible';
+      const isAvailable = value === 'available';
       this.getAvailableMechanics(isAvailable);
     }
   }
@@ -76,13 +76,13 @@ export class MechanicList implements OnInit {
         this.mechanics.set(response.data);
       },
       error: (error) => {
-        console.error('Erreur lors de getAvailableMechanics:', error.message);
+        console.error('Error during getAvailableMechanics:', error.message);
       },
     });
   }
 
   deleteMechanic(id: number): void {
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce mécanicien ?')) {
+    if (confirm('Are you sure you want to delete this mechanic?')) {
       this.mechanicService.deleteMechanic(id).subscribe({
         next: () => {
           this.mechanics.update((currentList) =>
@@ -90,7 +90,7 @@ export class MechanicList implements OnInit {
           );
         },
         error: (error) => {
-          console.error('Erreur lors de la suppression du mécanicien :', error.message);
+          console.error('Error while deleting mechanic:', error.message);
         },
       });
     }
@@ -104,7 +104,7 @@ export class MechanicList implements OnInit {
       this.mechanicService.activate(mechanic.id).subscribe({
         next: (response) => {},
         error: (error) => {
-          console.error("Erreur d'activation, retour à l'ancien état", error);
+          console.error('Activation error, reverting to previous state', error);
           mechanic.available = previousState;
         },
       });
@@ -112,7 +112,7 @@ export class MechanicList implements OnInit {
       this.mechanicService.deactivate(mechanic.id).subscribe({
         next: (response) => {},
         error: (error) => {
-          console.error("Erreur de désactivation, retour à l'ancien état", error);
+          console.error('Deactivation error, reverting to previous state', error);
           mechanic.available = previousState;
         },
       });
@@ -125,7 +125,7 @@ export class MechanicList implements OnInit {
         this.chargesData = response.data;
       },
       error: (error) => {
-        console.error('Erreur lors de getWorkload:', error);
+        console.error('Error during getWorkload:', error);
       },
     });
   }
