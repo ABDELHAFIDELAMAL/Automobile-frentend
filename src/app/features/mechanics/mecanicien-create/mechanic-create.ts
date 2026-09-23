@@ -1,19 +1,19 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgIf } from '@angular/common';
+import { KeyValuePipe, NgIf } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Specialty } from '../../../enums/Specialty.enum';
 import { MechanicService } from '../services/mecanicien';
 import { Mechanic } from '../../../entities/Mechanic';
 
 @Component({
-  imports: [ReactiveFormsModule, NgIf],
-  selector: 'app-mecanicien-create',
-  styleUrl: './mecanicien-create.css',
-  templateUrl: './mecanicien-create.html',
+  imports: [ReactiveFormsModule, NgIf, KeyValuePipe],
+  selector: 'app-mechanic-create',
+  styleUrl: './mechanic-create.css',
+  templateUrl: './mechanic-create.html',
   standalone: true,
 })
-export class MecanicienCreate implements OnInit {
+export class MechanicCreate implements OnInit {
   Speciality = Specialty;
 
   mechanicService = inject(MechanicService);

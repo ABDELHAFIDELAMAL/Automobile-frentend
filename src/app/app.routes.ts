@@ -4,7 +4,7 @@ import { InterventionList } from './features/interventions/intervention-list/int
 import { Register } from './features/auth/register/register';
 import { Admin } from './features/admin/admin';
 import { InterventionCreate } from './features/interventions/intervention-create/intervention-create';
-import { MecanicienCreate } from './features/mechanics/mecanicien-create/mecanicien-create';
+import { MechanicCreate } from './features/mechanics/mecanicien-create/mechanic-create';
 import { CreateUser } from './features/users/create-user/create-user';
 import { Home } from './shared/components/home/home';
 import { ChangePassword } from './features/users/change-password/change-password';
@@ -13,8 +13,8 @@ import { UserList } from './features/users/user-list/user-list';
 import { MecanicienDetail } from './features/mechanics/mecanicien-detail/mecanicien-detail';
 import { MechanicList } from './features/mechanics/mechanic-list/mechanic-list';
 import { VehicleList } from './features/vehicles/vehicle-list/vehicle-list';
-import { VehicleCreate } from './features/vehicles/createVehicle/vehicule-create';
-import { VehicleDetail } from './features/vehicles/vehicleDetails/vehicule-detail';
+import { VehicleCreate } from './features/vehicles/createVehicle/vehicle-create';
+import { VehicleDetail } from './features/vehicles/vehicleDetails/vehicle-detail';
 import { InterventionHistories } from './features/historique/historique-list/intervention-history';
 import { DashboardComponent } from './features/dashboard/dashboard/dashboard';
 
@@ -35,8 +35,8 @@ export const routes: Routes = [
   { path: 'vehicles/details/:id', component: VehicleDetail, data: { title: 'Details' } },
 
   { path: 'mechanics', component: MechanicList, data: { title: 'Mechanics' } },
-  { path: 'mechanics/create', component: MecanicienCreate, data: { title: 'Create Mechanic' } },
-  { path: 'mechanics/update/:id', component: MecanicienCreate, data: { title: 'Update Mechanic' }, },
+  { path: 'mechanics/create', component: MechanicCreate, data: { title: 'Create Mechanic' } },
+  { path: 'mechanics/update/:id', component: MechanicCreate, data: { title: 'Update Mechanic' }, },
   { path: 'mechanics/:id', component: MecanicienDetail, data: { title: 'Details' } },
 
   { path: 'interventions', component: InterventionList, data: { title: 'Inteventions' } },
