@@ -1,5 +1,5 @@
 import { Component, OnInit, signal, inject } from '@angular/core';
-import { MechanicService } from '../services/mecanicien';
+import { MechanicService } from '../services/mechanicService';
 import { Mechanic } from '../../../entities/Mechanic';
 import { Specialty } from '../../../enums/Specialty.enum';
 import { NgClass } from '@angular/common';

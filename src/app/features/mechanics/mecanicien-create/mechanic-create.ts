@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { KeyValuePipe, NgIf } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Specialty } from '../../../enums/Specialty.enum';
-import { MechanicService } from '../services/mecanicien';
+import { MechanicService } from '../services/mechanicService';
 import { Mechanic } from '../../../entities/Mechanic';
 
 @Component({
@@ -69,6 +69,7 @@ export class MechanicCreate implements OnInit {
   }
 
   createMechanic(mechanic: Mechanic): void {
+    console.log("Creating Mechanic..." , this.MechanicForm.value);
     this.mechanicService.createMechanic(mechanic).subscribe({
       next: (response) => {
         alert('Mechanic created successfully !');

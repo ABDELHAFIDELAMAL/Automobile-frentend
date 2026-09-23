@@ -6,7 +6,7 @@ import { Intervention } from '../../../entities/Interventions';
 import { InterventionService } from '../services/intervention';
 import { Status } from '../../../enums/Status.enum';
 import { Mechanic } from '../../../entities/Mechanic';
-import { MechanicService } from '../../mechanics/services/mecanicien';
+import { MechanicService } from '../../mechanics/services/mechanicService';
 import { InterventionType } from '../../../enums/InterventionType.enum';
 import { Priority } from '../../../enums/Priority.enum';
 

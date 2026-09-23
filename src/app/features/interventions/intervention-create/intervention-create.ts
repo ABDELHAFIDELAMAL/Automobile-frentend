@@ -69,7 +69,7 @@ export class InterventionCreate implements OnInit {
     const currentVehicleId = this.vehicleId() || formValue.vehicleId;
 
     if (!currentVehicleId) {
-      alert("Erreur : Aucun véhicule n'est associé à cette intervention.");
+      alert("Erreur : Aucun vehicle accossiate a intervention.");
       return;
     }
 
@@ -77,27 +77,34 @@ export class InterventionCreate implements OnInit {
       ? parseFloat(formValue.estimatedCost.toString())
       : 0.0;
 
-    const interventionPayload: Intervention = {
-      vehicleId: Number(currentVehicleId),
+    const interventionPayload: any = {
+      vehicle: {
+        id: Number(currentVehicleId)
+      },
       type: formValue.type,
       description: formValue.description,
-      diagnostic: formValue.diagnostic || undefined,
+      diagnostic: formValue.diagnostic?.trim() || null,
       status: formValue.status,
       priority: formValue.priority,
       estimatedCost: isNaN(parsedCost) ? 0.0 : parsedCost,
-      depositDate: formValue.depositDate ? `${formValue.depositDate}T00:00:00` : undefined,
-      estimatedReturnDate: formValue.estimatedReturnDate
-        ? `${formValue.estimatedReturnDate}T00:00:00`
-        : undefined,
+      depositDate: formValue.depositDate || null,
+      estimatedReturnDate: formValue.estimatedReturnDate || null,
     };
 
-    if (formValue.mechanicId) {
-      interventionPayload.mechanicId = Number(formValue.mechanicId);
+    if (formValue.mechanicId && formValue.mechanicId !== 'null') {
+      interventionPayload.mechanic = {
+        id: Number(formValue.mechanicId)
+      };
+    } else {
+      interventionPayload.mechanic = null;
     }
-
     if (formValue.closureDate) {
       interventionPayload.closureDate = `${formValue.closureDate}T00:00:00`;
+    } else {
+      interventionPayload.closureDate = null;
     }
+
+    console.log("Intervention pyload : " , interventionPayload);
 
     if (this.interventionId) {
       this.updateIntervention(this.interventionId, interventionPayload);
@@ -148,6 +155,7 @@ export class InterventionCreate implements OnInit {
   createIntervention(intervention: Intervention): void {
     this.interventionsService.createIntervention(intervention).subscribe({
       next: (response) => {
+        console.log('Intervention sent to server : ', this.interventionForm.value);
         alert(response.message || 'Intervention created with succes');
         this.goBackToVehicle();
       },

@@ -9,7 +9,7 @@ import { environment } from '../../../environment/environment';
   providedIn: 'root',
 })
 export class InterventionHistoryService {
-  private readonly baseUrl = `${environment.baseUrl}/api/v1/histories`;
+  private readonly baseUrl = `${environment.baseUrl}/histories`;
   private readonly http = inject(HttpClient);
 
   getAllHistories(): Observable<ApiResponce<InterventionHistory[]>> {

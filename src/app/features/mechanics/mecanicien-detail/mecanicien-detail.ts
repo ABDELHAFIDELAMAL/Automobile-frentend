@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MechanicService } from '../services/mecanicien';
+import { MechanicService } from '../services/mechanicService';
 
 @Component({
   imports: [],

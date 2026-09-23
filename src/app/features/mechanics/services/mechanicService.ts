@@ -11,7 +11,7 @@ import { Specialty } from '../../../enums/Specialty.enum';
   providedIn: 'root',
 })
 export class MechanicService {
-  private readonly baseUrl = `${environment.baseUrl}/api/v1/mechanics`;
+  private readonly baseUrl = `${environment.baseUrl}/mechanics`;
   private readonly http = inject(HttpClient);
 
   getAllMechanics(): Observable<ApiResponce<Mechanic[]>> {

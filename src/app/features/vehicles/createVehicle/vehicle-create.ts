@@ -110,6 +110,7 @@ export class VehicleCreate implements OnInit {
   createVehicle(vehicle: Vehicle): void {
     this.vehicleService.createVehicle(vehicle).subscribe({
       next: () => {
+        console.log("Vehicule sent to server is : " , this.vehicleForm.value);
         this.router.navigate(['/vehicles']);
       },
       error: (error: HttpErrorResponse) => {

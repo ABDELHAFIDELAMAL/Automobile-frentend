@@ -1,172 +1,224 @@
-<div class="min-h-screen bg-slate-50 p-4 md:p-8 space-y-8">
+<div class="min-h-screen bg-slate-50/50 p-4 sm:p-6 md:p-8 space-y-8 antialiased text-slate-800">
 
-  <header class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-    <div>
-      <h1 class="text-2xl font-bold tracking-tight text-slate-900">Workshop Dashboard</h1>
-      <p class="text-sm text-slate-500 mt-1">Overview of activity and return alerts</p>
+  <!-- Header Section -->
+  <header class="bg-white/80 backdrop-blur-md p-6 rounded-3xl border border-slate-200/80 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all">
+    <div class="space-y-1">
+      <div class="flex items-center gap-2">
+        <span class="inline-block w-2.5 h-2.5 rounded-full bg-indigo-600 animate-pulse"></span>
+        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">Workshop Dashboard</h1>
+      </div>
+      <p class="text-xs sm:text-sm text-slate-500 font-medium pl-4">Overview of current activity, mechanics workload, and return alerts.</p>
     </div>
+
     <button
       (click)="loadDashboardData()"
-      class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-900 hover:bg-slate-800 active:bg-black text-white text-sm font-semibold rounded-xl shadow-xs transition-all duration-200 cursor-pointer self-start sm:self-auto"
+      class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-slate-900 hover:bg-slate-800 active:bg-black text-white text-sm font-semibold rounded-2xl shadow-xs hover:shadow-md transition-all duration-200 cursor-pointer self-start sm:self-auto group shrink-0"
     >
-      <span class="material-symbols-outlined text-lg">refresh</span>
-      <span>Refresh</span>
+      <span class="material-symbols-outlined text-lg group-hover:rotate-180 transition-transform duration-500">refresh</span>
+      <span>Refresh Data</span>
     </button>
   </header>
 
   @if (loading()) {
-  <div class="flex flex-col items-center justify-center py-20 space-y-4">
-    <div class="w-10 h-10 border-4 border-slate-200 border-t-slate-900 rounded-full animate-spin"></div>
-    <p class="text-sm text-slate-500 font-medium">Loading data...</p>
+  <div class="flex flex-col items-center justify-center py-28 space-y-4">
+    <div class="relative w-12 h-12">
+      <div class="absolute inset-0 border-4 border-indigo-100 rounded-full"></div>
+      <div class="absolute inset-0 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+    <p class="text-sm text-slate-500 font-semibold tracking-wide animate-pulse">Loading dashboard statistics...</p>
   </div>
-  } @else if (errorMessage()) {
-  <div class="p-4 bg-rose-50 border border-rose-200/80 rounded-2xl flex items-center gap-3 text-rose-700 text-sm">
-    <span class="material-symbols-outlined text-xl text-rose-500">error</span>
-    <span class="font-medium">{{ errorMessage() }}</span>
+  }
+
+  <!-- Error State -->
+  @else if (errorMessage()) {
+  <div class="p-5 bg-rose-50/80 backdrop-blur-sm border border-rose-200/80 rounded-2xl flex items-center gap-3 text-rose-700 text-sm shadow-xs">
+    <span class="material-symbols-outlined text-2xl text-rose-500 shrink-0">error</span>
+    <span class="font-semibold">{{ errorMessage() }}</span>
   </div>
-  } @else {
+  }
 
-  <div class="stats-grid rounded-2xl">
-    <div class="stat-card total-card">
-      <div class="stat-card-top">
-        <h1>Received Today</h1>
-        <span class="material-symbols-outlined">input</span>
+  <!-- Main Dashboard Content -->
+  @else {
+
+  <!-- Stats Overview Grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+
+    <!-- Received Today -->
+    <div class="bg-gradient-to-br from-indigo-900 to-slate-900 p-6 rounded-3xl text-white shadow-xs hover:shadow-lg transition-all duration-300 relative overflow-hidden group">
+      <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-indigo-500/10 rounded-full blur-xl group-hover:scale-150 transition-transform"></div>
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-bold uppercase tracking-wider text-indigo-200/80">Received Today</span>
+        <div class="w-10 h-10 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center text-indigo-300">
+          <span class="material-symbols-outlined text-xl">input</span>
+        </div>
       </div>
-      <div class="stat-number">{{ stats()?.receivedToday ?? 0 }}</div>
+      <div class="text-3xl sm:text-4xl font-black mt-4 tracking-tight">{{ stats()?.receivedToday ?? 0 }}</div>
     </div>
 
-    <div class="stat-card">
-      <div class="stat-card-top">
-        <h1>In Diagnostic</h1>
-        <span class="material-symbols-outlined">search</span>
+    <!-- In Diagnostic -->
+    <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-xs hover:border-slate-300 hover:shadow-md transition-all duration-300">
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">In Diagnostic</span>
+        <div class="w-10 h-10 rounded-2xl bg-amber-50 flex items-center justify-center text-amber-600">
+          <span class="material-symbols-outlined text-xl">search</span>
+        </div>
       </div>
-      <div class="stat-number">{{ stats()?.inProgressDiagnostic ?? 0 }}</div>
+      <div class="text-3xl sm:text-4xl font-black text-slate-900 mt-4 tracking-tight">{{ stats()?.inProgressDiagnostic ?? 0 }}</div>
     </div>
 
-    <div class="stat-card">
-      <div class="stat-card-top">
-        <h1>Under Repair</h1>
-        <span class="material-symbols-outlined">build</span>
+    <!-- Under Repair -->
+    <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-xs hover:border-slate-300 hover:shadow-md transition-all duration-300">
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Under Repair</span>
+        <div class="w-10 h-10 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600">
+          <span class="material-symbols-outlined text-xl">build</span>
+        </div>
       </div>
-      <div class="stat-number">{{ stats()?.underRepair ?? 0 }}</div>
+      <div class="text-3xl sm:text-4xl font-black text-slate-900 mt-4 tracking-tight">{{ stats()?.underRepair ?? 0 }}</div>
     </div>
 
-    <div class="stat-card">
-      <div class="stat-card-top">
-        <h1>Completed</h1>
-        <span class="material-symbols-outlined">check_circle</span>
+    <!-- Completed -->
+    <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-xs hover:border-slate-300 hover:shadow-md transition-all duration-300">
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Completed</span>
+        <div class="w-10 h-10 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600">
+          <span class="material-symbols-outlined text-xl">check_circle</span>
+        </div>
       </div>
-      <div class="stat-number">{{ stats()?.completed ?? 0 }}</div>
+      <div class="text-3xl sm:text-4xl font-black text-slate-900 mt-4 tracking-tight">{{ stats()?.completed ?? 0 }}</div>
     </div>
+
   </div>
 
+  <!-- Layout Grid: Delays & Workload -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-    <div class="lg:col-span-2 space-y-4">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2">
+    <!-- Left Column: Return Delays List -->
+    <div class="lg:col-span-2 space-y-5">
+
+      <div class="flex items-center justify-between px-1">
+        <div class="flex items-center gap-3">
           <h2 class="text-lg font-bold text-slate-900">Return Delays</h2>
-          <span class="px-2.5 py-0.5 text-xs font-extrabold bg-rose-100 text-rose-700 rounded-full border border-rose-200">
-              {{ delays().length }}
-            </span>
+          <span class="px-2.5 py-0.5 text-xs font-black bg-rose-100 text-rose-700 rounded-full border border-rose-200/80">
+            {{ delays().length }}
+          </span>
         </div>
       </div>
 
       @if (delays().length === 0) {
-      <div class="bg-white rounded-2xl p-8 text-center border border-slate-200/80 shadow-xs">
-        <span class="material-symbols-outlined text-4xl text-emerald-400 mb-2">verified</span>
-        <p class="text-slate-600 font-medium text-sm">No return delays to report.</p>
+      <div class="bg-white rounded-3xl p-10 text-center border border-slate-200/80 shadow-xs space-y-2">
+        <div class="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-500 mx-auto mb-3">
+          <span class="material-symbols-outlined text-3xl">verified</span>
+        </div>
+        <h3 class="text-base font-bold text-slate-800">All clear!</h3>
+        <p class="text-slate-500 font-medium text-xs max-w-xs mx-auto">There are currently no delayed vehicle returns to report.</p>
       </div>
       } @else {
       <div class="space-y-4">
         @for (item of delays(); track item.id) {
-        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs space-y-4 hover:border-slate-300 transition-all">
+        <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-xs space-y-4 hover:border-slate-300 hover:shadow-md transition-all duration-200">
+
+          <!-- Top Row Header -->
           <div class="flex flex-wrap items-start justify-between gap-3">
             <div class="space-y-1">
               <div class="flex items-center gap-2">
-                <span class="text-xs font-bold text-slate-400">#{{ item.id }}</span>
+                <span class="px-2 py-0.5 rounded-md bg-slate-100 text-[11px] font-extrabold text-slate-500">#{{ item.id }}</span>
                 <h3 class="text-base font-bold text-slate-900 capitalize">{{ item.description }}</h3>
               </div>
               <p class="text-xs text-slate-500 font-medium">Type: <span class="text-slate-700 font-semibold">{{ item.type }}</span></p>
             </div>
 
+            <!-- Badges -->
             <div class="flex items-center gap-2">
-                    <span [class]="{
-                      'bg-rose-50 text-rose-700 border-rose-200': item.priority === 'HIGH' || item.priority === 'HAUTE',
-                      'bg-amber-50 text-amber-700 border-amber-200': item.priority === 'MEDIUM' || item.priority === 'MOYENNE',
-                      'bg-slate-50 text-slate-700 border-slate-200': item.priority === 'LOW' || item.priority === 'BASSE'
-                    }" class="px-2.5 py-1 rounded-full text-xs font-bold border">
-                      {{ item.priority }}
-                    </span>
+              <span [class]="{
+                'bg-rose-50 text-rose-700 border-rose-200/80': item.priority === 'HIGH' || item.priority === 'HAUTE',
+                'bg-amber-50 text-amber-700 border-amber-200/80': item.priority === 'MEDIUM' || item.priority === 'MOYENNE',
+                'bg-slate-50 text-slate-700 border-slate-200/80': item.priority === 'LOW' || item.priority === 'BASSE'
+              }" class="px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider border">
+                {{ item.priority }}
+              </span>
 
-              <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-800 border border-slate-200">
-                      {{ item.status }}
-                    </span>
+              <span class="px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-slate-100 text-slate-800 border border-slate-200/80">
+                {{ item.status }}
+              </span>
             </div>
           </div>
 
+          <!-- Diagnostic Box -->
           @if (item.diagnostic) {
-          <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs text-slate-600">
-            <span class="font-bold text-slate-700">Diagnostic: </span>{{ item.diagnostic }}
+          <div class="bg-slate-50/80 p-3.5 rounded-2xl border border-slate-100 text-xs text-slate-600 leading-relaxed">
+            <span class="font-bold text-slate-800">Diagnostic: </span>{{ item.diagnostic }}
           </div>
           }
 
-          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2 border-t border-slate-100 text-xs">
-            <div>
-              <p class="text-slate-400 font-medium">Estimated Cost</p>
-              <p class="font-bold text-slate-900 mt-0.5">{{ item.estimatedCost }} MAD</p>
+          <!-- Details Grid -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-3 border-t border-slate-100 text-xs">
+            <div class="bg-slate-50/50 p-2.5 rounded-xl border border-slate-100">
+              <p class="text-slate-400 font-semibold text-[11px]">Estimated Cost</p>
+              <p class="font-extrabold text-slate-900 mt-0.5 text-sm">{{ item.estimatedCost }} <span class="text-xs font-semibold text-slate-500">MAD</span></p>
             </div>
-            <div>
-              <p class="text-slate-400 font-medium">Drop-off Date</p>
-              <p class="font-semibold text-slate-700 mt-0.5">{{ item.depositDate | date:'dd/MM/yyyy HH:mm' }}</p>
+
+            <div class="bg-slate-50/50 p-2.5 rounded-xl border border-slate-100">
+              <p class="text-slate-400 font-semibold text-[11px]">Drop-off Date</p>
+              <p class="font-bold text-slate-700 mt-0.5">{{ item.depositDate | date:'dd/MM/yyyy HH:mm' }}</p>
             </div>
-            <div class="col-span-2 sm:col-span-1">
-              <p class="text-slate-400 font-medium">Expected Return</p>
-              <p class="font-bold text-rose-600 mt-0.5">
+
+            <div class="col-span-2 sm:col-span-1 bg-rose-50/50 p-2.5 rounded-xl border border-rose-100/60">
+              <p class="text-rose-400 font-semibold text-[11px]">Expected Return</p>
+              <p class="font-extrabold text-rose-600 mt-0.5">
                 {{ (item.estimatedReturnDate?.startsWith('+') ? 'Invalid Date' : (item.estimatedReturnDate | date:'dd/MM/yyyy HH:mm')) }}
               </p>
             </div>
           </div>
 
+          <!-- Intervention History -->
           @if (item.interventionHistoryList && item.interventionHistoryList.length > 0) {
           <div class="pt-3 border-t border-slate-100 space-y-2">
-            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Latest History</p>
-            <div class="text-xs text-slate-600 space-y-1">
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Latest History</p>
+            <div class="text-xs text-slate-600 space-y-1.5">
               @for (hist of item.interventionHistoryList; track hist.id) {
-              <div class="flex items-center justify-between bg-slate-50/80 p-2 rounded-lg">
-                          <span>
-                            <strong class="text-slate-800">{{ hist.author }}</strong>: {{ hist.oldStatus }} &rarr; {{ hist.newStatus }}
-                          </span>
-                <span class="text-[10px] text-slate-400">{{ hist.date | date:'dd/MM HH:mm' }}</span>
+              <div class="flex items-center justify-between bg-slate-50 p-2.5 rounded-xl border border-slate-100/80">
+                <span class="font-medium text-slate-700">
+                  <strong class="text-slate-900 font-bold">{{ hist.author }}</strong>: {{ hist.oldStatus }} &rarr; <span class="text-indigo-600 font-bold">{{ hist.newStatus }}</span>
+                </span>
+                <span class="text-[10px] font-semibold text-slate-400 bg-white px-2 py-0.5 rounded-md border border-slate-100">{{ hist.date | date:'dd/MM HH:mm' }}</span>
               </div>
               }
             </div>
           </div>
           }
+
         </div>
         }
       </div>
       }
     </div>
 
-    <div class="space-y-4">
-      <h2 class="text-lg font-bold text-slate-900">Workload Per Mechanic</h2>
-      <div class="bg-white p-5 rounded border border-slate-200/80 shadow-xs space-y-3">
+    <!-- Right Column: Workload Per Mechanic -->
+    <div class="space-y-5">
+      <div class="flex items-center justify-between px-1">
+        <h2 class="text-lg font-bold text-slate-900">Workload Per Mechanic</h2>
+      </div>
+
+      <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-xs space-y-3">
         @if (stats()?.workloadPerMechanic && (stats()?.workloadPerMechanic | keyvalue)?.length! > 0) {
         @for (item of stats()?.workloadPerMechanic | keyvalue; track item.key) {
-        <div class="flex items-center justify-between p-3 rounded bg-slate-50 border border-slate-100">
-          <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-slate-400 text-lg">person</span>
-            <span class="text-xs font-bold text-slate-700">Mechanic {{ item.key }}</span>
+        <div class="flex items-center justify-between p-3.5 rounded-2xl bg-slate-50/80 border border-slate-100 hover:bg-slate-100/60 transition-colors">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-slate-200/70 flex items-center justify-center text-slate-600">
+              <span class="material-symbols-outlined text-lg">person</span>
+            </div>
+            <span class="text-xs font-bold text-slate-800">Mechanic {{ item.key }}</span>
           </div>
-          <span class="px-2.5 py-1 text-xs font-bold bg-slate-200 text-slate-800 rounded-md">
-                  {{ item.value }} Task(s)
-                </span>
+          <span class="px-3 py-1 text-xs font-black bg-indigo-50 text-indigo-700 border border-indigo-100 rounded-xl">
+            {{ item.value }} Task(s)
+          </span>
         </div>
         }
         } @else {
-        <div class="py-8 text-center text-slate-400 text-xs font-medium">
-          No tasks assigned at the moment.
+        <div class="py-12 text-center text-slate-400 space-y-2">
+          <span class="material-symbols-outlined text-3xl text-slate-300">engineering</span>
+          <p class="text-xs font-semibold">No active tasks assigned at the moment.</p>
         </div>
         }
       </div>
