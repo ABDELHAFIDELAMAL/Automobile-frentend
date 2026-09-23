@@ -1,10 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Specialite } from '../../../enums/Specialty.enum';
 import { NgIf } from '@angular/common';
-import { Mecanicien } from '../../../entities/Mechanic';
-import { MecanicienService } from '../services/mecanicien';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Specialty } from '../../../enums/Specialty.enum';
+import { MechanicService } from '../services/mecanicien';
+import { Mechanic } from '../../../entities/Mechanic';
 
 @Component({
   imports: [ReactiveFormsModule, NgIf],
@@ -14,65 +14,65 @@ import { ActivatedRoute, Router } from '@angular/router';
   standalone: true,
 })
 export class MecanicienCreate implements OnInit {
-  Specialite = Specialite;
+  Speciality = Specialty;
 
-  mecanicienService = inject(MecanicienService);
+  mechanicService = inject(MechanicService);
   route = inject(ActivatedRoute);
   router = inject(Router);
 
-  mecanicienId: number | null = null;
+  mechanicId: number | null = null;
 
-  MecanicienForm = new FormGroup({
-    nom: new FormControl('', [Validators.required]),
-    specialite: new FormControl('', [Validators.required]),
-    disponible: new FormControl(true),
+  MechanicForm = new FormGroup({
+    name: new FormControl('', [Validators.required]),
+    speciality: new FormControl('', [Validators.required]),
+    available: new FormControl(true),
   });
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
 
     if (idParam) {
-      this.mecanicienId = +idParam;
+      this.mechanicId = +idParam;
 
-      this.mecanicienService.getMecanicienById(this.mecanicienId).subscribe({
+      this.mechanicService.getMechanicById(this.mechanicId).subscribe({
         next: (response) => {
-          this.MecanicienForm.patchValue({
-            nom: response.data.nom,
-            specialite: response.data.specialite,
-            disponible: response.data.disponible,
+          this.MechanicForm.patchValue({
+            name: response.data.name,
+            speciality: response.data.specialty,
+            available: response.data.available,
           });
         },
-        error: (error) => console.error('Erreur de chargement', error),
+        error: (error) => console.error('Erreur loading', error),
       });
     }
   }
 
   onSubmit(): void {
-    if (this.MecanicienForm.invalid) {
-      this.MecanicienForm.markAllAsTouched();
+    if (this.MechanicForm.invalid) {
+      this.MechanicForm.markAllAsTouched();
       return;
     }
 
-    const formValue = this.MecanicienForm.value;
+    const formValue = this.MechanicForm.value;
 
-    const mecanicienPayload: any = {
-      nom: formValue.nom,
-      specialite: formValue.specialite,
-      disponible: formValue.disponible,
+    const mechanicPayload: any = {
+      name: formValue.name,
+      speciality: formValue.speciality,
+      available: formValue.available,
     };
 
-    if (this.mecanicienId) {
-      this.updateMecanicien(this.mecanicienId, mecanicienPayload);
+    if (this.mechanicId) {
+      this.updateMechanic(this.mechanicId, mechanicPayload);
     } else {
-      this.createMecanicien(mecanicienPayload);
+      this.createMechanic(mechanicPayload);
     }
   }
 
-  createMecanicien(mecanicien: Mecanicien): void {
-    this.mecanicienService.createMecanicien(mecanicien).subscribe({
+  createMechanic(mechanic: Mechanic): void {
+    this.mechanicService.createMechanic(mechanic).subscribe({
       next: (response) => {
-        alert('Mécanicien créé avec succès !');
-        this.router.navigate(['/mecaniciens']);
+        alert('Mechanic created successfully !');
+        this.router.navigate(['/mechanics']);
       },
       error: (error) => {
         console.log(error);
@@ -80,11 +80,11 @@ export class MecanicienCreate implements OnInit {
     });
   }
 
-  updateMecanicien(id: number, mecanicien: Mecanicien): void {
-    this.mecanicienService.updateMecanicien(id, mecanicien).subscribe({
+  updateMechanic(id: number, mechanic: Mechanic): void {
+    this.mechanicService.updateMechanic(id, mechanic).subscribe({
       next: (response) => {
-        alert('Mecancien updated successfully');
-        this.router.navigate(['/mecaniciens']);
+        alert('Mechanic updated successfully');
+        this.router.navigate(['/mechanics']);
       },
       error: (error) => {
         console.log(error);

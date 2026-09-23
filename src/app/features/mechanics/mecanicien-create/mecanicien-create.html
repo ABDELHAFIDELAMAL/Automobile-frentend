@@ -1,52 +1,55 @@
 <div class="max-w-xl mx-auto mt-10 p-8 bg-white border border-slate-100 rounded-2xl shadow-xl">
-  <form [formGroup]="MecanicienForm" (ngSubmit)="onSubmit()" class="space-y-6">
+  <form [formGroup]="MechanicForm" (ngSubmit)="onSubmit()" class="space-y-6">
 
-    <!-- Entête -->
     <div class="border-b border-slate-100 pb-4">
-      <h1 class="text-2xl font-bold text-slate-800 tracking-tight">Créer un Mécanicien</h1>
-      <p class="text-sm text-slate-500 mt-1">Ajouter un nouveau membre à votre équipe technique.</p>
+      <h1 class="text-2xl font-bold text-slate-800 tracking-tight">
+        {{ mechanicId ? 'Edit Mechanic' : 'Create Mechanic' }}
+      </h1>
+      <p class="text-sm text-slate-500 mt-1">
+        {{ mechanicId ? 'Update information for this staff member.' : 'Add a new member to your technical team.' }}
+      </p>
     </div>
 
-    <!-- Champ Nom -->
     <div class="flex flex-col gap-1.5">
-      <label class="text-sm font-semibold text-slate-700">Nom Complet</label>
+      <label class="text-sm font-semibold text-slate-700">Full Name</label>
       <input
         type="text"
-        formControlName="nom"
-        placeholder="Ex: Jean Dupont"
+        formControlName="name"
+        placeholder="Ex: John Doe"
         class="w-full px-4 py-2.5 border border-slate-200 rounded-xl bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-sm text-slate-700 shadow-sm transition-all"
-        [class.border-red-400]="MecanicienForm.get('nom')?.touched && MecanicienForm.get('nom')?.invalid"
+        [class.border-red-400]="MechanicForm.get('name')?.touched && MechanicForm.get('name')?.invalid"
       >
-      @if (MecanicienForm.get('nom')?.touched && MecanicienForm.get('nom')?.invalid) {
+      @if (MechanicForm.get('name')?.touched && MechanicForm.get('name')?.invalid) {
       <div class="text-red-500 text-xs font-medium mt-1 flex items-center gap-1">
         <span class="material-symbols-outlined text-sm">error</span>
-        @if (MecanicienForm.get('nom')?.errors?.['required']) {
-        <span>Le nom est obligatoire.</span>
+        @if (MechanicForm.get('name')?.errors?.['required']) {
+        <span>Name is required.</span>
         }
       </div>
       }
     </div>
+
     <div class="flex flex-col gap-1.5">
-      <label class="text-sm font-semibold text-slate-700">Spécialité</label>
+      <label class="text-sm font-semibold text-slate-700">Specialty</label>
       <label>
         <select
-          formControlName="specialite"
+          formControlName="speciality"
           class="w-full px-4 py-2.5 border border-slate-200 rounded-xl bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-sm text-slate-700 cursor-pointer shadow-sm transition-all"
-          [class.border-red-400]="MecanicienForm.get('specialite')?.touched && MecanicienForm.get('specialite')?.invalid"
+          [class.border-red-400]="MechanicForm.get('speciality')?.touched && MechanicForm.get('speciality')?.invalid"
         >
-          <option value="" disabled selected>Sélectionnez une spécialité</option>
-          <option value="MECANIQUE_GENERALE">MÉCANIQUE GÉNÉRALE</option>
-          <option value="CARROSSERIE">CARROSSERIE</option>
-          <option value="ELECTRICITE_ELECTRONIQUE">ÉLECTRICITÉ ÉLECTRONIQUE</option>
-          <option value="DIAGNOSTIC">DIAGNOSTIC</option>
-          <option value="PNEUMATIQUE">PNEUMATIQUE</option>
+          <option value="" disabled selected>Select a specialty</option>
+          @for (spec of Speciality | keyvalue; track spec.key) {
+          <option [value]="spec.value">
+            {{ spec.value }}
+          </option>
+          }
         </select>
       </label>
-      @if (MecanicienForm.get('specialite')?.touched && MecanicienForm.get('specialite')?.invalid) {
+      @if (MechanicForm.get('speciality')?.touched && MechanicForm.get('speciality')?.invalid) {
       <div class="text-red-500 text-xs font-medium mt-1 flex items-center gap-1">
         <span class="material-symbols-outlined text-sm">error</span>
-        @if (MecanicienForm.get('specialite')?.errors?.['required']) {
-        <span>La spécialité est obligatoire.</span>
+        @if (MechanicForm.get('speciality')?.errors?.['required']) {
+        <span>Specialty is required.</span>
         }
       </div>
       }
@@ -54,11 +57,11 @@
 
     <div class="flex items-center justify-between p-4 bg-slate-50/50 rounded-xl border border-slate-100">
       <div class="flex flex-col">
-        <span class="text-sm font-semibold text-slate-700">Disponible pour le service</span>
-        <span class="text-xs text-slate-500">Activer pour lui attribuer des tâches immédiatement.</span>
+        <span class="text-sm font-semibold text-slate-700">Available for Service</span>
+        <span class="text-xs text-slate-500">Enable to assign tasks immediately.</span>
       </div>
       <label class="relative inline-flex items-center cursor-pointer select-none">
-        <input type="checkbox" formControlName="disponible" class="sr-only peer">
+        <input type="checkbox" formControlName="available" class="sr-only peer">
         <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
       </label>
     </div>
@@ -66,19 +69,18 @@
     <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
       <button
         type="button"
-        routerLink="/mecaniciens"
-        class="px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50 rounded-xl border border-slate-200 transition-colors"
+        routerLink="/mechanics"
+        class="px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50 rounded-xl border border-slate-200 transition-colors cursor-pointer"
       >
-        Annuler
+        Cancel
       </button>
       <button
         type="submit"
-        [disabled]="MecanicienForm.invalid"
-        class=" font-semibold items-center py-2.5 px-5 bg-black text-white text-sm rounded-xl hover:bg-gray-800 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed transition-all shadow-sm"
+        [disabled]="MechanicForm.invalid"
+        class="font-semibold items-center py-2.5 px-5 bg-black text-white text-sm rounded-xl hover:bg-gray-800 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed transition-all shadow-sm cursor-pointer"
       >
-        Enregistrer
+        Save
       </button>
     </div>
-
   </form>
 </div>
