@@ -152,7 +152,7 @@
             <input type="number"
                    min="0"
                    [value]="intervention.estimatedCost ?? 0"
-                   (change)="setEstimatedCost(intervention.id, $any($event.target).value)"
+                   (change)="setEstimatedCost(intervention.id!, $any($event.target).value)"
                    placeholder="0"
                    class="w-full pl-3 pr-10 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-900 focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600">
             <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400 pointer-events-none">MAD</span>
@@ -160,16 +160,16 @@
         </div>
 
         <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px] text-slate-500 bg-slate-50/50 p-2.5 rounded-lg border border-slate-200/50">
-          <div><strong class="text-slate-700">Drop-off Date:</strong> {{ intervention.dropOffDate | date:'dd/MM/yyyy HH:mm' }}</div>
+          <div><strong class="text-slate-700">Deposit Date:</strong> {{ intervention.depositDate | date:'dd/MM/yyyy HH:mm' }}</div>
           <div>
-            <strong class="text-slate-700">Expected Return:</strong>
-            @if (intervention.expectedReturnDate && !intervention.expectedReturnDate.toString().startsWith('+')) {
-            {{ intervention.expectedReturnDate | date:'dd/MM/yyyy' }}
+            <strong class="text-slate-700">Return Date:</strong>
+            @if (intervention.estimatedReturnDate && !intervention.estimatedReturnDate.toString().startsWith('+')) {
+            {{ intervention.estimatedReturnDate | date:'dd/MM/yyyy' }}
             } @else {
             <span class="text-amber-600 font-medium">Not defined / In progress</span>
             }
           </div>
-          <div><strong class="text-slate-700">Completion Date:</strong> {{ (intervention.completionDate | date:'dd/MM/yyyy HH:mm') || '--' }}</div>
+          <div><strong class="text-slate-700">ClosureDate:</strong> {{ (intervention.closureDate | date:'dd/MM/yyyy HH:mm') || '--' }}</div>
         </div>
       </div>
 
@@ -177,31 +177,31 @@
         <div class="flex-1">
           @switch (intervention.status) {
           @case (Status.RECEIVED) {
-          <button (click)="changeStatus(intervention.id, Status.DIAGNOSTIC_IN_PROGRESS)"
+          <button (click)="changeStatus(intervention.id!, Status.DIAGNOSTIC_IN_PROGRESS)"
                   class="px-4 py-2 text-xs font-bold text-sky-700 bg-sky-50 hover:bg-sky-100 border border-sky-200 rounded-xl transition-all cursor-pointer">
             Start Diagnostic
           </button>
           }
           @case (Status.DIAGNOSTIC_IN_PROGRESS) {
-          <button (click)="changeStatus(intervention.id, Status.QUOTE_PENDING_APPROVAL)"
+          <button (click)="changeStatus(intervention.id!, Status.QUOTATION_TO_VALIDATE)"
                   class="px-4 py-2 text-xs font-bold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-xl transition-all cursor-pointer">
             Generate Quote
           </button>
           }
-          @case (Status.QUOTE_PENDING_APPROVAL) {
-          <button (click)="changeStatus(intervention.id, Status.UNDER_REPAIR)"
+          @case (Status.QUOTATION_TO_VALIDATE) {
+          <button (click)="changeStatus(intervention.id!, Status.UNDER_REPAIR)"
                   class="px-4 py-2 text-xs font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded-xl transition-all cursor-pointer">
             Start Repair
           </button>
           }
           @case (Status.UNDER_REPAIR) {
-          <button (click)="changeStatus(intervention.id, Status.COMPLETED)"
+          <button (click)="changeStatus(intervention.id!, Status.COMPLETED)"
                   class="px-4 py-2 text-xs font-bold text-orange-700 bg-orange-50 hover:bg-orange-100 border border-orange-200 rounded-xl transition-all cursor-pointer">
             Complete Work
           </button>
           }
           @case (Status.COMPLETED) {
-          <button (click)="changeStatus(intervention.id, Status.RETURNED)"
+          <button (click)="changeStatus(intervention.id!, Status.RETURNED)"
                   class="px-4 py-2 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-xl transition-all cursor-pointer">
             Return Vehicle
           </button>
@@ -221,9 +221,9 @@
 
           <div class="flex items-center gap-2">
             <select id="mechanic-select-{{intervention.id}}"
-                    [value]="intervention.mechanic?.id || ''"
-                    [disabled]="availableMechanics.length === 0 || !!intervention.mechanic"
-                    (change)="assignMechanic(intervention.id, $event)"
+                    [value]="intervention.mechanicId ?? ''"
+                    [disabled]="availableMechanics.length === 0 || !!intervention.mechanicId"
+                    (change)="assignMechanic(intervention.id ?? 0, $event)"
                     class="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-700 disabled:bg-slate-100 disabled:text-slate-400 cursor-pointer">
               @if (availableMechanics.length === 0) {
               <option value="" selected disabled>No mechanics available</option>
