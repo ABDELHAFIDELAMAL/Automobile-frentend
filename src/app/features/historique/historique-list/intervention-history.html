@@ -60,17 +60,17 @@
 
         <span class="inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-bold rounded-lg border"
               [ngClass]="{
-                'bg-amber-50 text-amber-800 border-amber-200': log.newStatus === 'RECEIVED' || log.newStatus === 'DIAGNOSTIC_IN_PROGRESS' || log.newStatus === 'QUOTE_PENDING_APPROVAL',
+                'bg-amber-50 text-amber-800 border-amber-200': log.newStatus === 'RECEIVED' || log.newStatus === 'DIAGNOSTIC_IN_PROGRESS' || log.newStatus === 'QUOTATION_TO_VALIDATE',
                 'bg-blue-50 text-blue-800 border-blue-200': log.newStatus === 'UNDER_REPAIR',
                 'bg-emerald-50 text-emerald-800 border-emerald-200': log.newStatus === 'COMPLETED' || log.newStatus === 'RETURNED',
-                'bg-rose-50 text-rose-800 border-rose-200': log.newStatus === 'BLOCKED'
+                'bg-rose-50 text-rose-800 border-rose-200': log.newStatus === 'CANCELLED'
               }">
           <span class="w-1.5 h-1.5 rounded-full"
                 [ngClass]="{
-                  'bg-amber-500': log.newStatus === 'RECEIVED' || log.newStatus === 'DIAGNOSTIC_IN_PROGRESS' || log.newStatus === 'QUOTE_PENDING_APPROVAL',
+                  'bg-amber-500': log.newStatus === 'RECEIVED' || log.newStatus === 'DIAGNOSTIC_IN_PROGRESS' || log.newStatus === 'QUOTATION_TO_VALIDATE',
                   'bg-blue-500': log.newStatus === 'UNDER_REPAIR',
                   'bg-emerald-500': log.newStatus === 'COMPLETED' || log.newStatus === 'RETURNED',
-                  'bg-rose-500': log.newStatus === 'BLOCKED'
+                  'bg-rose-500': log.newStatus === 'CANCELLED'
                 }"></span>
           {{ log.newStatus }}
         </span>
