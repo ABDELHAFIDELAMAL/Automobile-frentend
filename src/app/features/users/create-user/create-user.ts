@@ -9,8 +9,8 @@ import { UserService } from '../services/UserService';
   selector: 'app-create-user',
   standalone: true,
   imports: [ReactiveFormsModule, NgIf, RouterLink],
-  templateUrl: './createUser.html',
-  styleUrl: './createUser.css',
+  templateUrl: './create-user.html',
+  styleUrl: './create-user.css',
 })
 export class CreateUser implements OnInit {
   private readonly userService = inject(UserService);
