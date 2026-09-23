@@ -12,7 +12,7 @@ import { Priority } from '../../../enums/Priority.enum';
   providedIn: 'root',
 })
 export class InterventionService {
-  private readonly baseUrl = `${environment.baseUrl}/api/v1/interventions`;
+  private readonly baseUrl = `${environment.baseUrl}/interventions`;
   private readonly http = inject(HttpClient);
 
   getAllInterventions(): Observable<ApiResponce<Intervention[]>> {

@@ -9,7 +9,7 @@ import { environment } from '../../../environment/environment';
   providedIn: 'root',
 })
 export class DashboardService {
-  private readonly baseUrl = `${environment.baseUrl}/api/v1/dashboard`;
+  private readonly baseUrl = `${environment.baseUrl}/dashboard`;
   private readonly http = inject(HttpClient);
 
   getWorkshopStats(): Observable<ApiResponce<Dashboard>> {

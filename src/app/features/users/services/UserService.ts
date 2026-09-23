@@ -11,7 +11,7 @@ import { Role } from '../../../enums/Role.enum';
 })
 export class UserService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = `${environment.baseUrl}/api/v1/users`;
+  private readonly apiUrl = `${environment.baseUrl}/users`;
 
   getAllUsers(): Observable<ApiResponce<User[]>> {
     return this.http.get<ApiResponce<User[]>>(`${this.apiUrl}`);
