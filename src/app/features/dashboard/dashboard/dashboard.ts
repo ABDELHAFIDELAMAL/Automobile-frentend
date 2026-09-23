@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { DashboardService } from '../services/dashboard-service';
-import {  DashboardStats } from '../../../entities/Dashboard';
 import { DatePipe, KeyValuePipe } from '@angular/common';
+import { Dashboard } from '../../../entities/Dashboard';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,9 +10,9 @@ import { DatePipe, KeyValuePipe } from '@angular/common';
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
-export class Dashboard implements OnInit {
-  stats = signal<DashboardStats | null>(null);
-  retards = signal<any[]>([]);
+export class DashboardComponent implements OnInit {
+  stats = signal<Dashboard | null>(null);
+  delays = signal<any[]>([]);
   loading = signal<boolean>(true);
   errorMessage = signal<string>('');
 
@@ -24,19 +24,19 @@ export class Dashboard implements OnInit {
 
   loadDashboardData(): void {
     this.loading.set(true);
-    this.dashboardService.getAtelierStats().subscribe({
+    this.dashboardService.getWorkshopStats().subscribe({
       next: (response) => {
         if (response && response.data) {
           this.stats.set(response.data);
-          this.retards.set(response.data.retardsRestitution || []);
-          console.log('Stats : ', this.stats());
-          console.log('Stats : ', this.retards());
+          this.delays.set(response.data.delayedReturns || []);
+          console.log('Stats: ', this.stats());
+          console.log('Delays: ', this.delays());
         }
         this.loading.set(false);
       },
       error: (err) => {
         console.error('Error:', err);
-        this.errorMessage.set('Impossible de charger les données.');
+        this.errorMessage.set('Unable to load dashboard data.');
         this.loading.set(false);
       },
     });

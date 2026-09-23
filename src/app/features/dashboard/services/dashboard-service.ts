@@ -12,7 +12,7 @@ export class DashboardService {
   private readonly baseUrl = `${environment.baseUrl}/api/v1/dashboard`;
   private readonly http = inject(HttpClient);
 
-  getAtelierStats(): Observable<ApiResponce<Dashboard>> {
+  getWorkshopStats(): Observable<ApiResponce<Dashboard>> {
     return this.http.get<ApiResponce<Dashboard>>(`${this.baseUrl}/stats`);
   }
 }

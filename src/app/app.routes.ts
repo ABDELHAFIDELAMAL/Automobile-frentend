@@ -1,8 +1,6 @@
 import { Routes } from '@angular/router';
-import { Dashboard } from './features/dashboard/dashboard/dashboard';
 import { Login } from './features/auth/login/login';
 import { InterventionList } from './features/interventions/intervention-list/intervention-list';
-import { InterventionHistory } from './features/historique/historique-list/intervention-history';
 import { Register } from './features/auth/register/register';
 import { Admin } from './features/admin/admin';
 import { InterventionCreate } from './features/interventions/intervention-create/intervention-create';
@@ -14,9 +12,11 @@ import { Profile } from './shared/components/profile/profile';
 import { UserList } from './features/users/user-list/user-list';
 import { MecanicienDetail } from './features/mechanics/mecanicien-detail/mecanicien-detail';
 import { MechanicList } from './features/mechanics/mechanic-list/mechanic-list';
-import { VehicleList } from './features/vehicles/vehicleList/vehicule-list';
+import { VehicleList } from './features/vehicles/vehicle-list/vehicle-list';
 import { VehicleCreate } from './features/vehicles/createVehicle/vehicule-create';
 import { VehicleDetail } from './features/vehicles/vehicleDetails/vehicule-detail';
+import { InterventionHistories } from './features/historique/historique-list/intervention-history';
+import { DashboardComponent } from './features/dashboard/dashboard/dashboard';
 
 
 
@@ -27,7 +27,7 @@ export const routes: Routes = [
   { path: 'login', component: Login, data: { title: 'Login' } },
   { path: 'register', component: Register, data: { title: 'Register' } },
 
-  { path: 'dashboard', component: Dashboard, data: { title: 'Dashboard' } },
+  { path: 'dashboard', component: DashboardComponent, data: { title: 'Dashboard' } },
 
   { path: 'vehicles', component: VehicleList, data: { title: 'Vehicles' } },
   { path: 'vehicles/create', component: VehicleCreate, data: { title: 'Create Vehicle' } },
@@ -43,8 +43,8 @@ export const routes: Routes = [
   { path: 'interventions/create/:id', component: InterventionCreate, data: { title: 'Create Intervention' }, },
   { path: 'interventions/update/:id', component: InterventionCreate, data: { title: 'Update Intervention' }, },
 
-  { path: 'histories', component: InterventionHistory, data: { title: 'Histories' } },
-  { path: 'histories/intervention/:id', component: InterventionHistory, data: { title: 'Details' }, },
+  { path: 'histories', component: InterventionHistories, data: { title: 'Histories' } },
+  { path: 'histories/intervention/:id', component: InterventionHistories, data: { title: 'Details' }, },
 
   { path: 'users', component: UserList, data: { title: 'Users' } },
   { path: 'users/create', component: CreateUser, data: { title: 'Create User' }, },

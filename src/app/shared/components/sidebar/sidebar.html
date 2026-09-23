@@ -1,58 +1,160 @@
-<aside [class.collapsed]="isCollapsed()">
-  <div class="sidebar-header">
-    <div class="logo-box">
+<aside
+  [class.w-\[78px\]]="isCollapsed()"
+  [class.p-3]="isCollapsed()"
+  class="w-[250px] h-screen bg-white border-r border-black/10 flex flex-col p-4 shadow-sm relative transition-all duration-300 ease-in-out select-none"
+>
+
+  <div class="flex items-center gap-3 relative mb-6">
+    <div class="w-11 h-11 bg-black text-white rounded-lg flex items-center justify-center font-bold text-lg min-w-11 border border-black/10">
       <span class="material-symbols-outlined">car_gear</span>
     </div>
-    <div class="brand-info">
-      <p class="brand-name">Automobile</p>
-      <p class="brand-sub">Gestion Atelier</p>
+
+    <div
+      [class.opacity-0]="isCollapsed()"
+      [class.w-0]="isCollapsed()"
+      [class.pointer-events-none]="isCollapsed()"
+      class="flex flex-col transition-opacity duration-200 whitespace-nowrap overflow-hidden"
+    >
+      <p class="font-semibold text-black text-[16px] leading-tight">Automobile</p>
+      <p class="text-black/40 text-[12px] mt-0.5">Workshop Management</p>
     </div>
-    <div class="toggle-btn" (click)="toggleSidebar()">
-      <span class="material-symbols-outlined">chevron_right</span>
-    </div>
+
+    <button
+      (click)="toggleSidebar()"
+      [class.-right-3]="isCollapsed()"
+      [class.rotate-180]="isCollapsed()"
+      class="absolute -right-7 top-1/2 -translate-y-1/2 w-6 h-6 bg-white text-black/60 border border-black/10 rounded-full flex items-center justify-center cursor-pointer transition-transform duration-300 z-50 shadow-sm hover:bg-black hover:text-white"
+    >
+      <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+    </button>
   </div>
 
-  <nav class="nav-menu">
-    <div class="nav-item" routerLink='/home' routerLinkActive="active">
-      <span class="material-symbols-outlined">home</span>
-      <p>Home</p>
-    </div>
+  <nav class="flex flex-col gap-1.5 flex-1">
+    <a
+      routerLink="/home"
+      routerLinkActive="bg-black text-white font-semibold border-black"
+      class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-black/5 hover:text-black"
+    >
+      <span class="material-symbols-outlined text-[22px] min-w-[22px]">home</span>
+      <p
+        [class.opacity-0]="isCollapsed()"
+        [class.w-0]="isCollapsed()"
+        [class.pointer-events-none]="isCollapsed()"
+        class="text-[15px] font-medium transition-opacity duration-200 whitespace-nowrap overflow-hidden"
+      >
+        Home
+      </p>
+    </a>
 
-    <div class="nav-item" routerLink="/dashboard" routerLinkActive="active">
-      <span class="material-symbols-outlined">dashboard</span>
-      <p>Dashboard</p>
-    </div>
+    <a
+      routerLink="/dashboard"
+      routerLinkActive="bg-black text-white font-semibold border-black"
+      class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-black/5 hover:text-black"
+    >
+      <span class="material-symbols-outlined text-[22px] min-w-[22px]">dashboard</span>
+      <p
+        [class.opacity-0]="isCollapsed()"
+        [class.w-0]="isCollapsed()"
+        [class.pointer-events-none]="isCollapsed()"
+        class="text-[15px] font-medium transition-opacity duration-200 whitespace-nowrap overflow-hidden"
+      >
+        Dashboard
+      </p>
+    </a>
 
-    <div class="nav-item" routerLink="/vehicules" routerLinkActive="active">
-      <span class="material-symbols-outlined">directions_car</span>
-      <p>Vehicules</p>
-    </div>
+    <a
+      routerLink="/vehicles"
+      routerLinkActive="bg-black text-white font-semibold border-black"
+      class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-black/5 hover:text-black"
+    >
+      <span class="material-symbols-outlined text-[22px] min-w-[22px]">directions_car</span>
+      <p
+        [class.opacity-0]="isCollapsed()"
+        [class.w-0]="isCollapsed()"
+        [class.pointer-events-none]="isCollapsed()"
+        class="text-[15px] font-medium transition-opacity duration-200 whitespace-nowrap overflow-hidden"
+      >
+        Vehicles
+      </p>
+    </a>
 
-    <div class="nav-item" routerLink="/interventions" routerLinkActive="active">
-      <span class="material-symbols-outlined">build</span>
-      <p>Interventions</p>
-    </div>
+    <a
+      routerLink="/interventions"
+      routerLinkActive="bg-black text-white font-semibold border-black"
+      class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-black/5 hover:text-black"
+    >
+      <span class="material-symbols-outlined text-[22px] min-w-[22px]">build</span>
+      <p
+        [class.opacity-0]="isCollapsed()"
+        [class.w-0]="isCollapsed()"
+        [class.pointer-events-none]="isCollapsed()"
+        class="text-[15px] font-medium transition-opacity duration-200 whitespace-nowrap overflow-hidden"
+      >
+        Interventions
+      </p>
+    </a>
 
-    <div class="nav-item" routerLink="/historiques" routerLinkActive="active">
-      <span class="material-symbols-outlined">history</span>
-      <p>Historique</p>
-    </div>
+    <a
+      routerLink="/histories"
+      routerLinkActive="bg-black text-white font-semibold border-black"
+      class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-black/5 hover:text-black"
+    >
+      <span class="material-symbols-outlined text-[22px] min-w-[22px]">history</span>
+      <p
+        [class.opacity-0]="isCollapsed()"
+        [class.w-0]="isCollapsed()"
+        [class.pointer-events-none]="isCollapsed()"
+        class="text-[15px] font-medium transition-opacity duration-200 whitespace-nowrap overflow-hidden"
+      >
+        History
+      </p>
+    </a>
 
-    <div class="nav-item" routerLink="/mecaniciens" routerLinkActive="active">
-      <span class="material-symbols-outlined">engineering</span>
-      <p>Mecaniciens</p>
-    </div>
+    <a
+      routerLink="/mechanics"
+      routerLinkActive="bg-black text-white font-semibold border-black"
+      class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-black/5 hover:text-black"
+    >
+      <span class="material-symbols-outlined text-[22px] min-w-[22px]">engineering</span>
+      <p
+        [class.opacity-0]="isCollapsed()"
+        [class.w-0]="isCollapsed()"
+        [class.pointer-events-none]="isCollapsed()"
+        class="text-[15px] font-medium transition-opacity duration-200 whitespace-nowrap overflow-hidden"
+      >
+        Mechanics
+      </p>
+    </a>
 
-    <div class="nav-item" routerLink="/utilisateurs" routerLinkActive="active">
-      <span class="material-symbols-outlined">frame_person</span>
-      <p>Utilisateurs</p>
-    </div>
+    <a
+      routerLink="/users"
+      routerLinkActive="bg-black text-white font-semibold border-black"
+      class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-black/5 hover:text-black"
+    >
+      <span class="material-symbols-outlined text-[22px] min-w-[22px]">frame_person</span>
+      <p
+        [class.opacity-0]="isCollapsed()"
+        [class.w-0]="isCollapsed()"
+        [class.pointer-events-none]="isCollapsed()"
+        class="text-[15px] font-medium transition-opacity duration-200 whitespace-nowrap overflow-hidden"
+      >
+        Users
+      </p>
+    </a>
   </nav>
 
-  <div class="sidebar-footer">
-    <div class="nav-item logout-item">
-      <span class="material-symbols-outlined">logout</span>
-      <p>Logout</p>
-    </div>
+  <div class="border-t border-black/10 pt-4 flex flex-col gap-2 mt-auto">
+    <button class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-rose-50 hover:text-rose-600 w-full text-left">
+      <span class="material-symbols-outlined text-[22px] min-w-[22px]">logout</span>
+      <p
+        [class.opacity-0]="isCollapsed()"
+        [class.w-0]="isCollapsed()"
+        [class.pointer-events-none]="isCollapsed()"
+        class="text-[15px] font-medium transition-opacity duration-200 whitespace-nowrap overflow-hidden"
+      >
+        Logout
+      </p>
+    </button>
   </div>
+
 </aside>
