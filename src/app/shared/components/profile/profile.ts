@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Role } from '../../../enums/Role.enum';
 import { CommonModule } from '@angular/common';
-import { UtilisateurService } from '../../../features/users/services/UserService';
+import { UserService } from '../../../features/users/services/UserService';
 
 @Component({
   imports: [CommonModule],
@@ -12,11 +12,11 @@ import { UtilisateurService } from '../../../features/users/services/UserService
   standalone: true,
 })
 export class Profile implements OnInit {
-  private readonly utilisateurService = inject(UtilisateurService);
+  private readonly userService = inject(UserService);
   private readonly route = inject(ActivatedRoute);
 
-  nom: string = '';
-  prenom: string = '';
+  lastName: string = '';
+  firstName: string = '';
   email: string = '';
   roles: Role[] = [];
   enabled: boolean = false;
@@ -24,14 +24,14 @@ export class Profile implements OnInit {
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam) {
-      this.utilisateurService.getUtilisateurById(+idParam).subscribe({
+      this.userService.getUserById(+idParam).subscribe({
         next: (response: any) => {
-          console.log("Réponse brute de l'API :", response.data);
+          console.log('Raw API response:', response.data);
 
           const user = response.data;
 
-          this.nom = user.nom || '';
-          this.prenom = user.prenom || '';
+          this.lastName = user.lastName || user.nom || '';
+          this.firstName = user.firstName || user.prenom || '';
           this.email = user.email || '';
 
           if (user.role) {
@@ -42,7 +42,7 @@ export class Profile implements OnInit {
 
           this.enabled = !!user.enabled;
         },
-        error: (error) => console.error('Erreur API :', error)
+        error: (error) => console.error('API Error:', error),
       });
     }
   }

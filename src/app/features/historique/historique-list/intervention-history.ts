@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { Historique } from '../../../entities/InterventionHistory';
-import { HistoriqueService } from '../service/historique-service';
 import { DatePipe, NgClass } from '@angular/common';
+import { InterventionHistoryService } from '../service/historique-service';
+import { InterventionHistory } from '../../../entities/InterventionHistory';
 
 @Component({
   imports: [DatePipe, NgClass],
@@ -10,29 +10,29 @@ import { DatePipe, NgClass } from '@angular/common';
   templateUrl: './intervention-history.html',
   standalone: true,
 })
-export class InterventionHistory implements OnInit {
-  historiques = signal<Historique[]>([]);
+export class InterventionHistories implements OnInit {
+  histories = signal<InterventionHistory[]>([]);
 
-  constructor(private historiqueService: HistoriqueService) {}
+  constructor(private historyService: InterventionHistoryService) {}
 
   ngOnInit(): void {
-    this.loadHistorique();
+    this.loadHistory();
   }
 
-  loadHistorique() {
-    this.historiqueService.getAllHistoriques().subscribe({
+  loadHistory(): void {
+    this.historyService.getAllHistories().subscribe({
       next: (response) => {
-        this.historiques.set(response.data);
-        console.log('Historiques : ', this.historiques());
+        this.histories.set(response.data);
+        console.log('Histories: ', this.histories());
       },
     });
   }
 
-  getHistoriqueByInterventionId(interventionId: number): void {
-    this.historiqueService.getHistoriqueByInterventionId(interventionId).subscribe({
+  getHistoryByInterventionId(interventionId: number): void {
+    this.historyService.getHistoryByInterventionId(interventionId).subscribe({
       next: (response) => {
-        this.historiques.set(response.data);
-        console.log(`Historiques de l'intervention ${interventionId}`, this.historiques());
+        this.histories.set(response.data);
+        console.log(`Histories for intervention ${interventionId}`, this.histories());
       },
       error: (err) => {
         console.error(err);
@@ -40,29 +40,28 @@ export class InterventionHistory implements OnInit {
     });
   }
 
-
-  rechercherParDate(dateValue: string): void {
+  searchByDate(dateValue: string): void {
     if (!dateValue) {
-      this.reinitialiserFiltre();
+      this.resetFilter();
       return;
     }
 
     const [year, month, day] = dateValue.split('-');
-    const dateFormatee = `${day}/${month}/${year}`;
+    const formattedDate = `${day}/${month}/${year}`;
 
-    this.historiqueService.getHistoriquesByDate(dateFormatee).subscribe({
+    this.historyService.getHistoriesByDate(formattedDate).subscribe({
       next: (response) => {
-        console.log('Données reçues du serveur de la date ' , dateFormatee , ': ', response.data);
-        this.historiques.set(response.data);
+        console.log('Data received from server for date ', formattedDate, ': ', response.data);
+        this.histories.set(response.data);
       },
       error: (err) => {
-        console.error('Erreur lors du filtrage Historique :', err);
-        this.historiques.set([]);
-      }
+        console.error('Error during history filtering:', err);
+        this.histories.set([]);
+      },
     });
   }
 
-  reinitialiserFiltre(): void {
-    this.loadHistorique();
+  resetFilter(): void {
+    this.loadHistory();
   }
 }
