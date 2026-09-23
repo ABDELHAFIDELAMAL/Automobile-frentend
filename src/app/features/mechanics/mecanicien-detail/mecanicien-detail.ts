@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MecanicienService } from '../../mechanics/services/mecanicien';
+import { MechanicService } from '../services/mecanicien';
 
 @Component({
   imports: [],
@@ -9,5 +9,5 @@ import { MecanicienService } from '../../mechanics/services/mecanicien';
   standalone: true,
 })
 export class MecanicienDetail {
-  constructor(private MecanicienService: MecanicienService) {}
+  constructor(private MechanicsService: MechanicService) {}
 }

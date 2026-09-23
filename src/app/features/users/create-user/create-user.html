@@ -1,0 +1,77 @@
+<div class="form-container">
+  <h2>
+    {{ userId ? 'Update' : 'Create' }} User
+  </h2>
+
+  <div *ngIf="errorMessage" class="error-msg-global">
+    {{ errorMessage }}
+  </div>
+
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="bg-blue-100 p-4">
+
+    <div class="form-group">
+      <label for="lastName">Last Name</label>
+      <input id="lastName" type="text" formControlName="lastName">
+      <div *ngIf="userForm.get('lastName')?.touched && userForm.get('lastName')?.invalid" class="error-msg">
+        <span *ngIf="userForm.get('lastName')?.errors?.['required']">last name required.</span>
+        <span *ngIf="userForm.get('lastName')?.errors?.['minlength']">The last name must contain at least 3 characters..</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="firstName">First Name</label>
+      <input id="firstName" type="text" formControlName="firstName">
+      <div *ngIf="userForm.get('firstName')?.touched && userForm.get('firstName')?.invalid" class="error-msg">
+        <span *ngIf="userForm.get('firstName')?.errors?.['required']">FisrtName required.</span>
+        <span *ngIf="userForm.get('firstName')?.errors?.['minlength']">The first name must contain at least 3 characters..</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email">
+      <div *ngIf="userForm.get('email')?.touched && userForm.get('email')?.invalid" class="error-msg">
+        <span *ngIf="userForm.get('email')?.errors?.['required']">L'email required.</span>
+        <span *ngIf="userForm.get('email')?.errors?.['email']">Entrer adress email valide.</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password {{ userId ? '(Optionnel)' : '' }}</label>
+      <input id="password" type="password" formControlName="password" >
+      <div *ngIf="userForm.get('password')?.touched && userForm.get('password')?.invalid" class="error-msg">
+        <span *ngIf="userForm.get('password')?.errors?.['required']">Password required.</span>
+        <span *ngIf="userForm.get('password')?.errors?.['minlength']">Password must contain min 6 caracteres.</span>
+        <span *ngIf="userForm.get('password')?.errors?.['maxlength']">Password must contain max 30 caracteres.</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="role">Role</label>
+      <select id="role" formControlName="role">
+        <option value="" disabled>Choose a role</option>
+        <option value="ADMIN">Administrator</option>
+        <option value="MECHANIC">Mechanic</option>
+        <option value="CLIENT">Client</option>
+      </select>
+      <div *ngIf="userForm.get('role')?.touched && userForm.get('role')?.invalid" class="error-msg">
+        <span *ngIf="userForm.get('role')?.errors?.['required']">Role required.</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="enabled">Statut compte</label>
+      <select id="enabled" formControlName="enabled">
+        <option value="true">Active</option>
+        <option value="false">Desactive</option>
+      </select>
+      <div *ngIf="userForm.get('enabled')?.touched && userForm.get('enabled')?.invalid" class="error-msg">
+        <span *ngIf="userForm.get('enabled')?.errors?.['required']">Status required.</span>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit">save</button>
+    </div>
+  </form>
+</div>
