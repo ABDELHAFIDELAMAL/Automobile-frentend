@@ -1,159 +1,159 @@
 <aside
-  [class.w-\[78px\]]="isCollapsed()"
-  [class.p-3]="isCollapsed()"
-  class="w-[250px] h-screen bg-white border-r border-black/10 flex flex-col p-4 shadow-sm relative transition-all duration-300 ease-in-out select-none"
+  [class.w-[250px]]="!isCollapsed()"
+  [class.w-[80px]]="isCollapsed()"
+  [class.px-3]="isCollapsed()"
+  class="h-screen bg-white border-r border-black/10 flex flex-col p-4 shadow-sm relative transition-all duration-300 ease-in-out select-none z-30"
 >
 
-  <div class="flex items-center gap-3 relative mb-6">
-    <div class="w-11 h-11 bg-black text-white rounded-lg flex items-center justify-center font-bold text-lg min-w-11 border border-black/10">
+  <button
+    (click)="toggleSidebar()"
+    [class.rotate-180]="isCollapsed()"
+    class="absolute -right-3 top-7 w-6 h-6 bg-white text-black/60 border border-black/10 rounded-full flex items-center justify-center cursor-pointer transition-transform duration-300 z-[100] shadow-md hover:bg-black hover:text-white shrink-0"
+  >
+    <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+  </button>
+
+  <div class="flex items-center gap-3 relative mb-6 overflow-hidden">
+    <div class="w-11 h-11 bg-black text-white rounded-lg flex items-center justify-center font-bold text-lg min-w-[44px] shrink-0 border border-black/10">
       <span class="material-symbols-outlined">car_gear</span>
     </div>
 
     <div
       [class.opacity-0]="isCollapsed()"
-      [class.w-0]="isCollapsed()"
-      [class.pointer-events-none]="isCollapsed()"
-      class="flex flex-col transition-opacity duration-200 whitespace-nowrap overflow-hidden"
+      [class.max-w-0]="isCollapsed()"
+      [class.max-w-[180px]]="!isCollapsed()"
+      class="flex flex-col transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden"
     >
       <p class="font-semibold text-black text-[16px] leading-tight">Automobile</p>
       <p class="text-black/40 text-[12px] mt-0.5">Workshop Management</p>
     </div>
-
-    <button
-      (click)="toggleSidebar()"
-      [class.-right-3]="isCollapsed()"
-      [class.rotate-180]="isCollapsed()"
-      class="absolute -right-7 top-1/2 -translate-y-1/2 w-6 h-6 bg-white text-black/60 border border-black/10 rounded-full flex items-center justify-center cursor-pointer transition-transform duration-300 z-50 shadow-sm hover:bg-black hover:text-white"
-    >
-      <span class="material-symbols-outlined text-[18px]">chevron_right</span>
-    </button>
   </div>
 
-  <nav class="flex flex-col gap-1.5 flex-1">
+  <nav class="flex flex-col gap-1.5 flex-1 overflow-x-hidden">
     <a
       routerLink="/home"
       routerLinkActive="bg-black text-white font-semibold border-black"
-      class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-black/5 hover:text-black"
+      class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-black/5 hover:text-black overflow-hidden whitespace-nowrap"
     >
-      <span class="material-symbols-outlined text-[22px] min-w-[22px]">home</span>
-      <p
+      <span class="material-symbols-outlined text-[22px] min-w-[22px] shrink-0">home</span>
+      <span
         [class.opacity-0]="isCollapsed()"
-        [class.w-0]="isCollapsed()"
-        [class.pointer-events-none]="isCollapsed()"
-        class="text-[15px] font-medium transition-opacity duration-200 whitespace-nowrap overflow-hidden"
+        [class.max-w-0]="isCollapsed()"
+        [class.max-w-[200px]]="!isCollapsed()"
+        class="text-[15px] font-medium transition-all duration-300 ease-in-out overflow-hidden inline-block"
       >
         Home
-      </p>
+      </span>
     </a>
 
     <a
       routerLink="/dashboard"
       routerLinkActive="bg-black text-white font-semibold border-black"
-      class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-black/5 hover:text-black"
+      class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-black/5 hover:text-black overflow-hidden whitespace-nowrap"
     >
-      <span class="material-symbols-outlined text-[22px] min-w-[22px]">dashboard</span>
-      <p
+      <span class="material-symbols-outlined text-[22px] min-w-[22px] shrink-0">dashboard</span>
+      <span
         [class.opacity-0]="isCollapsed()"
-        [class.w-0]="isCollapsed()"
-        [class.pointer-events-none]="isCollapsed()"
-        class="text-[15px] font-medium transition-opacity duration-200 whitespace-nowrap overflow-hidden"
+        [class.max-w-0]="isCollapsed()"
+        [class.max-w-[200px]]="!isCollapsed()"
+        class="text-[15px] font-medium transition-all duration-300 ease-in-out overflow-hidden inline-block"
       >
         Dashboard
-      </p>
+      </span>
     </a>
 
     <a
       routerLink="/vehicles"
       routerLinkActive="bg-black text-white font-semibold border-black"
-      class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-black/5 hover:text-black"
+      class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-black/5 hover:text-black overflow-hidden whitespace-nowrap"
     >
-      <span class="material-symbols-outlined text-[22px] min-w-[22px]">directions_car</span>
-      <p
+      <span class="material-symbols-outlined text-[22px] min-w-[22px] shrink-0">directions_car</span>
+      <span
         [class.opacity-0]="isCollapsed()"
-        [class.w-0]="isCollapsed()"
-        [class.pointer-events-none]="isCollapsed()"
-        class="text-[15px] font-medium transition-opacity duration-200 whitespace-nowrap overflow-hidden"
+        [class.max-w-0]="isCollapsed()"
+        [class.max-w-[200px]]="!isCollapsed()"
+        class="text-[15px] font-medium transition-all duration-300 ease-in-out overflow-hidden inline-block"
       >
         Vehicles
-      </p>
+      </span>
     </a>
 
     <a
       routerLink="/interventions"
       routerLinkActive="bg-black text-white font-semibold border-black"
-      class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-black/5 hover:text-black"
+      class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-black/5 hover:text-black overflow-hidden whitespace-nowrap"
     >
-      <span class="material-symbols-outlined text-[22px] min-w-[22px]">build</span>
-      <p
+      <span class="material-symbols-outlined text-[22px] min-w-[22px] shrink-0">build</span>
+      <span
         [class.opacity-0]="isCollapsed()"
-        [class.w-0]="isCollapsed()"
-        [class.pointer-events-none]="isCollapsed()"
-        class="text-[15px] font-medium transition-opacity duration-200 whitespace-nowrap overflow-hidden"
+        [class.max-w-0]="isCollapsed()"
+        [class.max-w-[200px]]="!isCollapsed()"
+        class="text-[15px] font-medium transition-all duration-300 ease-in-out overflow-hidden inline-block"
       >
         Interventions
-      </p>
+      </span>
     </a>
 
     <a
       routerLink="/histories"
       routerLinkActive="bg-black text-white font-semibold border-black"
-      class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-black/5 hover:text-black"
+      class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-black/5 hover:text-black overflow-hidden whitespace-nowrap"
     >
-      <span class="material-symbols-outlined text-[22px] min-w-[22px]">history</span>
-      <p
+      <span class="material-symbols-outlined text-[22px] min-w-[22px] shrink-0">history</span>
+      <span
         [class.opacity-0]="isCollapsed()"
-        [class.w-0]="isCollapsed()"
-        [class.pointer-events-none]="isCollapsed()"
-        class="text-[15px] font-medium transition-opacity duration-200 whitespace-nowrap overflow-hidden"
+        [class.max-w-0]="isCollapsed()"
+        [class.max-w-[200px]]="!isCollapsed()"
+        class="text-[15px] font-medium transition-all duration-300 ease-in-out overflow-hidden inline-block"
       >
         History
-      </p>
+      </span>
     </a>
 
     <a
       routerLink="/mechanics"
       routerLinkActive="bg-black text-white font-semibold border-black"
-      class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-black/5 hover:text-black"
+      class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-black/5 hover:text-black overflow-hidden whitespace-nowrap"
     >
-      <span class="material-symbols-outlined text-[22px] min-w-[22px]">engineering</span>
-      <p
+      <span class="material-symbols-outlined text-[22px] min-w-[22px] shrink-0">engineering</span>
+      <span
         [class.opacity-0]="isCollapsed()"
-        [class.w-0]="isCollapsed()"
-        [class.pointer-events-none]="isCollapsed()"
-        class="text-[15px] font-medium transition-opacity duration-200 whitespace-nowrap overflow-hidden"
+        [class.max-w-0]="isCollapsed()"
+        [class.max-w-[200px]]="!isCollapsed()"
+        class="text-[15px] font-medium transition-all duration-300 ease-in-out overflow-hidden inline-block"
       >
         Mechanics
-      </p>
+      </span>
     </a>
 
     <a
       routerLink="/users"
       routerLinkActive="bg-black text-white font-semibold border-black"
-      class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-black/5 hover:text-black"
+      class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-black/5 hover:text-black overflow-hidden whitespace-nowrap"
     >
-      <span class="material-symbols-outlined text-[22px] min-w-[22px]">frame_person</span>
-      <p
+      <span class="material-symbols-outlined text-[22px] min-w-[22px] shrink-0">frame_person</span>
+      <span
         [class.opacity-0]="isCollapsed()"
-        [class.w-0]="isCollapsed()"
-        [class.pointer-events-none]="isCollapsed()"
-        class="text-[15px] font-medium transition-opacity duration-200 whitespace-nowrap overflow-hidden"
+        [class.max-w-0]="isCollapsed()"
+        [class.max-w-[200px]]="!isCollapsed()"
+        class="text-[15px] font-medium transition-all duration-300 ease-in-out overflow-hidden inline-block"
       >
         Users
-      </p>
+      </span>
     </a>
   </nav>
 
-  <div class="border-t border-black/10 pt-4 flex flex-col gap-2 mt-auto">
-    <button class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-rose-50 hover:text-rose-600 w-full text-left">
-      <span class="material-symbols-outlined text-[22px] min-w-[22px]">logout</span>
-      <p
+  <div class="border-t border-black/10 pt-4 flex flex-col gap-2 mt-auto overflow-hidden">
+    <button class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-rose-50 hover:text-rose-600 w-full text-left whitespace-nowrap">
+      <span class="material-symbols-outlined text-[22px] min-w-[22px] shrink-0">logout</span>
+      <span
         [class.opacity-0]="isCollapsed()"
-        [class.w-0]="isCollapsed()"
-        [class.pointer-events-none]="isCollapsed()"
-        class="text-[15px] font-medium transition-opacity duration-200 whitespace-nowrap overflow-hidden"
+        [class.max-w-0]="isCollapsed()"
+        [class.max-w-[200px]]="!isCollapsed()"
+        class="text-[15px] font-medium transition-all duration-300 ease-in-out overflow-hidden inline-block"
       >
         Logout
-      </p>
+      </span>
     </button>
   </div>
 
