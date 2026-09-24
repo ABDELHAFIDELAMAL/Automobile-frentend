@@ -24,7 +24,7 @@ export class MechanicCreate implements OnInit {
 
   MechanicForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
-    speciality: new FormControl('', [Validators.required]),
+    specialty: new FormControl('', [Validators.required]),
     available: new FormControl(true),
   });
 
@@ -38,7 +38,7 @@ export class MechanicCreate implements OnInit {
         next: (response) => {
           this.MechanicForm.patchValue({
             name: response.data.name,
-            speciality: response.data.specialty,
+            specialty: response.data.specialty,
             available: response.data.available,
           });
         },
@@ -57,7 +57,7 @@ export class MechanicCreate implements OnInit {
 
     const mechanicPayload: any = {
       name: formValue.name,
-      speciality: formValue.speciality,
+      specialty: formValue.specialty,
       available: formValue.available,
     };
 
