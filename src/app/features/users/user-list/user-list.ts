@@ -3,6 +3,7 @@ import { NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { User } from '../../../entities/User';
 import { UserService } from '../../../services/user-service/UserService';
+import { KeycloakService } from '../../../services/keycloak-service/keycloak-service';
 
 @Component({
   imports: [NgClass, RouterLink],
@@ -13,6 +14,7 @@ import { UserService } from '../../../services/user-service/UserService';
 })
 export class UserList implements OnInit {
   private readonly userService = inject(UserService);
+  private keycloakService = inject(KeycloakService);
   users = signal<User[]>([]);
 
   ngOnInit(): void {
@@ -61,5 +63,12 @@ export class UserList implements OnInit {
         },
       });
     }
+  }
+
+  isAdmin(){
+    this.keycloakService.isAdmin();
+  }
+  isUser(){
+    this.keycloakService.isUser();
   }
 }

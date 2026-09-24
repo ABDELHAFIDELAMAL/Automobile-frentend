@@ -4,6 +4,7 @@ import { Mechanic } from '../../../entities/Mechanic';
 import { Specialty } from '../../../enums/Specialty.enum';
 import { NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { KeycloakService } from '../../../services/keycloak-service/keycloak-service';
 
 @Component({
   selector: 'app-mecanicien-list',
@@ -16,6 +17,8 @@ export class MechanicList implements OnInit {
   mechanics = signal<Mechanic[]>([]);
   specialities: Specialty[] = Object.values(Specialty);
   chargesData: Record<number, number> = {};
+
+  private keycloakService = inject(KeycloakService);
 
   private readonly mechanicService = inject(MechanicService);
 
@@ -128,5 +131,12 @@ export class MechanicList implements OnInit {
         console.error('Error during getWorkload:', error);
       },
     });
+  }
+
+  isAdmin(){
+    this.keycloakService.isAdmin();
+  }
+  isUser(){
+    this.keycloakService.isUser();
   }
 }
