@@ -3,10 +3,10 @@ import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { Intervention } from '../../../entities/Interventions';
-import { InterventionService } from '../services/intervention';
+import { InterventionService } from '../../../services/intervention-service/intervention';
 import { Status } from '../../../enums/Status.enum';
 import { Mechanic } from '../../../entities/Mechanic';
-import { MechanicService } from '../../mechanics/services/mechanicService';
+import { MechanicService } from '../../../services/mechanic-service/mechanicService';
 import { InterventionType } from '../../../enums/InterventionType.enum';
 import { Priority } from '../../../enums/Priority.enum';
 

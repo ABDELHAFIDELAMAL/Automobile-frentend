@@ -1,12 +1,12 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Intervention } from '../../../entities/Interventions';
-import { ApiResponce } from '../../../entities/ApiResponce';
-import { environment } from '../../../environment/environment';
-import { Mechanic } from '../../../entities/Mechanic';
-import { InterventionType } from '../../../enums/InterventionType.enum';
-import { Priority } from '../../../enums/Priority.enum';
+import { Intervention } from '../../entities/Interventions';
+import { ApiResponce } from '../../entities/ApiResponce';
+import { environment } from '../../environment/environment';
+import { Mechanic } from '../../entities/Mechanic';
+import { InterventionType } from '../../enums/InterventionType.enum';
+import { Priority } from '../../enums/Priority.enum';
 
 @Injectable({
   providedIn: 'root',

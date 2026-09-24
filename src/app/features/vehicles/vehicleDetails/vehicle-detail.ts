@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule, CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { VehicleService } from '../services/VehicleService';
+import { VehicleService } from '../../../services/vehicle-service/VehicleService';
 import { Vehicle } from '../../../entities/Vehicle';
 import { Status } from '../../../enums/Status.enum';
 

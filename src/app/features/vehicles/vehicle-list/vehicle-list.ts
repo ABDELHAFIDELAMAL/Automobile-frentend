@@ -1,5 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { VehicleService } from '../services/VehicleService';
+import { VehicleService } from '../../../services/vehicle-service/VehicleService';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Vehicle } from '../../../entities/Vehicle';

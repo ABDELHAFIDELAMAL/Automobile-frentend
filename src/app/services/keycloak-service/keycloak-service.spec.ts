@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
-import { VehicleService } from './VehicleService';
+import { KeycloakService } from './keycloak-service';
 
-describe('VehiculeService', () => {
-  let service: VehicleService;
+describe('KeycloakService', () => {
+  let service: KeycloakService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(VehicleService);
+    service = TestBed.inject(KeycloakService);
   });
 
   it('should be created', () => {

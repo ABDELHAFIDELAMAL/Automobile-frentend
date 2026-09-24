@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angula
 import { User } from '../../../entities/User';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgIf } from '@angular/common';
-import { UserService } from '../services/UserService';
+import { UserService } from '../../../services/user-service/UserService';
 
 @Component({
   selector: 'app-create-user',
