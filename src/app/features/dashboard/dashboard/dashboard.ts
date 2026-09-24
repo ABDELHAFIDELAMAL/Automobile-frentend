@@ -1,5 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { DashboardService } from '../services/dashboard-service';
+import { DashboardService } from '../../../services/dashboard-service/dashboard-service';
 import { DatePipe, KeyValuePipe } from '@angular/common';
 import { Dashboard } from '../../../entities/Dashboard';
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIf } from '@angular/common';
-import { VehicleService } from '../services/VehicleService';
+import { VehicleService } from '../../../services/vehicle-service/VehicleService';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Vehicle } from '../../../entities/Vehicle';
 import { HttpErrorResponse } from '@angular/common/http';

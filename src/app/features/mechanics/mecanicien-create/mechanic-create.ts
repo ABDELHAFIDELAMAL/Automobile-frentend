@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { KeyValuePipe, NgIf } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Specialty } from '../../../enums/Specialty.enum';
-import { MechanicService } from '../services/mechanicService';
+import { MechanicService } from '../../../services/mechanic-service/mechanicService';
 import { Mechanic } from '../../../entities/Mechanic';
 
 @Component({

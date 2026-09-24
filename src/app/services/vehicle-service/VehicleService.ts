@@ -1,9 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Vehicle } from '../../../entities/Vehicle';
+import { Vehicle } from '../../entities/Vehicle';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environment/environment';
-import { ApiResponce } from '../../../entities/ApiResponce';
+import { environment } from '../../environment/environment';
+import { ApiResponce } from '../../entities/ApiResponce';
 
 @Injectable({
   providedIn: 'root',

@@ -1,18 +1,32 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import {
+  APP_INITIALIZER,
+  ApplicationConfig,
+  provideBrowserGlobalErrorListeners,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
-import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
-import { AuthInterceptor } from './features/auth/interceptors/auth-interceptor';
+import { provideHttpClient, withInterceptors } from '@angular/common/http'; // 👈 Changement ici
 import { registerLocaleData } from '@angular/common';
 import localeFrMa from '@angular/common/locales/fr-MA';
+import { authInterceptor } from './interceptors/auth-interceptor';
+import { KeycloakService } from './services/keycloak-service/keycloak-service';
 
 registerLocaleData(localeFrMa);
 
+export function initializeKeycloak(keycloakService: KeycloakService) {
+  return () => keycloakService.init();
+}
+
 export const appConfig: ApplicationConfig = {
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor , multi : true },
-    provideBrowserGlobalErrorListeners(),
-    provideHttpClient(),
     provideRouter(routes),
+    provideHttpClient(withInterceptors([authInterceptor])),
+    provideBrowserGlobalErrorListeners(),
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeKeycloak,
+      multi: true,
+      deps: [KeycloakService],
+    },
   ],
 };

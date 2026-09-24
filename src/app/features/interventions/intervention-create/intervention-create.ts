@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { InterventionService } from '../services/intervention';
+import { InterventionService } from '../../../services/intervention-service/intervention';
 import { Intervention } from '../../../entities/Interventions';
 
 @Component({

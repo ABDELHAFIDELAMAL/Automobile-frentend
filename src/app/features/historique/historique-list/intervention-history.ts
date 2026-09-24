@@ -1,6 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { DatePipe, NgClass } from '@angular/common';
-import { InterventionHistoryService } from '../service/historique-service';
+import { InterventionHistoryService } from '../../../services/intervention-history-service/historique-service';
 import { InterventionHistory } from '../../../entities/InterventionHistory';
 
 @Component({

@@ -2,7 +2,7 @@ import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { User } from '../../../entities/User';
-import { UserService } from '../services/UserService';
+import { UserService } from '../../../services/user-service/UserService';
 
 @Component({
   imports: [NgClass, RouterLink],

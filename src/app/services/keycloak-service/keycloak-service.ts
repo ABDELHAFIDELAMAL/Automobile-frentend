@@ -1,0 +1,47 @@
+import { Injectable } from '@angular/core';
+import Keycloak from 'keycloak-js';
+
+@Injectable({
+  providedIn: 'root',
+})
+
+export class KeycloakService {
+  private keycloak = new Keycloak({
+    url: 'http://localhost:8080',
+    realm: 'AutomobileRealm',
+    clientId: 'AutomobileClient',
+  });
+
+  async init(): Promise<boolean> {
+    return await this.keycloak.init({
+      onLoad: 'login-required',
+      checkLoginIframe: false,
+    });
+  }
+
+  getToken(): string | undefined {
+    return this.keycloak.token;
+  }
+
+  async logout(): Promise<void> {
+    await this.keycloak.logout({ redirectUri: window.location.origin });
+  }
+
+  getUsername(): string | undefined {
+    return this.keycloak.tokenParsed?.['preferred_username'];
+  }
+
+  getRoles(): string[] {
+    const resourceAccess = this.keycloak.tokenParsed?.['resource_access'];
+    const clientAccess = resourceAccess?.['AutomobileClient'];
+    return clientAccess?.['roles'] ?? [];
+  }
+
+  isAdmin(): boolean {
+    return this.getRoles().includes('ADMIN');
+  }
+
+  isUser(): boolean {
+    return this.getRoles().includes('USER');
+  }
+}
