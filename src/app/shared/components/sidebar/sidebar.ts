@@ -27,4 +27,12 @@ export class SidebarComponent {
     return this.keycloakService.isUser();
   }
 
+
+  onLogout(): void {
+    if (confirm('Are you sure you want to logout?')) {
+      this.keycloakService.logout();
+    }
+  }
+
+
 }
