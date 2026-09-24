@@ -9,6 +9,7 @@ import { Mechanic } from '../../../entities/Mechanic';
 import { MechanicService } from '../../../services/mechanic-service/mechanicService';
 import { InterventionType } from '../../../enums/InterventionType.enum';
 import { Priority } from '../../../enums/Priority.enum';
+import { KeycloakService } from '../../../services/keycloak-service/keycloak-service';
 
 @Component({
   selector: 'app-intervention-list',
@@ -29,6 +30,8 @@ export class InterventionList implements OnInit {
   interventions = signal<Intervention[]>([]);
   mechanics = signal<Mechanic[]>([]);
   totalCost = signal<number>(0);
+
+  private keycloakService = inject(KeycloakService);
 
   notification = signal<{ message: string; type: 'success' | 'error' } | null>(null);
 
@@ -371,5 +374,16 @@ export class InterventionList implements OnInit {
         alert(err.message);
       },
     });
+  }
+
+  isAdmin() : boolean {
+    if(this.keycloakService.isAdmin()) {
+      return true;
+    }
+    return false;
+  }
+
+  isUser(){
+    this.keycloakService.isUser();
   }
 }

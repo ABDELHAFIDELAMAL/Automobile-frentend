@@ -1,10 +1,11 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { VehicleService } from '../../../services/vehicle-service/VehicleService';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Vehicle } from '../../../entities/Vehicle';
 import { RouterLink } from '@angular/router';
 import { Status } from '../../../enums/Status.enum';
+import { KeycloakService } from '../../../services/keycloak-service/keycloak-service';
 
 @Component({
   imports: [CommonModule, FormsModule, RouterLink],
@@ -18,6 +19,7 @@ export class VehicleList implements OnInit {
   searchTerm = '';
   statuses = Object.values(Status);
   selectedStatus: Status | null = null;
+  keycloakService = inject(KeycloakService);
   constructor(private vehicleService: VehicleService) {}
 
   ngOnInit() {
@@ -77,5 +79,13 @@ export class VehicleList implements OnInit {
         console.error('Error searching vehicles:', err);
       },
     });
+  }
+
+
+  isAdmin(){
+    return this.keycloakService.isAdmin();
+  }
+  isUser(){
+    return this.keycloakService.isUser();
   }
 }

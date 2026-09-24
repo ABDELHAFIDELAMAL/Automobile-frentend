@@ -35,7 +35,8 @@
       <div class="w-full sm:w-auto">
         <button
           type="button"
-          routerLink="/mechanics/create"
+          *ngIf="isAdmin()"
+          routerLink="/mecaniciens/create"
           class="w-full sm:w-auto flex items-center justify-center gap-2 py-2.5 px-4 bg-slate-900 hover:bg-slate-800 active:bg-black text-white text-xs md:text-sm font-semibold rounded-xl shadow-sm transition-all duration-200 cursor-pointer"
         >
           <span class="material-symbols-outlined text-lg">add</span>
@@ -100,7 +101,7 @@
           <div class="flex items-center gap-1">
             <button
               type="button"
-              [routerLink]="['/mechanics/update', mecano.id]"
+              [routerLink]="['/mecaniciens/update', mecano.id]"
               class="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
             >
               <span class="material-symbols-outlined text-xl">edit</span>
@@ -126,7 +127,7 @@
           <th class="py-4 px-6">Specialty</th>
           <th class="py-4 px-6">Availability</th>
           <th class="py-4 px-6">Workload (Tasks)</th>
-          <th class="py-4 px-6 text-right">Actions</th>
+          <th class="py-4 px-6 text-right" *ngIf="isAdmin()">Actions</th>
         </tr>
         </thead>
         <tbody class="divide-y divide-slate-100 text-sm font-medium text-slate-700">
@@ -146,7 +147,7 @@
                 {{ mecano.interventions?.length ?? chargesData[mecano.id] ?? 0 }}
               </span>
           </td>
-          <td class="py-4 px-6">
+          <td class="py-4 px-6" *ngIf="isAdmin()">
             <div class="flex items-center justify-end gap-3">
               <div class="relative inline-flex items-center p-1 bg-slate-100/80 rounded-full w-38 select-none shadow-inner">
                 <div
