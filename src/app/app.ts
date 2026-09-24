@@ -4,7 +4,6 @@ import { SidebarComponent } from './shared/components/sidebar/sidebar';
 import { Header } from './shared/components/header/header';
 import { Footer } from './shared/components/footer/footer';
 import { VehicleList } from './features/vehicles/vehicle-list/vehicle-list';
-import { Login } from './features/auth/login/login';
 import { DashboardComponent } from './features/dashboard/dashboard/dashboard';
 
 
@@ -17,7 +16,6 @@ import { DashboardComponent } from './features/dashboard/dashboard/dashboard';
     SidebarComponent,
     DashboardComponent,
     VehicleList,
-    Login,
   ],
   selector: 'app-root',
   styleUrl: './app.css',

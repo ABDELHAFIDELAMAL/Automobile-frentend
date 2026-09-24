@@ -1,8 +1,5 @@
 import { Routes } from '@angular/router';
-import { Login } from './features/auth/login/login';
 import { InterventionList } from './features/interventions/intervention-list/intervention-list';
-import { Register } from './features/auth/register/register';
-import { Admin } from './features/admin/admin';
 import { InterventionCreate } from './features/interventions/intervention-create/intervention-create';
 import { MechanicCreate } from './features/mechanics/mecanicien-create/mechanic-create';
 import { CreateUser } from './features/users/create-user/create-user';
@@ -21,11 +18,8 @@ import { DashboardComponent } from './features/dashboard/dashboard/dashboard';
 
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: Home, data: { title: 'Home' } },
-
-  { path: 'login', component: Login, data: { title: 'Login' } },
-  { path: 'register', component: Register, data: { title: 'Register' } },
 
   { path: 'dashboard', component: DashboardComponent, data: { title: 'Dashboard' } },
 
@@ -51,8 +45,4 @@ export const routes: Routes = [
   { path: 'users/update/:id', component: CreateUser, data: { title: 'Update User' }, },
   { path: 'users/password/change/:id', component: ChangePassword, data: { title: 'Change password' }, },
   { path : 'profile/:id', component: Profile, data : { title : 'Profile' } },
-  {
-    path: 'admin', component: Admin,
-    children: [],
-  },
 ];
