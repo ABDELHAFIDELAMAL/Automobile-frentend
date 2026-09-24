@@ -33,9 +33,9 @@
       <label class="text-sm font-semibold text-slate-700">Specialty</label>
       <label>
         <select
-          formControlName="speciality"
+          formControlName="specialty"
           class="w-full px-4 py-2.5 border border-slate-200 rounded-xl bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-sm text-slate-700 cursor-pointer shadow-sm transition-all"
-          [class.border-red-400]="MechanicForm.get('speciality')?.touched && MechanicForm.get('speciality')?.invalid"
+          [class.border-red-400]="MechanicForm.get('specialty')?.touched && MechanicForm.get('specialty')?.invalid"
         >
           <option value="" disabled selected>Select a specialty</option>
           @for (spec of Speciality | keyvalue; track spec.key) {
