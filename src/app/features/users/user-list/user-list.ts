@@ -1,12 +1,12 @@
 import { Component, OnInit, signal, computed, inject } from '@angular/core';
-import { NgClass } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { User } from '../../../entities/User';
 import { UserService } from '../../../services/user-service/UserService';
 import { KeycloakService } from '../../../services/keycloak-service/keycloak-service';
 
 @Component({
-  imports: [NgClass, RouterLink],
+  imports: [NgClass, RouterLink , NgIf],
   selector: 'app-user-list',
   styleUrl: './user-list.css',
   templateUrl: './user-list.html',
@@ -14,7 +14,7 @@ import { KeycloakService } from '../../../services/keycloak-service/keycloak-ser
 })
 export class UserList implements OnInit {
   private readonly userService = inject(UserService);
-  private keycloakService = inject(KeycloakService);
+  keycloakService = inject(KeycloakService);
   users = signal<User[]>([]);
 
   ngOnInit(): void {
@@ -68,6 +68,7 @@ export class UserList implements OnInit {
   isAdmin(){
     this.keycloakService.isAdmin();
   }
+
   isUser(){
     this.keycloakService.isUser();
   }
