@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import Keycloak from 'keycloak-js';
+import { Role } from '../../enums/Role.enum';
 
 @Injectable({
   providedIn: 'root',
 })
-
 export class KeycloakService {
   private keycloak = new Keycloak({
     url: 'http://localhost:8080',
@@ -44,4 +44,16 @@ export class KeycloakService {
   isUser(): boolean {
     return this.getRoles().includes('USER');
   }
+
+  hasRole(role: Role): boolean {
+    if (!this.isLoggedIn()) {
+      return false;
+    }
+    return this.keycloak.realmAccess?.roles.includes(role) ?? false;
+  }
+
+  isLoggedIn(): boolean {
+    return this.keycloak.authenticated ?? false;
+  }
+
 }
