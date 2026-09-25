@@ -1,12 +1,19 @@
-<header>
-  <div class="header-title">
-    <h1>{{ title }}</h1>
+<header class="flex items-center justify-between w-full h-full px-6 bg-white select-none border-b border-slate-100">
+  <div class="flex items-center">
+    <h1 class="text-xl font-bold text-slate-800 tracking-tight">{{ title }}</h1>
   </div>
 
-  <div class="profile-box">
-    <div class="profile-info">
-      <span class="user-name">{{ username() }} </span>
+  <div class="group flex items-center gap-3 cursor-pointer p-1.5 rounded-xl hover:bg-slate-50 transition-all duration-200">
+    <div class="w-10 h-10 rounded-full bg-rose-200 text-rose-700 flex items-center justify-center font-bold text-sm border border-slate-200/50 shadow-sm transition-all duration-200 uppercase shrink-0">
+      {{ firstName()?.charAt(0) }}{{ lastName()?.charAt(0) }}
     </div>
-    <span class="material-symbols-outlined user-avatar">account_circle</span>
+    <div class="flex flex-col text-left">
+      <span class="text-[14px] font-bold text-slate-800 leading-tight transition-colors group-hover:text-blue-600">
+      {{ firstName() }} {{ lastName() }}
+    </span>
+      <span class="text-[12px] font-medium text-slate-400 mt-0.5">
+      {{ email() }}
+    </span>
+    </div>
   </div>
 </header>
