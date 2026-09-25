@@ -27,4 +27,5 @@ export class App {
   toggleSidebar() {
     this.isSidebarHidden = !this.isSidebarHidden;
   }
+
 }

@@ -2,14 +2,14 @@ import { Component, OnInit, signal, inject } from '@angular/core';
 import { MechanicService } from '../../../services/mechanic-service/mechanicService';
 import { Mechanic } from '../../../entities/Mechanic';
 import { Specialty } from '../../../enums/Specialty.enum';
-import { NgClass } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { KeycloakService } from '../../../services/keycloak-service/keycloak-service';
 
 @Component({
   selector: 'app-mecanicien-list',
   standalone: true,
-  imports: [NgClass, RouterLink],
+  imports: [NgClass, RouterLink , NgIf],
   templateUrl: './mechanic-list.html',
   styleUrl: './mechanic-list.css',
 })
