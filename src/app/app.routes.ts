@@ -14,6 +14,7 @@ import { VehicleCreate } from './features/vehicles/createVehicle/vehicle-create'
 import { VehicleDetail } from './features/vehicles/vehicleDetails/vehicle-detail';
 import { InterventionHistories } from './features/historique/historique-list/intervention-history';
 import { DashboardComponent } from './features/dashboard/dashboard/dashboard';
+import { adminGuard } from './guard/admin.guard';
 
 
 
@@ -24,7 +25,7 @@ export const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, data: { title: 'Dashboard' } },
 
   { path: 'vehicles', component: VehicleList, data: { title: 'Vehicles' } },
-  { path: 'vehicles/create', component: VehicleCreate, data: { title: 'Create Vehicle' } },
+  { path: 'vehicles/create', component: VehicleCreate, data: { title: 'Create Vehicle' } , canActivate : [ adminGuard] },
   { path: 'vehicles/update/:id', component: VehicleCreate, data: { title: 'Update Vehicle' } },
   { path: 'vehicles/details/:id', component: VehicleDetail, data: { title: 'Details' } },
 
@@ -40,7 +41,7 @@ export const routes: Routes = [
   { path: 'histories', component: InterventionHistories, data: { title: 'Histories' } },
   { path: 'histories/intervention/:id', component: InterventionHistories, data: { title: 'Details' }, },
 
-  { path: 'users', component: UserList, data: { title: 'Users' } },
+  { path: 'users', component: UserList, data: { title: 'Users' } , canActivate : [ adminGuard] },
   { path: 'users/create', component: CreateUser, data: { title: 'Create User' }, },
   { path: 'users/update/:id', component: CreateUser, data: { title: 'Update User' }, },
   { path: 'users/password/change/:id', component: ChangePassword, data: { title: 'Change password' }, },
