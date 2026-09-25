@@ -1,6 +1,7 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, inject, signal } from '@angular/core';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter } from 'rxjs';
+import { KeycloakService } from '../../../services/keycloak-service/keycloak-service';
 
 @Component({
   imports: [RouterLink],
@@ -11,6 +12,9 @@ import { filter } from 'rxjs';
 })
 export class Header implements OnInit {
   title: string = 'Home';
+  private keycloakService = inject(KeycloakService);
+
+  username = signal<string | undefined>(undefined);
 
   constructor(
     private router: Router,
@@ -19,6 +23,8 @@ export class Header implements OnInit {
 
   ngOnInit(): void {
     this.extractTitle();
+
+    this.username.set(this.keycloakService.getUsername());
 
     this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
       this.extractTitle();
@@ -38,5 +44,10 @@ export class Header implements OnInit {
 
     this.title = lastValidTitle;
     this.cdr.detectChanges();
+  }
+
+  getUsername() {
+    this.keycloakService.getUsername();
+    console.log('Username : ', `${this.keycloakService.getUsername()}`);
   }
 }
