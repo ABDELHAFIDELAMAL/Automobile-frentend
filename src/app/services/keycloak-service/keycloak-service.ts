@@ -56,4 +56,15 @@ export class KeycloakService {
     return this.keycloak.authenticated ?? false;
   }
 
+  getUserInfosSynchronous() {
+    if (!this.keycloak.authenticated) return null;
+
+    return {
+      id: this.keycloak.subject,
+      username: this.keycloak.tokenParsed?.['preferred_username'],
+      email: this.keycloak.tokenParsed?.['email'],
+      firstName: this.keycloak.tokenParsed?.['given_name'],
+      lastName: this.keycloak.tokenParsed?.['family_name'],
+    };
+  }
 }
