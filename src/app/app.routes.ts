@@ -15,12 +15,16 @@ import { VehicleDetail } from './features/vehicles/vehicleDetails/vehicle-detail
 import { InterventionHistories } from './features/historique/historique-list/intervention-history';
 import { DashboardComponent } from './features/dashboard/dashboard/dashboard';
 import { adminGuard } from './guard/admin.guard';
+import { Login } from './features/login/login';
 
 
 
 export const routes: Routes = [
+
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: Home, data: { title: 'Home' } },
+
+  { path: 'login', component : Login , data : { title: 'Login' } },
 
   { path: 'dashboard', component: DashboardComponent, data: { title: 'Dashboard' } },
 
