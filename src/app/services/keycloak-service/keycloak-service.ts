@@ -15,26 +15,49 @@ export class KeycloakService {
     clientId: 'AutomobileClient',
   });
 
-  private keycloakLoginUrl =
-    'http://localhost:8080/realms/AutomobileRealm/protocol/openid-connect/auth?client_id=AutomobileClient&redirect_uri=http%3A%2F%2Flocalhost%3A4200%2F&state=977d5ae5-194b-411a-9971-13acd5b8c965&response_mode=fragment&response_type=code&scope=openid&nonce=824c1db7-485b-405b-8cf5-c3c100cd9fb3&code_challenge=j1Ric7EHohvprOxoEZ-9ppfe_dZ-VjurrKoruZGH6Fs&code_challenge_method=S256';
+  private keycloakTokenUrl =
+    'http://localhost:8080/realms/AutomobileRealm/protocol/openid-connect/token';
   private clientId = 'AutomobileClient';
 
   private http = inject(HttpClient);
   private router = inject(Router);
 
   async init(): Promise<boolean> {
-    return await this.keycloak.init({
-      onLoad: 'login-required',
-      checkLoginIframe: false,
-    });
+    const localToken = localStorage.getItem('access_token');
+    const localRefreshToken = localStorage.getItem('refresh_token');
+
+    if (localToken && localRefreshToken) {
+      try {
+        return await this.keycloak.init({
+          onLoad: 'check-sso',
+          token: localToken,
+          refreshToken: localRefreshToken,
+          checkLoginIframe: false,
+        });
+      } catch (e) {
+        this.logout();
+        return false;
+      }
+    }
+
+    try {
+      return await this.keycloak.init({
+        onLoad: 'check-sso',
+        checkLoginIframe: false,
+      });
+    } catch (e) {
+      return false;
+    }
   }
 
   getToken(): string | undefined {
-    return this.keycloak.token;
+    return this.keycloak.token || localStorage.getItem('access_token') || undefined;
   }
 
   async logout(): Promise<void> {
-    await this.keycloak.logout({ redirectUri: window.location.origin });
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    await this.keycloak.logout({ redirectUri: window.location.origin + '/login' });
   }
 
   getUsername(): string | undefined {
@@ -63,11 +86,11 @@ export class KeycloakService {
   }
 
   isLoggedIn(): boolean {
-    return this.keycloak.authenticated ?? false;
+    return this.keycloak.authenticated || !!localStorage.getItem('access_token');
   }
 
   getUserInfosSynchronous() {
-    if (!this.keycloak.authenticated) return null;
+    if (!this.isLoggedIn()) return null;
 
     return {
       id: this.keycloak.subject,
@@ -88,11 +111,24 @@ export class KeycloakService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded',
     });
-    return this.http.post<any>(this.keycloakLoginUrl, payload.toString(), { headers }).pipe(
+
+    return this.http.post<any>(this.keycloakTokenUrl, payload.toString(), { headers }).pipe(
       tap((response) => {
         localStorage.setItem('access_token', response.access_token);
         localStorage.setItem('refresh_token', response.refresh_token);
-        this.router.navigate(['/dashboard']);
+
+        this.keycloak
+          .init({
+            token: response.access_token,
+            refreshToken: response.refresh_token,
+            checkLoginIframe: false,
+          })
+          .then(() => {
+            this.router.navigate(['/dashboard']);
+          })
+          .catch(() => {
+            this.router.navigate(['/dashboard']);
+          });
       }),
     );
   }
