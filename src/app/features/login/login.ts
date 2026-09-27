@@ -42,4 +42,8 @@ export class Login {
       this.loginForm.markAllAsTouched();
     }
   }
+
+  loginWithGoogle(): void {
+    this.keycloakService.loginWithGoogle();
+  }
 }
