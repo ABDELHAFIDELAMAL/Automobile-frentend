@@ -22,10 +22,6 @@ import { DashboardComponent } from './features/dashboard/dashboard/dashboard';
   templateUrl: './app.html',
 })
 export class App {
-  isSidebarHidden = false;
 
-  toggleSidebar() {
-    this.isSidebarHidden = !this.isSidebarHidden;
-  }
 
 }
