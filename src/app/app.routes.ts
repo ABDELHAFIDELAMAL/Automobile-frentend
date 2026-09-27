@@ -22,19 +22,13 @@ import { NewApp } from './new-app/new-app';
 
 export const routes: Routes = [
   { path: 'login', component: Login, data: { title: 'Login' } },
-
   {
     path: '',
     component: NewApp,
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: Home, data: { title: 'Home' } },
-      {
-        path: 'dashboard',
-        component: DashboardComponent,
-        data: { title: 'Dashboard' },
-      },
-
+      { path: 'dashboard', component: DashboardComponent, data: { title: 'Dashboard' }, },
       { path: 'vehicles', component: VehicleList, data: { title: 'Vehicles' } },
       {
         path: 'vehicles/create',
@@ -79,14 +73,23 @@ export const routes: Routes = [
         canActivate: [adminGuard],
       },
 
-      { path: 'histories', component: InterventionHistories, data: { title: 'Histories' } },
+      {
+        path: 'histories',
+        component: InterventionHistories,
+        data: { title: 'Histories' }
+      },
       {
         path: 'histories/intervention/:id',
         component: InterventionHistories,
         data: { title: 'Details' },
       },
 
-      { path: 'users', component: UserList, data: { title: 'Users' }, canActivate: [adminGuard] },
+      {
+        path: 'users',
+        component: UserList,
+        data: { title: 'Users' },
+        canActivate: [adminGuard]
+      },
       {
         path: 'users/create',
         component: CreateUser,

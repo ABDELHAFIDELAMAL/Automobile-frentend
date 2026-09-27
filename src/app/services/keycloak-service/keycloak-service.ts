@@ -26,26 +26,27 @@ export class KeycloakService {
     const localToken = localStorage.getItem('access_token');
     const localRefreshToken = localStorage.getItem('refresh_token');
 
-    if (localToken && localRefreshToken) {
-      try {
-        return await this.keycloak.init({
-          onLoad: 'check-sso',
-          token: localToken,
-          refreshToken: localRefreshToken,
-          checkLoginIframe: false,
-        });
-      } catch (e) {
-        this.logout();
-        return false;
-      }
-    }
-
     try {
-      return await this.keycloak.init({
+      const options: Keycloak.KeycloakInitOptions = {
         onLoad: 'check-sso',
         checkLoginIframe: false,
-      });
+        pkceMethod: 'S256',
+      };
+
+      if (localToken && localRefreshToken) {
+        options.token = localToken;
+        options.refreshToken = localRefreshToken;
+      }
+
+      const authenticated = await this.keycloak.init(options);
+
+      if (!authenticated && localToken) {
+        this.clearLocalStorage();
+      }
+
+      return authenticated;
     } catch (e) {
+      this.clearLocalStorage();
       return false;
     }
   }
@@ -54,10 +55,9 @@ export class KeycloakService {
     return this.keycloak.token || localStorage.getItem('access_token') || undefined;
   }
 
-  async logout(): Promise<void> {
+  private clearLocalStorage(): void {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
-    await this.keycloak.logout({ redirectUri: window.location.origin + '/login' });
   }
 
   getUsername(): string | undefined {
@@ -66,7 +66,7 @@ export class KeycloakService {
 
   getRoles(): string[] {
     const resourceAccess = this.keycloak.tokenParsed?.['resource_access'];
-    const clientAccess = resourceAccess?.['AutomobileClient'];
+    const clientAccess = resourceAccess?.[this.clientId];
     return clientAccess?.['roles'] ?? [];
   }
 
@@ -102,11 +102,11 @@ export class KeycloakService {
   }
 
   login(username: string, password: string): Observable<any> {
-    const payload = new HttpParams()
-      .set('client_id', this.clientId)
-      .set('grant_type', 'password')
-      .set('username', username)
-      .set('password', password);
+    const payload = new URLSearchParams();
+    payload.set('client_id', this.clientId);
+    payload.set('grant_type', 'password');
+    payload.set('username', username);
+    payload.set('password', password);
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -117,19 +117,25 @@ export class KeycloakService {
         localStorage.setItem('access_token', response.access_token);
         localStorage.setItem('refresh_token', response.refresh_token);
 
-        this.keycloak
-          .init({
-            token: response.access_token,
-            refreshToken: response.refresh_token,
-            checkLoginIframe: false,
-          })
-          .then(() => {
-            this.router.navigate(['/dashboard']);
-          })
-          .catch(() => {
-            this.router.navigate(['/dashboard']);
-          });
+        this.keycloak.token = response.access_token;
+        this.keycloak.refreshToken = response.refresh_token;
+
+        this.router.navigate(['/dashboard']);
       }),
     );
+  }
+
+  loginWithGoogle(): void {
+    this.keycloak.login({
+      idpHint: 'google',
+      redirectUri: window.location.origin + '/dashboard',
+    });
+  }
+
+  async logout(): Promise<void> {
+    this.clearLocalStorage();
+    await this.keycloak.logout({
+      redirectUri: window.location.origin + '/login',
+    });
   }
 }
