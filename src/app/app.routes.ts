@@ -16,38 +16,96 @@ import { InterventionHistories } from './features/historique/historique-list/int
 import { DashboardComponent } from './features/dashboard/dashboard/dashboard';
 import { adminGuard } from './guard/admin.guard';
 import { Login } from './features/login/login';
+import { NewApp } from './new-app/new-app';
 
 
 
 export const routes: Routes = [
+  { path: 'login', component: Login, data: { title: 'Login' } },
 
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: Home, data: { title: 'Home' } },
+  {
+    path: '',
+    component: NewApp,
+    children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'home', component: Home, data: { title: 'Home' } },
+      {
+        path: 'dashboard',
+        component: DashboardComponent,
+        data: { title: 'Dashboard' },
+      },
 
-  { path: 'login', component : Login , data : { title: 'Login' } },
+      { path: 'vehicles', component: VehicleList, data: { title: 'Vehicles' } },
+      {
+        path: 'vehicles/create',
+        component: VehicleCreate,
+        data: { title: 'Create Vehicle' },
+        canActivate: [adminGuard],
+      },
+      {
+        path: 'vehicles/update/:id',
+        component: VehicleCreate,
+        data: { title: 'Update Vehicle' },
+        canActivate: [adminGuard],
+      },
+      { path: 'vehicles/details/:id', component: VehicleDetail, data: { title: 'Details' } },
 
-  { path: 'dashboard', component: DashboardComponent, data: { title: 'Dashboard' } },
+      { path: 'mechanics', component: MechanicList, data: { title: 'Mechanics' } },
+      {
+        path: 'mechanics/create',
+        component: MechanicCreate,
+        data: { title: 'Create Mechanic' },
+        canActivate: [adminGuard],
+      },
+      {
+        path: 'mechanics/update/:id',
+        component: MechanicCreate,
+        data: { title: 'Update Mechanic' },
+        canActivate: [adminGuard],
+      },
+      { path: 'mechanics/:id', component: MecanicienDetail, data: { title: 'Details' } },
 
-  { path: 'vehicles', component: VehicleList, data: { title: 'Vehicles' } },
-  { path: 'vehicles/create', component: VehicleCreate, data: { title: 'Create Vehicle' } , canActivate : [ adminGuard] },
-  { path: 'vehicles/update/:id', component: VehicleCreate, data: { title: 'Update Vehicle' } , canActivate : [ adminGuard] },
-  { path: 'vehicles/details/:id', component: VehicleDetail, data: { title: 'Details' } },
+      { path: 'interventions', component: InterventionList, data: { title: 'Inteventions' } },
+      {
+        path: 'interventions/create/:id',
+        component: InterventionCreate,
+        data: { title: 'Create Intervention' },
+        canActivate: [adminGuard],
+      },
+      {
+        path: 'interventions/update/:id',
+        component: InterventionCreate,
+        data: { title: 'Update Intervention' },
+        canActivate: [adminGuard],
+      },
 
-  { path: 'mechanics', component: MechanicList, data: { title: 'Mechanics' } },
-  { path: 'mechanics/create', component: MechanicCreate, data: { title: 'Create Mechanic' } , canActivate : [ adminGuard] },
-  { path: 'mechanics/update/:id', component: MechanicCreate, data: { title: 'Update Mechanic' }, canActivate : [ adminGuard] },
-  { path: 'mechanics/:id', component: MecanicienDetail, data: { title: 'Details' } },
+      { path: 'histories', component: InterventionHistories, data: { title: 'Histories' } },
+      {
+        path: 'histories/intervention/:id',
+        component: InterventionHistories,
+        data: { title: 'Details' },
+      },
 
-  { path: 'interventions', component: InterventionList, data: { title: 'Inteventions' } },
-  { path: 'interventions/create/:id', component: InterventionCreate, data: { title: 'Create Intervention' }, canActivate : [ adminGuard] },
-  { path: 'interventions/update/:id', component: InterventionCreate, data: { title: 'Update Intervention' }, canActivate : [ adminGuard] },
-
-  { path: 'histories', component: InterventionHistories, data: { title: 'Histories' } },
-  { path: 'histories/intervention/:id', component: InterventionHistories, data: { title: 'Details' }, },
-
-  { path: 'users', component: UserList, data: { title: 'Users' } , canActivate : [ adminGuard] },
-  { path: 'users/create', component: CreateUser, data: { title: 'Create User' }, canActivate : [ adminGuard] },
-  { path: 'users/update/:id', component: CreateUser, data: { title: 'Update User' }, canActivate : [ adminGuard] },
-  { path: 'users/password/change/:id', component: ChangePassword, data: { title: 'Change password' }, canActivate : [ adminGuard] },
-  { path : 'profile/:id', component: Profile, data : { title : 'Profile' } },
+      { path: 'users', component: UserList, data: { title: 'Users' }, canActivate: [adminGuard] },
+      {
+        path: 'users/create',
+        component: CreateUser,
+        data: { title: 'Create User' },
+        canActivate: [adminGuard],
+      },
+      {
+        path: 'users/update/:id',
+        component: CreateUser,
+        data: { title: 'Update User' },
+        canActivate: [adminGuard],
+      },
+      {
+        path: 'users/password/change/:id',
+        component: ChangePassword,
+        data: { title: 'Change password' },
+        canActivate: [adminGuard],
+      },
+      { path: 'profile/:id', component: Profile, data: { title: 'Profile' } },
+    ],
+  },
 ];
