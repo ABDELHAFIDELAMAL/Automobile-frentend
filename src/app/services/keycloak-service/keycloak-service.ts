@@ -23,6 +23,7 @@ export class KeycloakService {
   private router = inject(Router);
 
   currentUser = signal<any>(null);
+  private manualTokenParsed: any = null;
 
   constructor() {
     this.keycloak.onAuthSuccess = async () => {
@@ -36,32 +37,44 @@ export class KeycloakService {
   async init(): Promise<boolean> {
     const localToken = localStorage.getItem('access_token');
     const localRefreshToken = localStorage.getItem('refresh_token');
-
     try {
       const options: Keycloak.KeycloakInitOptions = {
         onLoad: 'check-sso',
         checkLoginIframe: false,
         pkceMethod: 'S256',
       };
-
       if (localToken && localRefreshToken) {
         options.token = localToken;
         options.refreshToken = localRefreshToken;
+        this.manualTokenParsed = this.decodeToken(localToken);
       }
-
       const authenticated = await this.keycloak.init(options);
-
       if (authenticated || this.keycloak.authenticated) {
         await this.refreshUserInfos();
         return true;
       } else if (localToken) {
         this.clearLocalStorage();
       }
-
       return authenticated;
     } catch (e) {
       this.clearLocalStorage();
       return false;
+    }
+  }
+
+  private decodeToken(token: string): any {
+    try {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split('')
+          .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+          .join(''),
+      );
+      return JSON.parse(jsonPayload);
+    } catch (e) {
+      return null;
     }
   }
 
@@ -76,27 +89,30 @@ export class KeycloakService {
           firstName: profile.firstName || this.keycloak.tokenParsed?.['given_name'],
           lastName: profile.lastName || this.keycloak.tokenParsed?.['family_name'],
         });
-      } catch (e) {
-        this.setFallbackUserInfos();
-      }
-    } else {
-      this.setFallbackUserInfos();
+        this.manualTokenParsed = this.keycloak.tokenParsed;
+        return;
+      } catch (e) {}
     }
+    this.setFallbackUserInfos();
   }
 
   private setFallbackUserInfos(): void {
-    if (this.isLoggedIn()) {
-      const tokenParsed = this.keycloak.tokenParsed;
-      this.currentUser.set({
-        id: this.keycloak.subject,
-        username: tokenParsed?.['preferred_username'],
-        email: tokenParsed?.['email'],
-        firstName: tokenParsed?.['given_name'],
-        lastName: tokenParsed?.['family_name'],
-      });
-    } else {
-      this.currentUser.set(null);
+    const token = this.getToken();
+    if (token) {
+      const parsed = this.manualTokenParsed || this.decodeToken(token);
+      this.manualTokenParsed = parsed;
+      if (parsed) {
+        this.currentUser.set({
+          id: parsed.sub,
+          username: parsed.preferred_username,
+          email: parsed.email,
+          firstName: parsed.given_name,
+          lastName: parsed.family_name,
+        });
+        return;
+      }
     }
+    this.currentUser.set(null);
   }
 
   getToken(): string | undefined {
@@ -107,6 +123,7 @@ export class KeycloakService {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     this.currentUser.set(null);
+    this.manualTokenParsed = null;
   }
 
   getUsername(): string | undefined {
@@ -114,26 +131,36 @@ export class KeycloakService {
   }
 
   getRoles(): string[] {
-    const resourceAccess = this.keycloak.tokenParsed?.['resource_access'];
-    const clientAccess = resourceAccess?.[this.clientId];
-    return clientAccess?.['roles'] ?? [];
+    const tokenParsed = this.manualTokenParsed || this.keycloak.tokenParsed;
+    if (!tokenParsed) return [];
+
+    const realmRoles: string[] = tokenParsed['realm_access']?.['roles'] ?? [];
+    const resourceAccess = tokenParsed['resource_access'];
+    const clientRoles: string[] = resourceAccess?.[this.clientId]?.['roles'] ?? [];
+
+    return Array.from(new Set([...realmRoles, ...clientRoles]));
+  }
+
+  hasRole(role: Role | string): boolean {
+    if (!this.isLoggedIn()) return false;
+    const userRoles = this.getRoles();
+    const targetRole = String(role);
+    const cleanRole = targetRole.replace(/^ROLE_/, '');
+
+    return userRoles.some((r) => r === targetRole || r === cleanRole || r === `ROLE_${cleanRole}`);
   }
 
   isAdmin(): boolean {
-    if (!this.isLoggedIn()) return false;
-    return this.getRoles().includes('ADMIN');
+    return (
+      this.hasRole('ROLE_MANAGER') ||
+      this.hasRole('MANAGER') ||
+      this.hasRole('ADMIN') ||
+      this.hasRole('ROLE_ADMIN')
+    );
   }
 
   isUser(): boolean {
-    if (!this.isLoggedIn()) return false;
-    return this.getRoles().includes('USER');
-  }
-
-  hasRole(role: Role): boolean {
-    if (!this.isLoggedIn()) {
-      return false;
-    }
-    return this.keycloak.realmAccess?.roles.includes(role) ?? false;
+    return this.hasRole('ROLE_USER') || this.hasRole('USER');
   }
 
   isLoggedIn(): boolean {
@@ -150,25 +177,19 @@ export class KeycloakService {
     payload.set('grant_type', 'password');
     payload.set('username', username);
     payload.set('password', password);
-
+    payload.set('scope', 'openid');
     const headers = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded',
     });
-
     return this.http.post<any>(this.keycloakTokenUrl, payload.toString(), { headers }).pipe(
       tap(async (response) => {
         localStorage.setItem('access_token', response.access_token);
         localStorage.setItem('refresh_token', response.refresh_token);
-
         this.keycloak.token = response.access_token;
         this.keycloak.refreshToken = response.refresh_token;
-
-        try {
-          (this.keycloak as any).processTokenObject(response);
-        } catch (e) {}
-
+        this.manualTokenParsed = this.decodeToken(response.access_token);
         await this.refreshUserInfos();
-        this.router.navigate(['/dashboard']);
+        await this.router.navigate(['/dashboard']);
       }),
     );
   }
