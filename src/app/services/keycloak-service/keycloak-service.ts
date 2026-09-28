@@ -120,10 +120,12 @@ export class KeycloakService {
   }
 
   isAdmin(): boolean {
+    if (!this.isLoggedIn()) return false;
     return this.getRoles().includes('ADMIN');
   }
 
   isUser(): boolean {
+    if (!this.isLoggedIn()) return false;
     return this.getRoles().includes('USER');
   }
 
