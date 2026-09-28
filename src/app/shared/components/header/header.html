@@ -3,17 +3,23 @@
     <h1 class="text-xl font-bold text-slate-800 tracking-tight">{{ title }}</h1>
   </div>
 
+  @if (currentUser()) {
   <div class="group flex items-center gap-3 cursor-pointer p-1.5 rounded-xl hover:bg-slate-50 transition-all duration-200">
     <div class="w-10 h-10 rounded-full bg-rose-200 text-rose-700 flex items-center justify-center font-bold text-sm border border-slate-200/50 shadow-sm transition-all duration-200 uppercase shrink-0">
-      {{ firstName()?.charAt(0) }}{{ lastName()?.charAt(0) }}
+      {{ currentUser().firstName?.charAt(0) }}{{ currentUser().lastName?.charAt(0) }}
     </div>
     <div class="flex flex-col text-left">
-      <span class="text-[14px] font-bold text-slate-800 leading-tight transition-colors group-hover:text-blue-600">
-      {{ firstName() }} {{ lastName() }}
-    </span>
+        <span class="text-[14px] font-bold text-slate-800 leading-tight transition-colors group-hover:text-blue-600">
+          {{ currentUser().firstName }} {{ currentUser().lastName }}
+        </span>
       <span class="text-[12px] font-medium text-slate-400 mt-0.5">
-      {{ email() }}
-    </span>
+          {{ currentUser().email }}
+        </span>
     </div>
   </div>
+  } @else {
+  <div class="text-[14px] font-medium text-slate-400">
+    Loading...
+  </div>
+  }
 </header>
