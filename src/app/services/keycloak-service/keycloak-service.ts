@@ -1,7 +1,7 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import Keycloak from 'keycloak-js';
 import { Role } from '../../enums/Role.enum';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 
@@ -22,6 +22,17 @@ export class KeycloakService {
   private http = inject(HttpClient);
   private router = inject(Router);
 
+  currentUser = signal<any>(null);
+
+  constructor() {
+    this.keycloak.onAuthSuccess = async () => {
+      await this.refreshUserInfos();
+    };
+    this.keycloak.onAuthRefreshSuccess = async () => {
+      await this.refreshUserInfos();
+    };
+  }
+
   async init(): Promise<boolean> {
     const localToken = localStorage.getItem('access_token');
     const localRefreshToken = localStorage.getItem('refresh_token');
@@ -40,7 +51,10 @@ export class KeycloakService {
 
       const authenticated = await this.keycloak.init(options);
 
-      if (!authenticated && localToken) {
+      if (authenticated || this.keycloak.authenticated) {
+        await this.refreshUserInfos();
+        return true;
+      } else if (localToken) {
         this.clearLocalStorage();
       }
 
@@ -51,6 +65,40 @@ export class KeycloakService {
     }
   }
 
+  async refreshUserInfos(): Promise<void> {
+    if (this.keycloak.authenticated) {
+      try {
+        const profile = await this.keycloak.loadUserProfile();
+        this.currentUser.set({
+          id: this.keycloak.subject,
+          username: profile.username || this.keycloak.tokenParsed?.['preferred_username'],
+          email: profile.email || this.keycloak.tokenParsed?.['email'],
+          firstName: profile.firstName || this.keycloak.tokenParsed?.['given_name'],
+          lastName: profile.lastName || this.keycloak.tokenParsed?.['family_name'],
+        });
+      } catch (e) {
+        this.setFallbackUserInfos();
+      }
+    } else {
+      this.setFallbackUserInfos();
+    }
+  }
+
+  private setFallbackUserInfos(): void {
+    if (this.isLoggedIn()) {
+      const tokenParsed = this.keycloak.tokenParsed;
+      this.currentUser.set({
+        id: this.keycloak.subject,
+        username: tokenParsed?.['preferred_username'],
+        email: tokenParsed?.['email'],
+        firstName: tokenParsed?.['given_name'],
+        lastName: tokenParsed?.['family_name'],
+      });
+    } else {
+      this.currentUser.set(null);
+    }
+  }
+
   getToken(): string | undefined {
     return this.keycloak.token || localStorage.getItem('access_token') || undefined;
   }
@@ -58,10 +106,11 @@ export class KeycloakService {
   private clearLocalStorage(): void {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
+    this.currentUser.set(null);
   }
 
   getUsername(): string | undefined {
-    return this.keycloak.tokenParsed?.['preferred_username'];
+    return this.currentUser()?.username;
   }
 
   getRoles(): string[] {
@@ -90,15 +139,7 @@ export class KeycloakService {
   }
 
   getUserInfosSynchronous() {
-    if (!this.isLoggedIn()) return null;
-
-    return {
-      id: this.keycloak.subject,
-      username: this.keycloak.tokenParsed?.['preferred_username'],
-      email: this.keycloak.tokenParsed?.['email'],
-      firstName: this.keycloak.tokenParsed?.['given_name'],
-      lastName: this.keycloak.tokenParsed?.['family_name'],
-    };
+    return this.currentUser();
   }
 
   login(username: string, password: string): Observable<any> {
@@ -113,13 +154,18 @@ export class KeycloakService {
     });
 
     return this.http.post<any>(this.keycloakTokenUrl, payload.toString(), { headers }).pipe(
-      tap((response) => {
+      tap(async (response) => {
         localStorage.setItem('access_token', response.access_token);
         localStorage.setItem('refresh_token', response.refresh_token);
 
         this.keycloak.token = response.access_token;
         this.keycloak.refreshToken = response.refresh_token;
 
+        try {
+          (this.keycloak as any).processTokenObject(response);
+        } catch (e) {}
+
+        await this.refreshUserInfos();
         this.router.navigate(['/dashboard']);
       }),
     );

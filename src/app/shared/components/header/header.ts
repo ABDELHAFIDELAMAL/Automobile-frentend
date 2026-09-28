@@ -14,10 +14,7 @@ export class Header implements OnInit {
   title: string = 'Home';
   private keycloakService = inject(KeycloakService);
 
-  email = signal<string | undefined>(undefined);
-
-  firstName = signal<string | undefined>(undefined);
-  lastName = signal<string | undefined>(undefined);
+  currentUser = this.keycloakService.currentUser;
 
   constructor(
     private router: Router,
@@ -26,10 +23,6 @@ export class Header implements OnInit {
 
   ngOnInit(): void {
     this.extractTitle();
-
-    this.email.set(this.keycloakService.getUsername());
-    this.firstName.set(this.keycloakService.getUserInfosSynchronous()?.firstName);
-    this.lastName.set(this.keycloakService.getUserInfosSynchronous()?.lastName);
 
     this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
       this.extractTitle();
@@ -50,5 +43,4 @@ export class Header implements OnInit {
     this.title = lastValidTitle;
     this.cdr.detectChanges();
   }
-
 }
