@@ -88,9 +88,7 @@ export class MechanicList implements OnInit {
     if (confirm('Are you sure you want to delete this mechanic?')) {
       this.mechanicService.deleteMechanic(id).subscribe({
         next: () => {
-          this.mechanics.update((currentList) =>
-            currentList.filter((mechanic) => mechanic.id !== id),
-          );
+          this.loadMechanics();
         },
         error: (error) => {
           console.error('Error while deleting mechanic:', error.message);
@@ -133,10 +131,11 @@ export class MechanicList implements OnInit {
     });
   }
 
-  isAdmin(){
-    this.keycloakService.isAdmin();
+  isAdmin(): boolean {
+    return this.keycloakService.isAdmin();
   }
+
   isUser(){
-    this.keycloakService.isUser();
+    return this.keycloakService.isUser();
   }
 }

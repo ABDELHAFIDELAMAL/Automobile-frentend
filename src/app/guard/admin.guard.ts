@@ -17,10 +17,6 @@ export const adminGuard: CanActivateFn = async (route, state) => {
 
   await keycloakService.refreshUserInfos();
 
-  if (keycloakService.isAdmin()) {
-    return true;
-  }
-
   router.navigate(['/dashboard']);
   return false;
 };
