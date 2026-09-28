@@ -2,11 +2,7 @@ import { Routes } from '@angular/router';
 import { InterventionList } from './features/interventions/intervention-list/intervention-list';
 import { InterventionCreate } from './features/interventions/intervention-create/intervention-create';
 import { MechanicCreate } from './features/mechanics/mecanicien-create/mechanic-create';
-import { CreateUser } from './features/users/create-user/create-user';
 import { Home } from './shared/components/home/home';
-import { ChangePassword } from './features/users/change-password/change-password';
-import { Profile } from './shared/components/profile/profile';
-import { UserList } from './features/users/user-list/user-list';
 import { MecanicienDetail } from './features/mechanics/mecanicien-detail/mecanicien-detail';
 import { MechanicList } from './features/mechanics/mechanic-list/mechanic-list';
 import { VehicleList } from './features/vehicles/vehicle-list/vehicle-list';
@@ -82,33 +78,7 @@ export const routes: Routes = [
         path: 'histories/intervention/:id',
         component: InterventionHistories,
         data: { title: 'Details' },
-      },
-
-      {
-        path: 'users',
-        component: UserList,
-        data: { title: 'Users' },
-        canActivate: [adminGuard]
-      },
-      {
-        path: 'users/create',
-        component: CreateUser,
-        data: { title: 'Create User' },
-        canActivate: [adminGuard],
-      },
-      {
-        path: 'users/update/:id',
-        component: CreateUser,
-        data: { title: 'Update User' },
-        canActivate: [adminGuard],
-      },
-      {
-        path: 'users/password/change/:id',
-        component: ChangePassword,
-        data: { title: 'Change password' },
-        canActivate: [adminGuard],
-      },
-      { path: 'profile/:id', component: Profile, data: { title: 'Profile' } },
+      }
     ],
   },
 ];
