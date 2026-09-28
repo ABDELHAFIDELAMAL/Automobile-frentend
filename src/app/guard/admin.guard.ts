@@ -1,16 +1,26 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { KeycloakService } from '../services/keycloak-service/keycloak-service';
-import { Role } from '../enums/Role.enum';
 
-
-export const adminGuard: CanActivateFn = () => {
-  const keycloak = inject(KeycloakService);
+export const adminGuard: CanActivateFn = async (route, state) => {
+  const keycloakService = inject(KeycloakService);
   const router = inject(Router);
 
-  if (keycloak.isLoggedIn() && keycloak.hasRole(Role.ADMIN)) {
+  if (!keycloakService.isLoggedIn()) {
+    router.navigate(['/login']);
+    return false;
+  }
+
+  if (keycloakService.isAdmin()) {
     return true;
   }
 
-  return router.createUrlTree(['/']);
+  await keycloakService.refreshUserInfos();
+
+  if (keycloakService.isAdmin()) {
+    return true;
+  }
+
+  router.navigate(['/dashboard']);
+  return false;
 };
