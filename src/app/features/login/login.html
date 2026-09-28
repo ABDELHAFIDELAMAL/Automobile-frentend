@@ -1,9 +1,9 @@
 <div class="flex min-h-screen w-full flex-col lg:flex-row bg-white overflow-x-hidden" >
   <div class="relative hidden w-full items-end bg-black p-12 lg:flex lg:w-1/2 min-h-screen">
-    <div class="absolute inset-0 z-0 bg-cover bg-center opacity-60" style="background-image: url('https://unsplash.com'); filter: grayscale(100%);"></div>
+    <div class="absolute inset-0 z-0 bg-cover bg-center opacity-60" ></div>
     <div class="relative z-10 max-w-md text-white">
-      <h1 class="text-4xl font-bold tracking-tight">Build something amazing today.</h1>
-      <p class="mt-4 text-sm text-gray-300">Maybe some text here will help me see it better.</p>
+      <h1 class="text-4xl font-bold tracking-tight">Real-time Workshop Performance Overview.</h1>
+      <p class="mt-4 text-sm text-gray-300">Monitor vehicle entries, track live repair progress, and seamlessly optimize mechanic workload.</p>
     </div>
   </div>
 
@@ -52,7 +52,7 @@
         </div>
 
         <div>
-          <button type="submit" [disabled]="isLoading" class="flex w-full justify-center rounded-lg bg-[#0e131f] px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black disabled:opacity-50">
+          <button type="submit" [disabled]="isLoading" class="flex w-full justify-center rounded-lg bg-[#0e131f] px-4 py-3 text-sm hover:cursor-pointer font-semibold text-white shadow-sm hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black disabled:opacity-50">
             @if (!isLoading) {
             <span>Sign in</span>
             } @else {
@@ -71,14 +71,14 @@
         </div>
 
         <div class="mt-6 grid grid-cols-2 gap-4">
-          <button type="button" class="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:outline-none">
+          <button type="button" (onclick)="loginWithFacebook()" class="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:outline-none hover:cursor-pointer ">
             <svg class="h-5 w-5 text-[#1877F2]" aria-hidden="true" fill="currentColor" viewBox="0 0 24 24">
               <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
             </svg>
             <span class="text-sm font-semibold">Facebook</span>
           </button>
 
-          <button type="button" (click)="loginWithGoogle()" class="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:outline-none">
+          <button type="button" (click)="loginWithGoogle()" class="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:outline-none hover:cursor-pointer">
             <svg class="h-5 w-5" aria-hidden="true" viewBox="0 0 24 24">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
               <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
@@ -92,7 +92,7 @@
 
       <p class="mt-8 text-center text-sm text-gray-500">
         Don't have an account?
-        <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Sign up</a>
+        <a routerLink="/" class="font-semibold text-indigo-600 hover:text-indigo-500 hover:cursor-pointer">Sign up</a>
       </p>
     </div>
   </div>
