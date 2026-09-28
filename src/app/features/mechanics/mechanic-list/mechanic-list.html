@@ -1,4 +1,6 @@
 <div class="w-full mx-auto space-y-4 bg-slate-50 min-h-screen">
+
+
   <header class="bg-white w-full p-4 md:p-6 shadow border border-slate-200/80 flex flex-col md:flex-row items-center justify-between gap-4">
     <div class="w-full md:w-auto text-center md:text-left">
       <h2 class="text-xl md:text-2xl font-bold tracking-tight text-slate-800">Mechanics List</h2>
@@ -32,11 +34,10 @@
           </select>
         </label>
       </div>
-      <div class="w-full sm:w-auto">
+      <div class="w-full sm:w-auto" *ngIf="isAdmin()">
         <button
           type="button"
-          *ngIf="isAdmin()"
-          routerLink="/mecaniciens/create"
+          routerLink="/mechanics/create"
           class="w-full sm:w-auto flex items-center justify-center gap-2 py-2.5 px-4 bg-slate-900 hover:bg-slate-800 active:bg-black text-white text-xs md:text-sm font-semibold rounded-xl shadow-sm transition-all duration-200 cursor-pointer"
         >
           <span class="material-symbols-outlined text-lg">add</span>
@@ -46,6 +47,9 @@
     </div>
   </header>
 
+
+
+
   <main class="px-4 md:px-6">
     @if (mechanics().length === 0) {
     <div class="bg-white p-12 text-center rounded-2xl border border-slate-200/80 shadow-sm">
@@ -53,72 +57,6 @@
       <p class="text-slate-500 font-medium text-sm">No mechanics found.</p>
     </div>
     } @else {
-    <div class="block lg:hidden space-y-4">
-      @for (mecano of mechanics(); track mecano.id) {
-      <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
-        <div class="flex items-start justify-between gap-3">
-          <div>
-            <h3 class="font-bold text-slate-800 text-base">{{ mecano.name }}</h3>
-            <p class="text-xs font-medium text-slate-500 mt-0.5">{{ mecano.specialty }}</p>
-          </div>
-          <div>
-            @if (mecano.available) {
-            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/60">Available</span>
-            } @else {
-            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200/60">Busy</span>
-            }
-          </div>
-        </div>
-        <div class="flex items-center justify-between text-xs py-2 border-y border-slate-100">
-          <span class="text-slate-500 font-medium">Workload (Tasks)</span>
-          <span class="font-bold text-slate-800 px-2.5 py-0.5 bg-slate-100 rounded-md">
-            {{ mecano.interventions?.length ?? chargesData[mecano.id] ?? 0 }}
-          </span>
-        </div>
-        <div class="flex items-center justify-between gap-2 pt-1">
-          <div class="relative flex items-center p-1 bg-slate-100 rounded-xl w-36 select-none border border-slate-200/60">
-            <div
-              [ngClass]="mecano.available ? 'translate-x-0' : 'translate-x-[68px]'"
-              class="absolute top-1 bottom-1 left-1 w-[64px] bg-white rounded-lg shadow-xs transition-transform duration-300 ease-out pointer-events-none"
-            ></div>
-            <button
-              type="button"
-              (click)="!mecano.available && toggleStatut(mecano)"
-              [ngClass]="mecano.available ? 'text-slate-900 font-bold' : 'text-slate-400 font-medium'"
-              class="relative z-10 w-[64px] py-1 text-[10px] tracking-wider text-center transition-colors duration-200 focus:outline-none cursor-pointer"
-            >
-              Enable
-            </button>
-            <button
-              type="button"
-              (click)="mecano.available && toggleStatut(mecano)"
-              [ngClass]="!mecano.available ? 'text-slate-900 font-bold' : 'text-slate-400 font-medium'"
-              class="relative z-10 w-[64px] py-1 text-[10px] tracking-wider text-center transition-colors duration-200 focus:outline-none cursor-pointer"
-            >
-              Disable
-            </button>
-          </div>
-          <div class="flex items-center gap-1">
-            <button
-              type="button"
-              [routerLink]="['/mecaniciens/update', mecano.id]"
-              class="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
-            >
-              <span class="material-symbols-outlined text-xl">edit</span>
-            </button>
-            <button
-              [disabled]="mecano.available"
-              type="button"
-              (click)="deleteMechanic(mecano.id)"
-              class="p-2 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-lg transition-colors disabled:text-slate-300 disabled:bg-transparent disabled:cursor-not-allowed cursor-pointer"
-            >
-              <span class="material-symbols-outlined text-xl">delete</span>
-            </button>
-          </div>
-        </div>
-      </div>
-      }
-    </div>
     <div class="hidden lg:block bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
       <table class="w-full text-left border-collapse">
         <thead>
@@ -147,7 +85,7 @@
                 {{ mecano.interventions?.length ?? chargesData[mecano.id] ?? 0 }}
               </span>
           </td>
-          <td class="py-4 px-6" *ngIf="isAdmin()">
+          <td class="py-4 px-6" *ngIf="isAdmin()" >
             <div class="flex items-center justify-end gap-3">
               <div class="relative inline-flex items-center p-1 bg-slate-100/80 rounded-full w-38 select-none shadow-inner">
                 <div
@@ -173,7 +111,7 @@
               </div>
               <button
                 type="button"
-                [routerLink]="['/mecaniciens/update', mecano.id]"
+                [routerLink]="['/mechanics/update', mecano.id]"
                 class="p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
               >
                 <span class="material-symbols-outlined text-lg">edit</span>
