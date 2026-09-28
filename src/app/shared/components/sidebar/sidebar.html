@@ -125,23 +125,6 @@
         Mechanics
       </span>
     </a>
-
-    <a
-      routerLink="/users"
-      *ngIf="isAdmin()"
-      routerLinkActive="bg-black text-white font-semibold border-black"
-      class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-black/5 hover:text-black overflow-hidden whitespace-nowrap"
-    >
-      <span class="material-symbols-outlined text-[22px] min-w-[22px] shrink-0">frame_person</span>
-      <span
-        [class.opacity-0]="isCollapsed()"
-        [class.max-w-0]="isCollapsed()"
-        [class.max-w-[200px]]="!isCollapsed()"
-        class="text-[15px] font-medium transition-all duration-300 ease-in-out overflow-hidden inline-block"
-      >
-        Users
-      </span>
-    </a>
   </nav>
 
   <div class="border-t border-black/10 pt-4 flex flex-col gap-2 mt-auto overflow-hidden">
