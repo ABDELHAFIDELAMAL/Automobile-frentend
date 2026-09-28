@@ -171,7 +171,7 @@ export class KeycloakService {
     return this.currentUser();
   }
 
-  login(username: string, password: string): Observable<any> {
+  login(username: string, password: string , rememberMe: boolean = false): Observable<any> {
     const payload = new URLSearchParams();
     payload.set('client_id', this.clientId);
     payload.set('grant_type', 'password');
@@ -181,6 +181,13 @@ export class KeycloakService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded',
     });
+
+    if (rememberMe) {
+      payload.set('scope', 'openid offline_access');
+    } else {
+      payload.set('scope', 'openid');
+    }
+
     return this.http.post<any>(this.keycloakTokenUrl, payload.toString(), { headers }).pipe(
       tap(async (response) => {
         localStorage.setItem('access_token', response.access_token);
@@ -197,6 +204,13 @@ export class KeycloakService {
   loginWithGoogle(): void {
     this.keycloak.login({
       idpHint: 'google',
+      redirectUri: window.location.origin + '/dashboard',
+    });
+  }
+
+  loginWithFacebook(): void {
+    this.keycloak.login({
+      idpHint: 'facebook',
       redirectUri: window.location.origin + '/dashboard',
     });
   }

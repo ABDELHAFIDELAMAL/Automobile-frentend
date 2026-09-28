@@ -15,10 +15,16 @@ export class Login {
   loginForm = new FormGroup({
     username: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
+    rememberMe : new FormControl(false)
   });
 
   errorMessage: string = '';
   isLoading: boolean = false;
+
+
+
+
+
 
   onSubmit() {
     if (this.loginForm.valid) {
@@ -27,8 +33,9 @@ export class Login {
 
       const username = this.loginForm.value.username!;
       const password = this.loginForm.value.password!;
+      const rememberMe = this.loginForm.value.rememberMe!;
 
-      this.keycloakService.login(username, password).subscribe({
+      this.keycloakService.login(username, password , rememberMe).subscribe({
         next: () => {
           this.isLoading = false;
         },
@@ -45,5 +52,8 @@ export class Login {
 
   loginWithGoogle(): void {
     this.keycloakService.loginWithGoogle();
+  }
+  loginWithFacebook(): void {
+    this.keycloakService.loginWithFacebook();
   }
 }
