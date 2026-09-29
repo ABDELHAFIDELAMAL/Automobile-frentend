@@ -211,7 +211,7 @@ export class KeycloakService {
   async logout(): Promise<void> {
     this.clearLocalStorage();
     await this.keycloak.logout({
-      redirectUri: window.location.origin + '/login',
+      redirectUri: window.location.origin + '/sign-in',
     });
   }
 

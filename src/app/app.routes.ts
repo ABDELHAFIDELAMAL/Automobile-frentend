@@ -13,18 +13,20 @@ import { DashboardComponent } from './features/dashboard/dashboard/dashboard';
 import { adminGuard } from './guard/admin.guard';
 import { Login } from './features/login/login';
 import { NewApp } from './new-app/new-app';
+import { SignUp } from './features/sign-up/sign-up';
 
 
 
 export const routes: Routes = [
-  { path: 'login', component: Login, data: { title: 'Login' } },
+  { path: 'sign-in', component: Login, data: { title: 'Sign-in' } },
+  { path: 'sign-up', component: SignUp, data: { title: 'Sign-up' } },
   {
     path: '',
     component: NewApp,
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: Home, data: { title: 'Home' } },
-      { path: 'dashboard', component: DashboardComponent, data: { title: 'Dashboard' }, },
+      { path: 'dashboard', component: DashboardComponent, data: { title: 'Dashboard' } },
       { path: 'vehicles', component: VehicleList, data: { title: 'Vehicles' } },
       {
         path: 'vehicles/create',
@@ -72,13 +74,13 @@ export const routes: Routes = [
       {
         path: 'histories',
         component: InterventionHistories,
-        data: { title: 'Histories' }
+        data: { title: 'Histories' },
       },
       {
         path: 'histories/intervention/:id',
         component: InterventionHistories,
         data: { title: 'Details' },
-      }
+      },
     ],
   },
 ];
