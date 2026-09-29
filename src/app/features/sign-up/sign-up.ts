@@ -61,4 +61,11 @@ export class SignUp {
     console.log('Login with Github called');
     this.keycloakService.loginWithGithub();
   }
+
+  showPassword = false;
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
 }
