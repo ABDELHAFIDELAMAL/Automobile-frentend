@@ -171,7 +171,7 @@ export class KeycloakService {
     return this.currentUser();
   }
 
-  login(username: string, password: string , rememberMe: boolean = false): Observable<any> {
+  login(username: string, password: string, rememberMe: boolean = false): Observable<any> {
     const payload = new URLSearchParams();
     payload.set('client_id', this.clientId);
     payload.set('grant_type', 'password');
@@ -208,17 +208,17 @@ export class KeycloakService {
     });
   }
 
-  loginWithFacebook(): void {
-    this.keycloak.login({
-      idpHint: 'facebook',
-      redirectUri: window.location.origin + '/dashboard',
-    });
-  }
-
   async logout(): Promise<void> {
     this.clearLocalStorage();
     await this.keycloak.logout({
       redirectUri: window.location.origin + '/login',
+    });
+  }
+
+  loginWithGithub() {
+    this.keycloak.login({
+      idpHint: 'github',
+      redirectUri: window.location.origin + '/dashboard',
     });
   }
 }
