@@ -14,15 +14,18 @@ import { adminGuard } from './guard/admin.guard';
 import { Login } from './features/login/login';
 import { NewApp } from './new-app/new-app';
 import { SignUp } from './features/sign-up/sign-up';
+import { authGuard } from './guard/auth.guard';
 
 
 
 export const routes: Routes = [
+
   { path: 'sign-in', component: Login, data: { title: 'Sign-in' } },
   { path: 'sign-up', component: SignUp, data: { title: 'Sign-up' } },
   {
     path: '',
     component: NewApp,
+    canActivate : [ authGuard] ,
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: Home, data: { title: 'Home' } },
