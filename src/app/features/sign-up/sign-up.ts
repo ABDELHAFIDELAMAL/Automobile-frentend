@@ -29,6 +29,7 @@ export class SignUp {
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
+      terms: [false, Validators.requiredTrue]
     });
   }
 
@@ -38,19 +39,19 @@ export class SignUp {
     this.isLoading = true;
     this.errorMessage = '';
 
-    const backendSignUpUrl = 'http://localhost:3000/api/auth/register';
-
-    this.http.post(backendSignUpUrl, this.signUpForm.value).subscribe({
+    this.http.post('http://localhost:8090/api/v1/auth/register', this.signUpForm.value).subscribe({
       next: () => {
         this.isLoading = false;
         this.router.navigate(['/sign-in']);
       },
       error: (err) => {
         this.isLoading = false;
-        this.errorMessage = err.error?.message || "Une erreur est survenue lors de l'inscription.";
-      },
+        console.error('Détail du rejet 400 :', err.error);
+        this.errorMessage = err.error?.message || "Registration failed.";
+      }
     });
   }
+
 
   loginWithGoogle(): void {
     console.log('Login with Google called');

@@ -13,7 +13,7 @@ export class KeycloakService {
     url: 'http://localhost:8080',
     realm: 'AutomobileRealm',
     clientId: 'AutomobileClient',
-  });
+    });
 
   private keycloakTokenUrl =
     'http://localhost:8080/realms/AutomobileRealm/protocol/openid-connect/token';
