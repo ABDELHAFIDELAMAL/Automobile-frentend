@@ -11,7 +11,7 @@ import { VehicleDetail } from './features/vehicles/vehicleDetails/vehicle-detail
 import { InterventionHistories } from './features/historique/historique-list/intervention-history';
 import { DashboardComponent } from './features/dashboard/dashboard/dashboard';
 import { adminGuard } from './guard/admin.guard';
-import { Login } from './features/login/login';
+import { Login } from './features/sign-in/login';
 import { NewApp } from './new-app/new-app';
 import { SignUp } from './features/sign-up/sign-up';
 import { authGuard } from './guard/auth.guard';
