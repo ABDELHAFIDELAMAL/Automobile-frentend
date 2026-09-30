@@ -1,21 +1,23 @@
 <aside
-  [class.w-[250px]]="!isCollapsed()"
-  [class.w-[80px]]="isCollapsed()"
-  [class.px-3]="isCollapsed()"
-  class="h-screen bg-white border-r border-black/10 flex flex-col p-4 shadow-sm relative transition-all duration-300 ease-in-out select-none z-30"
+  [class.w-[260px]]="!isCollapsed()"
+  [class.w-[84px]]="isCollapsed()"
+  class="h-screen bg-white border-r border-black/5 flex flex-col p-4 shadow-sm relative transition-all duration-300 ease-in-out select-none z-30"
 >
 
   <button
     (click)="toggleSidebar()"
     [class.rotate-180]="isCollapsed()"
-    class="absolute -right-3 top-7 w-6 h-6 bg-white text-black/60 border border-black/10 rounded-full flex items-center justify-center cursor-pointer transition-transform duration-300 z-[100] shadow-md hover:bg-black hover:text-white shrink-0"
+    class="absolute -right-3 top-7 w-6 h-6 bg-[#FF5722] text-white border border-transparent rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 z-[100] shadow-md shadow-[#FF5722]/20 hover:bg-[#111111] shrink-0"
   >
-    <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+    <span class="material-symbols-outlined text-[16px] font-bold">chevron_right</span>
   </button>
 
-  <div class="flex items-center gap-3 relative mb-6 overflow-hidden">
-    <div class="w-11 h-11 bg-black text-white rounded-lg flex items-center justify-center font-bold text-lg min-w-[44px] shrink-0 border border-black/10">
-      <span class="material-symbols-outlined">car_gear</span>
+  <div class="flex items-center gap-3 relative mb-8 pl-1 overflow-hidden h-11">
+    <div class="w-11 h-11 bg-transparent rounded-lg flex items-center justify-center min-w-[44px] shrink-0 relative">
+      <div class="absolute inset-0 flex items-center justify-center">
+        <div class="w-9 h-9 border-[6px] border-[#222222] rounded-full border-t-transparent border-b-transparent rotate-45 flex items-center justify-center"></div>
+      </div>
+      <div class="w-3.5 h-3.5 bg-[#FF5722] rounded-[3px] z-10 shadow-sm shadow-[#FF5722]/30"></div>
     </div>
 
     <div
@@ -24,120 +26,101 @@
       [class.max-w-[180px]]="!isCollapsed()"
       class="flex flex-col transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden"
     >
-      <p class="font-semibold text-black text-[16px] leading-tight">Automobile</p>
-      <p class="text-black/40 text-[12px] mt-0.5">Workshop Management</p>
+      <div class="flex items-baseline font-bold text-[#111111] text-[19px] tracking-tight leading-none">
+        <span>Auto</span>
+        <span class="text-[#FF5722] font-semibold">mobile</span>
+      </div>
+      <p class="text-black/40 text-[10px] font-bold tracking-wider uppercase mt-1">Workshop Management</p>
     </div>
   </div>
 
-  <nav class="flex flex-col gap-1.5 flex-1 overflow-x-hidden">
+  <nav class="flex flex-col gap-1 flex-1 overflow-x-hidden">
+
+
     <a
       routerLink="/home"
-      routerLinkActive="bg-black text-white font-semibold border-black"
-      class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-black/5 hover:text-black overflow-hidden whitespace-nowrap"
+      routerLinkActive="bg-[#111111]/5 !text-[#111111] font-semibold border-l-4 border-l-[#FF5722] !rounded-l-none pl-2"
+      class="flex items-center gap-4 px-3 py-3 rounded-xl text-gray-500 cursor-pointer border-l-4 border-l-transparent transition-all duration-200 hover:bg-[#111111]/5 hover:text-[#111111] overflow-hidden whitespace-nowrap group"
     >
-      <span class="material-symbols-outlined text-[22px] min-w-[22px] shrink-0">home</span>
-      <span
-        [class.opacity-0]="isCollapsed()"
-        [class.max-w-0]="isCollapsed()"
-        [class.max-w-[200px]]="!isCollapsed()"
-        class="text-[15px] font-medium transition-all duration-300 ease-in-out overflow-hidden inline-block"
-      >
+      <span class="material-symbols-outlined text-[22px] min-w-[22px] shrink-0 transition-colors group-hover:text-[#FF5722]">home</span>
+      <span [class.opacity-0]="isCollapsed()" [class.max-w-0]="isCollapsed()" [class.max-w-[200px]]="!isCollapsed()" class="text-[14px] font-medium transition-all duration-300 ease-in-out overflow-hidden inline-block">
         Home
       </span>
     </a>
 
+    <!-- Dashboard Link -->
     <a
       routerLink="/dashboard"
-      routerLinkActive="bg-black text-white font-semibold border-black"
-      class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-black/5 hover:text-black overflow-hidden whitespace-nowrap"
+      routerLinkActive="bg-[#111111]/5 !text-[#111111] font-semibold border-l-4 border-l-[#FF5722] !rounded-l-none pl-2"
+      class="flex items-center gap-4 px-3 py-3 rounded-xl text-gray-500 cursor-pointer border-l-4 border-l-transparent transition-all duration-200 hover:bg-[#111111]/5 hover:text-[#111111] overflow-hidden whitespace-nowrap group"
     >
-      <span class="material-symbols-outlined text-[22px] min-w-[22px] shrink-0">dashboard</span>
-      <span
-        [class.opacity-0]="isCollapsed()"
-        [class.max-w-0]="isCollapsed()"
-        [class.max-w-[200px]]="!isCollapsed()"
-        class="text-[15px] font-medium transition-all duration-300 ease-in-out overflow-hidden inline-block"
-      >
+      <span class="material-symbols-outlined text-[22px] min-w-[22px] shrink-0 transition-colors group-hover:text-[#FF5722]">dashboard</span>
+      <span [class.opacity-0]="isCollapsed()" [class.max-w-0]="isCollapsed()" [class.max-w-[200px]]="!isCollapsed()" class="text-[14px] font-medium transition-all duration-300 ease-in-out overflow-hidden inline-block">
         Dashboard
       </span>
     </a>
 
+    <!-- Vehicles Link -->
     <a
       routerLink="/vehicles"
-      routerLinkActive="bg-black text-white font-semibold border-black"
-      class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-black/5 hover:text-black overflow-hidden whitespace-nowrap"
+      routerLinkActive="bg-[#111111]/5 !text-[#111111] font-semibold border-l-4 border-l-[#FF5722] !rounded-l-none pl-2"
+      class="flex items-center gap-4 px-3 py-3 rounded-xl text-gray-500 cursor-pointer border-l-4 border-l-transparent transition-all duration-200 hover:bg-[#111111]/5 hover:text-[#111111] overflow-hidden whitespace-nowrap group"
     >
-      <span class="material-symbols-outlined text-[22px] min-w-[22px] shrink-0">directions_car</span>
-      <span
-        [class.opacity-0]="isCollapsed()"
-        [class.max-w-0]="isCollapsed()"
-        [class.max-w-[200px]]="!isCollapsed()"
-        class="text-[15px] font-medium transition-all duration-300 ease-in-out overflow-hidden inline-block"
-      >
+      <span class="material-symbols-outlined text-[22px] min-w-[22px] shrink-0 transition-colors group-hover:text-[#FF5722]">directions_car</span>
+      <span [class.opacity-0]="isCollapsed()" [class.max-w-0]="isCollapsed()" [class.max-w-[200px]]="!isCollapsed()" class="text-[14px] font-medium transition-all duration-300 ease-in-out overflow-hidden inline-block">
         Vehicles
       </span>
     </a>
 
+    <!-- Interventions Link -->
     <a
       routerLink="/interventions"
-      routerLinkActive="bg-black text-white font-semibold border-black"
-      class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-black/5 hover:text-black overflow-hidden whitespace-nowrap"
+      routerLinkActive="bg-[#111111]/5 !text-[#111111] font-semibold border-l-4 border-l-[#FF5722] !rounded-l-none pl-2"
+      class="flex items-center gap-4 px-3 py-3 rounded-xl text-gray-500 cursor-pointer border-l-4 border-l-transparent transition-all duration-200 hover:bg-[#111111]/5 hover:text-[#111111] overflow-hidden whitespace-nowrap group"
     >
-      <span class="material-symbols-outlined text-[22px] min-w-[22px] shrink-0">build</span>
-      <span
-        [class.opacity-0]="isCollapsed()"
-        [class.max-w-0]="isCollapsed()"
-        [class.max-w-[200px]]="!isCollapsed()"
-        class="text-[15px] font-medium transition-all duration-300 ease-in-out overflow-hidden inline-block"
-      >
+      <span class="material-symbols-outlined text-[22px] min-w-[22px] shrink-0 transition-colors group-hover:text-[#FF5722]">build</span>
+      <span [class.opacity-0]="isCollapsed()" [class.max-w-0]="isCollapsed()" [class.max-w-[200px]]="!isCollapsed()" class="text-[14px] font-medium transition-all duration-300 ease-in-out overflow-hidden inline-block">
         Interventions
       </span>
     </a>
 
+    <!-- History Link -->
     <a
       routerLink="/histories"
-      routerLinkActive="bg-black text-white font-semibold border-black"
-      class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-black/5 hover:text-black overflow-hidden whitespace-nowrap"
+      routerLinkActive="bg-[#111111]/5 !text-[#111111] font-semibold border-l-4 border-l-[#FF5722] !rounded-l-none pl-2"
+      class="flex items-center gap-4 px-3 py-3 rounded-xl text-gray-500 cursor-pointer border-l-4 border-l-transparent transition-all duration-200 hover:bg-[#111111]/5 hover:text-[#111111] overflow-hidden whitespace-nowrap group"
     >
-      <span class="material-symbols-outlined text-[22px] min-w-[22px] shrink-0">history</span>
-      <span
-        [class.opacity-0]="isCollapsed()"
-        [class.max-w-0]="isCollapsed()"
-        [class.max-w-[200px]]="!isCollapsed()"
-        class="text-[15px] font-medium transition-all duration-300 ease-in-out overflow-hidden inline-block"
-      >
+      <span class="material-symbols-outlined text-[22px] min-w-[22px] shrink-0 transition-colors group-hover:text-[#FF5722]">history</span>
+      <span [class.opacity-0]="isCollapsed()" [class.max-w-0]="isCollapsed()" [class.max-w-[200px]]="!isCollapsed()" class="text-[14px] font-medium transition-all duration-300 ease-in-out overflow-hidden inline-block">
         History
       </span>
     </a>
 
+    <!-- Mechanics Link -->
     <a
       routerLink="/mechanics"
-      routerLinkActive="bg-black text-white font-semibold border-black"
-      class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-black/5 hover:text-black overflow-hidden whitespace-nowrap"
+      routerLinkActive="bg-[#111111]/5 !text-[#111111] font-semibold border-l-4 border-l-[#FF5722] !rounded-l-none pl-2"
+      class="flex items-center gap-4 px-3 py-3 rounded-xl text-gray-500 cursor-pointer border-l-4 border-l-transparent transition-all duration-200 hover:bg-[#111111]/5 hover:text-[#111111] overflow-hidden whitespace-nowrap group"
     >
-      <span class="material-symbols-outlined text-[22px] min-w-[22px] shrink-0">engineering</span>
-      <span
-        [class.opacity-0]="isCollapsed()"
-        [class.max-w-0]="isCollapsed()"
-        [class.max-w-[200px]]="!isCollapsed()"
-        class="text-[15px] font-medium transition-all duration-300 ease-in-out overflow-hidden inline-block"
-      >
+      <span class="material-symbols-outlined text-[22px] min-w-[22px] shrink-0 transition-colors group-hover:text-[#FF5722]">engineering</span>
+      <span [class.opacity-0]="isCollapsed()" [class.max-w-0]="isCollapsed()" [class.max-w-[200px]]="!isCollapsed()" class="text-[14px] font-medium transition-all duration-300 ease-in-out overflow-hidden inline-block">
         Mechanics
       </span>
     </a>
   </nav>
 
-  <div class="border-t border-black/10 pt-4 flex flex-col gap-2 mt-auto overflow-hidden">
+  <!-- Bottom Actions Footer Block -->
+  <div class="border-t border-black/5 pt-4 flex flex-col gap-1 mt-auto overflow-hidden">
     <button
       (click)="onLogout()"
-      class="flex items-center gap-4 px-3 py-3 rounded-lg text-black/60 cursor-pointer border border-transparent transition-colors duration-200 hover:bg-rose-50 hover:text-rose-600 w-full text-left whitespace-nowrap"
+      class="flex items-center gap-4 px-3 py-3 rounded-xl text-gray-400 cursor-pointer transition-colors duration-200 hover:bg-rose-50 hover:text-rose-600 w-full text-left whitespace-nowrap group"
     >
-      <span class="material-symbols-outlined text-[22px] min-w-[22px] shrink-0">logout</span>
+      <span class="material-symbols-outlined text-[22px] min-w-[22px] shrink-0 transition-colors">logout</span>
       <span
         [class.opacity-0]="isCollapsed()"
         [class.max-w-0]="isCollapsed()"
         [class.max-w-[200px]]="!isCollapsed()"
-        class="text-[15px] font-medium transition-all duration-300 ease-in-out overflow-hidden inline-block"
+        class="text-[14px] font-medium transition-all duration-300 ease-in-out overflow-hidden inline-block"
       >
         Logout
       </span>

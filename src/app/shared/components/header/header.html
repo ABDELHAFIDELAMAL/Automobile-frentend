@@ -5,7 +5,7 @@
 
   @if (currentUser()) {
   <div class="group flex items-center gap-3 cursor-pointer p-1.5 rounded-xl hover:bg-slate-50 transition-all duration-200">
-    <div class="w-10 h-10 rounded-full bg-rose-200 text-rose-700 flex items-center justify-center font-bold text-sm border border-slate-200/50 shadow-sm transition-all duration-200 uppercase shrink-0">
+    <div class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center font-bold text-sm border border-slate-200/50 shadow-sm transition-all duration-200 uppercase shrink-0">
       {{ currentUser().firstName?.charAt(0) }}{{ currentUser().lastName?.charAt(0) }}
     </div>
     <div class="flex flex-col text-left">
