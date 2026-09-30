@@ -15,6 +15,7 @@ import { Login } from './features/sign-in/login';
 import { NewApp } from './new-app/new-app';
 import { SignUp } from './features/sign-up/sign-up';
 import { authGuard } from './guard/auth.guard';
+import { SplashScreen } from './shared/components/splash-screen/splash-screen';
 
 
 
