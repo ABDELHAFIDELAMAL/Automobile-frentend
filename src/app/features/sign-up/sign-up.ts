@@ -4,6 +4,8 @@ import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
+import { ApiResponce } from '../../entities/ApiResponce';
 
 
 @Component({
@@ -39,9 +41,12 @@ export class SignUp {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.http.post('http://localhost:8090/api/v1/auth/register', this.signUpForm.value).subscribe({
-      next: () => {
+    console.log("User sent to server : " , this.signUpForm.value);
+
+    this.http.post<ApiResponce<any>>('http://localhost:8090/api/v1/auth/register', this.signUpForm.value).subscribe({
+      next: (response) => {
         this.isLoading = false;
+        console.log(response);
         this.router.navigate(['/sign-in']);
       },
       error: (err) => {
@@ -68,5 +73,6 @@ export class SignUp {
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
   }
+
 
 }
