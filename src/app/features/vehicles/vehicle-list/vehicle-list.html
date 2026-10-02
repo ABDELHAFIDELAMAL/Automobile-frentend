@@ -1,6 +1,6 @@
-<div class="mx-auto w-full max-w-7xl space-y-5 px-3 py-4 sm:space-y-6 sm:px-6 sm:py-6 lg:px-8" dir="ltr">
+<div class="mx-auto w-full space-y-5 sm:space-y-6 " dir="ltr">
 
-  <header class="bg-black p-4 shadow-sm sm:p-5">
+  <header class="w-full bg-white p-4 shadow-sm sm:p-5">
     <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
 
       <div class="flex items-center gap-3">
@@ -58,18 +58,18 @@
   </header>
 
 
-  <main class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-3">
+  <main class="grid grid-cols-1 gap-4 sm:grid-cols-2 p-4 sm:gap-5 xl:grid-cols-3">
     @for (vehicle of vehicles(); track vehicle.id) {
     <article class="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-lg">
 
-      <div class="flex items-center justify-between gap-3 bg-gradient-to-br from-slate-900 to-slate-700 px-5 py-4 text-white">
+      <div class="flex items-center justify-between gap-3 bg-gradient-to-br from-slate-400 to-slate-300 px-5 py-4 text-white">
         <div class="flex min-w-0 items-center gap-3">
           <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/15 ring-1 ring-white/20">
             <span class="material-symbols-outlined text-xl">directions_car</span>
           </div>
           <h2 class="truncate text-white font-bold">{{ vehicle.make }} {{ vehicle.model }}</h2>
         </div>
-        <span class="shrink-0 rounded-md bg-white px-2.5 py-1 font-mono text-xs font-bold tracking-wide text-slate-900">
+        <span class="shrink-0 rounded-md bg-white px-2.5 py-1 text-xs font-bold tracking-wide text-slate-900">
           {{ vehicle.matricule }}
         </span>
       </div>
@@ -92,7 +92,6 @@
           </div>
         </dl>
 
-        <!-- Dummy client -->
         <div class="flex items-center justify-between text-sm">
           <span class="text-slate-500">Dummy client</span>
           <span
@@ -106,10 +105,10 @@
           </span>
         </div>
 
-        <!-- Interventions link -->
+
         <a
           [routerLink]="['/vehicles/details', vehicle.id]"
-          class="flex items-center justify-between rounded-xl border border-slate-200 px-3.5 py-3 transition hover:border-slate-900 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-900/20"
+          class="flex items-center justify-between rounded-xl border border-slate-200 px-3.5 py-3 transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-900/20"
           title="View details"
         >
           <span class="flex items-center gap-2.5 text-sm font-semibold text-slate-800">
@@ -126,16 +125,16 @@
             <button
               type="button"
               [routerLink]="['/vehicles/update', vehicle.id]"
-              class="inline-flex items-center justify-center gap-1.5 rounded-xl bg-blue-600 px-3 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:scale-[0.98]"
+              class="inline-flex items-center justify-center gap-1.5 rounded-xl bg-blue-500 px-3 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:scale-[0.98]"
             >
               <span class="material-symbols-outlined text-lg leading-none">edit</span>
-              Edit
+              Update
             </button>
 
             <button
               type="button"
               (click)="vehicle.id && deleteVehicle(vehicle.id)"
-              class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-red-200 bg-red-50 px-3 py-2.5 text-sm font-semibold text-red-600 transition hover:bg-red-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 active:scale-[0.98]"
+              class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-red-200 bg-red-50 px-3 py-2.5 text-sm font-semibold text-red-400 transition hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 active:scale-[0.98]"
             >
               <span class="material-symbols-outlined text-lg leading-none">delete</span>
               Delete
@@ -145,7 +144,7 @@
           <button
             type="button"
             [routerLink]="['/interventions/create', vehicle.id]"
-            class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-3 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2 active:scale-[0.98]"
+            class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2 active:scale-[0.98]"
           >
             <span class="material-symbols-outlined text-lg leading-none">add_circle</span>
             Create intervention
