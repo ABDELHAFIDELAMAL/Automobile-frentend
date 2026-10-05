@@ -76,13 +76,6 @@ export class InterventionService {
     return this.http.patch<ApiResponce<Intervention>>(`${this.baseUrl}/return/${id}`, null);
   }
 
-  getInterventionsByMechanic(id: number): Observable<ApiResponce<Intervention[]>> {
-    return this.http.get<ApiResponce<Intervention[]>>(`${this.baseUrl}/by/mechanic/${id}`);
-  }
-
-  getInterventionsByVehicle(id: number): Observable<ApiResponce<Intervention[]>> {
-    return this.http.get<ApiResponce<Intervention[]>>(`${this.baseUrl}/by/vehicle/${id}`);
-  }
 
   getDelayedInterventions(): Observable<ApiResponce<Intervention[]>> {
     return this.http.get<ApiResponce<Intervention[]>>(`${this.baseUrl}/delayed`);

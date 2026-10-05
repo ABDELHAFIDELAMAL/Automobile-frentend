@@ -44,11 +44,11 @@
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
 
     <!-- Received Today -->
-    <div class="bg-gradient-to-br from-indigo-900 to-slate-900 p-6 rounded-3xl text-white shadow-xs hover:shadow-lg transition-all duration-300 relative overflow-hidden group">
+    <div class="bg-gradient-to-br from-indigo-700 to-slate-700 p-6 rounded-3xl text-white shadow-xs hover:shadow-lg transition-all duration-300 relative overflow-hidden group">
       <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-indigo-500/10 rounded-full blur-xl group-hover:scale-150 transition-transform"></div>
       <div class="flex items-center justify-between">
         <span class="text-xs font-bold uppercase tracking-wider text-indigo-200/80">Received Today</span>
-        <div class="w-10 h-10 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center text-indigo-300">
+        <div class="flex items-center justify-center text-indigo-300">
           <span class="material-symbols-outlined text-xl">input</span>
         </div>
       </div>
@@ -56,10 +56,10 @@
     </div>
 
     <!-- In Diagnostic -->
-    <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-xs hover:border-slate-300 hover:shadow-md transition-all duration-300">
+    <div class="bg-blue-200 p-6 rounded-3xl border border-slate-200/80 shadow-xs hover:border-slate-300 hover:shadow-md transition-all duration-300">
       <div class="flex items-center justify-between">
         <span class="text-xs font-bold uppercase tracking-wider text-slate-400">In Diagnostic</span>
-        <div class="w-10 h-10 rounded-2xl bg-amber-50 flex items-center justify-center text-amber-600">
+        <div class="flex items-center justify-center text-amber-600">
           <span class="material-symbols-outlined text-xl">search</span>
         </div>
       </div>
@@ -67,20 +67,20 @@
     </div>
 
     <!-- Under Repair -->
-    <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-xs hover:border-slate-300 hover:shadow-md transition-all duration-300">
-      <div class="flex items-center justify-between">
-        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Under Repair</span>
-        <div class="w-10 h-10 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600">
+    <div class="bg-gradient-to-r from-blue-200 to-blue-400 p-6 rounded-3xl border border-slate-200/80 shadow-xs hover:border-slate-300 hover:shadow-md transition-all duration-300">
+      <div class="flex items-center justify-between ">
+        <span class="text-xs font-bold uppercase tracking-wider text-slate-600">Under Repair</span>
+        <div class="flex items-center justify-center text-blue-600">
           <span class="material-symbols-outlined text-xl">build</span>
         </div>
       </div>
       <div class="text-3xl sm:text-4xl font-black text-slate-900 mt-4 tracking-tight">{{ stats()?.underRepair ?? 0 }}</div>
     </div>
 
-    <div class="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-xs hover:border-slate-300 hover:shadow-md transition-all duration-300">
+    <div class="bg-gradient-to-r from-green-300 to-green-400 text-white p-6 rounded-3xl border border-slate-200/80 shadow-xs hover:border-slate-300 hover:shadow-md transition-all duration-300">
       <div class="flex items-center justify-between">
-        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Completed</span>
-        <div class="w-10 h-10 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600">
+        <span class="text-xs font-bold uppercase tracking-wider">Completed</span>
+        <div class="flex items-center justify-center text-white">
           <span class="material-symbols-outlined text-xl">check_circle</span>
         </div>
       </div>

@@ -112,7 +112,7 @@ export class InterventionList implements OnInit {
     const statusStr = targetStatus.toString();
 
     this.interventionService.changeStatus(id, statusStr, authorName).subscribe({
-      next: () => {
+      next: (responce) => {
         this.interventions.update((list) =>
           list.map((item) =>
             item.id === id ? ({ ...item, status: targetStatus } as typeof item) : item,
@@ -185,27 +185,8 @@ export class InterventionList implements OnInit {
     });
   }
 
-  getInterventionsByMechanic(mechanicId: number): void {
-    this.interventionService.getInterventionsByMechanic(mechanicId).subscribe({
-      next: (response) => {
-        this.interventions.set(response.data || response);
-      },
-      error: (err) => {
-        console.error('Error fetching mechanic interventions:', err);
-      },
-    });
-  }
 
-  getInterventionsByVehicle(vehicleId: number): void {
-    this.interventionService.getInterventionsByVehicle(vehicleId).subscribe({
-      next: (response) => {
-        this.interventions.set(response.data || response);
-      },
-      error: (err) => {
-        console.error('Error fetching vehicle interventions:', err);
-      },
-    });
-  }
+
 
   calculateTotalCost(): void {
     this.interventionService.calculateTotalCost().subscribe({
