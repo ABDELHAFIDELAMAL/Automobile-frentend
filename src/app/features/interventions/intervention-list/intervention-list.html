@@ -218,6 +218,15 @@
           }
         </div>
 
+        <button
+          type="button"
+          (click)="intervention.id && onCancelIntervention(intervention.id)"
+          class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[#ffd5d8] bg-[#fff0f1] px-4 py-2.5 text-sm font-semibold text-[#ff7882] transition duration-200 hover:bg-[#ffe2e4] hover:text-[#f85a66] hover:border-[#fca5ab] focus:outline-none focus:ring-2 focus:ring-[#ff7882] focus:ring-offset-2 active:scale-[0.98]"
+        >
+          <span class="material-symbols-outlined text-lg leading-none">cancel</span>
+          Cancel Intervention
+        </button>
+
         <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
           @if (intervention.status !== Status.COMPLETED && intervention.status !== Status.RETURNED) {
           @let availableMechanics = getAvailableMechanics();

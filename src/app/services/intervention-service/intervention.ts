@@ -76,7 +76,6 @@ export class InterventionService {
     return this.http.patch<ApiResponce<Intervention>>(`${this.baseUrl}/return/${id}`, null);
   }
 
-
   getDelayedInterventions(): Observable<ApiResponce<Intervention[]>> {
     return this.http.get<ApiResponce<Intervention[]>>(`${this.baseUrl}/delayed`);
   }
@@ -93,5 +92,9 @@ export class InterventionService {
   getInterventionsByPriority(priority: Priority | string): Observable<ApiResponce<Intervention[]>> {
     const params = new HttpParams().set('priority', priority.toString());
     return this.http.get<ApiResponce<Intervention[]>>(`${this.baseUrl}/by/priority`, { params });
+  }
+
+  concelIntervention(id: number): Observable<ApiResponce<void>> {
+     return this.http.delete<ApiResponce<void>>(`${this.baseUrl}/${id}/cancel`);
   }
 }
