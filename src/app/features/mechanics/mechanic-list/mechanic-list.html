@@ -116,7 +116,7 @@
                 <span class="material-symbols-outlined text-lg">edit</span>
               </button>
               <button
-                [disabled]="mecano.available"
+                [disabled]="!mecano.available"
                 type="button"
                 (click)="deleteMechanic(mecano.id)"
                 class="p-2 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-xl transition-colors disabled:text-slate-300 disabled:bg-transparent disabled:cursor-not-allowed cursor-pointer"

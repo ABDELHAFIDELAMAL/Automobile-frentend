@@ -109,8 +109,9 @@ export class VehicleCreate implements OnInit {
 
   createVehicle(vehicle: Vehicle): void {
     this.vehicleService.createVehicle(vehicle).subscribe({
-      next: () => {
+      next: (response) => {
         console.log("Vehicule sent to server is : " , this.vehicleForm.value);
+        alert(response.message);
         this.router.navigate(['/vehicles']);
       },
       error: (error: HttpErrorResponse) => {
@@ -125,10 +126,10 @@ export class VehicleCreate implements OnInit {
 
   updateVehicle(id: number, vehicle: Vehicle): void {
     this.vehicleService.updateVehicle(id, vehicle).subscribe({
-      next: () => {
+      next: (response) => {
+        alert(response.message);
         this.router.navigate(['/vehicles']);
       },
-
       error: (error) => {
         console.error('Error updating vehicle:', error);
       },
