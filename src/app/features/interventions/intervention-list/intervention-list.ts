@@ -66,7 +66,26 @@ export class InterventionList implements OnInit {
   loadInterventions(): void {
     this.interventionService.getAllInterventions().subscribe({
       next: (response) => {
-        this.interventions.set(response.data || response);
+        const data = response.data || response;
+
+        const sortedData = [...data].sort((a, b) => {
+          const order: Record<string, number> = {
+            RECEIVED: 0,
+            DIAGNOSTIC_IN_PROGRESS: 1,
+            QUOTATION_TO_VALIDATE: 2,
+            UNDER_REPAIR: 3,
+            COMPLETED: 4,
+            RETURNED: 5,
+            CANCELLED: 6,
+          };
+
+
+          const weightA = a.status && order[a.status as string] !== undefined ? order[a.status as string] : 99;
+          const weightB = b.status && order[b.status as string] !== undefined ? order[b.status as string] : 99;
+
+          return weightA - weightB;
+        });
+        this.interventions.set(sortedData);
       },
       error: (error) => {
         console.error('Error loading interventions: ', error);
@@ -376,14 +395,14 @@ export class InterventionList implements OnInit {
     });
   }
 
-  isAdmin() : boolean {
-    if(this.keycloakService.isAdmin()) {
+  isAdmin(): boolean {
+    if (this.keycloakService.isAdmin()) {
       return true;
     }
     return false;
   }
 
-  isUser(){
+  isUser() {
     this.keycloakService.isUser();
   }
 }

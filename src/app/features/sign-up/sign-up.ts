@@ -52,7 +52,7 @@ export class SignUp {
       error: (err) => {
         this.isLoading = false;
         console.error('Détail du rejet 400 :', err.error);
-        this.errorMessage = err.error?.message || "Registration failed.";
+        this.errorMessage = err.error.message || "Registration failed.";
       }
     });
   }
