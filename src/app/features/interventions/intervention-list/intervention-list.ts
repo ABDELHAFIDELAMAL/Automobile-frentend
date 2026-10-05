@@ -354,6 +354,26 @@ export class InterventionList implements OnInit {
     });
   }
 
+
+  onCancelIntervention(id: number): void {
+    if (confirm("Are you sure you want to cancel this intervention?")) {
+      this.interventionService.concelIntervention(id).subscribe({
+        next: (response) => {
+          this.notification.set({
+            message: response.message,
+            type: 'success',
+          });
+          setTimeout(() => this.notification.set(null), 4000);
+          this.loadInterventions();
+        },
+        error: (error) => {
+          console.error('Error cancelling intervention: ', error);
+        }
+      });
+    }
+  }
+
+
   onChangePriority(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
     const value = selectElement.value;
