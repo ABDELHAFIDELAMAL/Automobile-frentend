@@ -196,7 +196,7 @@ export class KeycloakService {
         this.keycloak.refreshToken = response.refresh_token;
         this.manualTokenParsed = this.decodeToken(response.access_token);
         await this.refreshUserInfos();
-        await this.router.navigate(['/dashboard']);
+        await this.router.navigate(['/home']);
       }),
     );
   }
