@@ -397,13 +397,10 @@ export class InterventionList implements OnInit {
   }
 
   isAdmin(): boolean {
-    if (this.keycloakService.isAdmin()) {
-      return true;
-    }
-    return false;
+    return this.keycloakService.isAdmin();
   }
 
-  isUser() {
-    this.keycloakService.isUser();
+  isUser(): boolean {
+    return this.keycloakService.isUser();
   }
 }
