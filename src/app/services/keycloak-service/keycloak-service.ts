@@ -3,7 +3,7 @@ import Keycloak from 'keycloak-js';
 import { Role } from '../../enums/Role.enum';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, tap } from 'rxjs';
+import { from, map, Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -206,6 +206,14 @@ export class KeycloakService {
       idpHint: 'google',
       redirectUri: window.location.origin + '/dashboard',
     });
+  }
+
+  updateToken(): Observable<string> {
+    return from(this.keycloak.updateToken(30)).pipe(
+      map(() => {
+        return this.keycloak.token || '';
+      })
+    );
   }
 
   async logout(): Promise<void> {
