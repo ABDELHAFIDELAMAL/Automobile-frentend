@@ -81,6 +81,19 @@ export class VehicleList implements OnInit {
     });
   }
 
+  onDeleteAllVehicles(){
+    if(confirm("Are you sure you want to delete all vehicles ?")){
+      this.vehicleService.deleteAllVehicles().subscribe({
+        next: (response) => {
+          this.loadVehicles()
+        },
+        error : (err) =>{
+          alert(err.message);
+        }
+      })
+    }
+  }
+
 
   isAdmin(){
     return this.keycloakService.isAdmin();

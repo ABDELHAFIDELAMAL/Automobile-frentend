@@ -33,7 +33,16 @@
           </select>
         </label>
       </div>
-      <div class="w-full sm:w-auto" *ngIf="isAdmin()">
+      <div class="w-full sm:w-auto flex align-center gap-3" *ngIf="isAdmin()">
+        <button
+          type="button"
+          *ngIf="mechanics().length > 0"
+          (click)="onDeleteAllMechanics()"
+          class="w-full sm:w-auto flex items-center justify-center gap-2 py-2.5 px-4 bg-red-500 hover:bg-red-400 text-white text-xs md:text-sm font-semibold rounded-xl shadow-sm transition-all duration-200 cursor-pointer"
+        >
+          <span class="material-symbols-outlined text-lg">delete</span>
+          <span>Clear Mechanics</span>
+        </button>
         <button
           type="button"
           routerLink="/mechanics/create"
