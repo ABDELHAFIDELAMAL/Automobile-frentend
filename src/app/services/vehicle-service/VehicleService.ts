@@ -86,4 +86,8 @@ export class VehicleService {
       { params }
     );
   }
+
+  deleteAllVehicles() : Observable<ApiResponce<void>>{
+    return this.http.delete<ApiResponce<void>>(this.baseUrl + '/delete/all');
+  }
 }

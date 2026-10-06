@@ -131,6 +131,19 @@ export class MechanicList implements OnInit {
     });
   }
 
+  onDeleteAllMechanics() : void {
+    if(confirm("Are you sure you want delete all mechanics ?")){
+      this.mechanicService.deleteAllMechanics().subscribe({
+        next: (response) => {
+          this.loadMechanics();
+        },
+        error: (error) => {
+          alert(error.message);
+        }
+      })
+    }
+  }
+
   isAdmin(): boolean {
     return this.keycloakService.isAdmin();
   }

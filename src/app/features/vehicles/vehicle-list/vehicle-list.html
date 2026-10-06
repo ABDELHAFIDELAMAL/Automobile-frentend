@@ -2,7 +2,6 @@
 
   <header class="w-full bg-white p-4 shadow-sm sm:p-5">
     <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-
       <div class="flex items-center gap-3">
         <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-slate-900 text-white">
           <span class="material-symbols-outlined text-2xl">directions_car</span>
@@ -43,6 +42,15 @@
           </select>
           <span class="material-symbols-outlined pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-lg text-slate-400">unfold_more</span>
         </label>
+        <button
+          type="button"
+          *ngIf="isAdmin() && vehicles().length > 0"
+          (click)="onDeleteAllVehicles()"
+          class="inline-flex shrink-0 items-center justify-center gap-2 hover:cursor-pointer rounded-xl bg-red-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-red-400 "
+        >
+          <span class="material-symbols-outlined text-lg">delete</span>
+          Clear vehicles
+        </button>
 
         <button
           type="button"

@@ -97,4 +97,8 @@ export class InterventionService {
   concelIntervention(id: number): Observable<ApiResponce<void>> {
      return this.http.delete<ApiResponce<void>>(`${this.baseUrl}/${id}/cancel`);
   }
+
+  cancelAllInterventions() : Observable<ApiResponce<void>> {
+    return this.http.delete<ApiResponce<void>>(`${this.baseUrl}/cancel/all`);
+  }
 }

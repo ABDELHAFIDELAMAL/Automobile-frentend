@@ -396,6 +396,19 @@ export class InterventionList implements OnInit {
     });
   }
 
+  oncancelAllInterventions() : void {
+    if(confirm("Are you sure you want to cancel all interventions?")) {
+      this.interventionService.cancelAllInterventions().subscribe({
+        next: (response) => {
+          this.loadInterventions();
+        },
+        error: (err) => {
+          alert(err.message);
+        }
+      })
+    }
+  }
+
   isAdmin(): boolean {
     return this.keycloakService.isAdmin();
   }

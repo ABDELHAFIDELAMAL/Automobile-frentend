@@ -59,4 +59,8 @@ export class MechanicService {
     const params = new HttpParams().set('specialty', specialty.toString());
     return this.http.get<ApiResponce<Mechanic[]>>(`${this.baseUrl}/by/specialty`, { params });
   }
+
+  deleteAllMechanics() : Observable<ApiResponce<void>> {
+    return this.http.delete<ApiResponce<void>>( this.baseUrl + "/delete/all");
+  }
 }
