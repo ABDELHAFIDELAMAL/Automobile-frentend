@@ -54,6 +54,14 @@
 
         <button
           type="button"
+          class="py-2 px-2 bg-blue-400 text-white hover:cursor-pointer rounded-xl flex align-center justify-center"
+          (click)="loadVehicles()"
+        >
+          <span class="material-symbols-outlined">cached</span>
+        </button>
+
+        <button
+          type="button"
           *ngIf="isAdmin()"
           routerLink="/vehicles/create"
           class="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2 active:scale-[0.98]"
