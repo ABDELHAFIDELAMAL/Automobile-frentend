@@ -7,7 +7,7 @@ export const adminGuard: CanActivateFn = async (route, state) => {
   const router = inject(Router);
 
   if (!keycloakService.isLoggedIn()) {
-    router.navigate(['/login']);
+    await router.navigate(['/login']);
     return false;
   }
 
@@ -16,7 +16,6 @@ export const adminGuard: CanActivateFn = async (route, state) => {
   }
 
   await keycloakService.refreshUserInfos();
-
-  router.navigate(['/dashboard']);
+  await router.navigate(['/dashboard']);
   return false;
 };
