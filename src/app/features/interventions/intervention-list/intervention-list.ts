@@ -237,7 +237,6 @@ export class InterventionList implements OnInit {
           type: 'success',
         });
         setTimeout(() => this.notification.set(null), 4000);
-
         this.getAvailableMechanics();
       },
       error: (err) => {
