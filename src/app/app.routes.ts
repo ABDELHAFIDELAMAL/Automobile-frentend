@@ -9,7 +9,7 @@ import { VehicleList } from './features/vehicles/vehicle-list/vehicle-list';
 import { VehicleCreate } from './features/vehicles/createVehicle/vehicle-create';
 import { VehicleDetail } from './features/vehicles/vehicleDetails/vehicle-detail';
 import { InterventionHistories } from './features/historique/historique-list/intervention-history';
-import { DashboardComponent } from './features/dashboard/dashboard/dashboard';
+import { DashboardComponent } from './features/dashboard/dashboard';
 import { adminGuard } from './guard/admin.guard';
 import { Login } from './features/sign-in/login';
 import { NewApp } from './new-app/new-app';

@@ -4,7 +4,7 @@ import { SidebarComponent } from './shared/components/sidebar/sidebar';
 import { Header } from './shared/components/header/header';
 import { Footer } from './shared/components/footer/footer';
 import { VehicleList } from './features/vehicles/vehicle-list/vehicle-list';
-import { DashboardComponent } from './features/dashboard/dashboard/dashboard';
+import { DashboardComponent } from './features/dashboard/dashboard';
 import { SplashScreen } from './shared/components/splash-screen/splash-screen';
 
 
