@@ -238,19 +238,18 @@
 
         <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
           @if (intervention.status !== Status.COMPLETED && intervention.status !== Status.RETURNED) {
-          @let availableMechanics = getAvailableMechanics();
 
           <div class="flex items-center gap-2">
             <select id="mechanic-select-{{intervention.id}}"
                     [value]="intervention.mechanicId ?? ''"
-                    [disabled]="availableMechanics.length === 0 || intervention.mechanicId"
+                    [disabled]="availableMechanics().length === 0 || intervention.mechanicId"
                     (change)="assignMechanic(intervention.id ?? 0, $event)"
                     class="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-700 disabled:bg-slate-100 disabled:text-slate-400 cursor-pointer">
-              @if (availableMechanics.length === 0) {
+              @if (availableMechanics().length === 0) {
               <option value="" selected disabled>No mechanics available</option>
               } @else {
               <option value="" disabled selected>Assign available mechanic</option>
-              @for (mechanic of availableMechanics; track mechanic.id) {
+              @for (mechanic of availableMechanics(); track mechanic.id) {
               <option [value]="mechanic.id">Name: {{ mechanic.name }}</option>
               }
               }

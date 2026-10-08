@@ -28,7 +28,7 @@ export class InterventionList implements OnInit {
   interventionTypes: InterventionType[] = Object.values(InterventionType);
 
   interventions = signal<Intervention[]>([]);
-  mechanics = signal<Mechanic[]>([]);
+  availableMechanics = signal<Mechanic[]>([]);
   totalCost = signal<number>(0);
 
   private keycloakService = inject(KeycloakService);
@@ -59,7 +59,7 @@ export class InterventionList implements OnInit {
 
   ngOnInit(): void {
     this.loadInterventions();
-    this.loadMechanics();
+    this.getAvailableMechanics();
     this.calculateTotalCost();
   }
 
@@ -93,16 +93,6 @@ export class InterventionList implements OnInit {
     });
   }
 
-  loadMechanics(): void {
-    this.mechanicService.getAllMechanics().subscribe({
-      next: (response) => {
-        this.mechanics.set(response.data || response);
-      },
-      error: (error) => {
-        console.error('Error loading mechanics:', error);
-      },
-    });
-  }
 
   changeStatus(id: number, targetStatus: Status): void {
     const currentIntervention = this.interventions().find((item) => item.id === id);
@@ -221,7 +211,7 @@ export class InterventionList implements OnInit {
     const selectElement = event.target as HTMLSelectElement;
     const mechanicId = Number(selectElement.value);
 
-    const selectedMechanic = this.mechanics().find((m) => m.id === mechanicId);
+    const selectedMechanic = this.availableMechanics().find((m) => m.id === mechanicId);
 
     if (!selectedMechanic) {
       console.error('Mechanic not found in local list');
@@ -261,9 +251,19 @@ export class InterventionList implements OnInit {
     });
   }
 
-  getAvailableMechanics(): Mechanic[] {
-    return this.mechanics().filter((m) => m.available);
+  getAvailableMechanics() {
+    this.mechanicService.getAvailableMechanics(true).subscribe({
+      next: (response) => {
+        console.log("Available Mechanics:" , response);
+        this.availableMechanics.set(response.data);
+        console.log(this.availableMechanics());
+      },
+      error: (err) => {
+        alert(err.message);
+      }
+    });
   }
+
 
   setEstimatedCost(id: number, estimatedCost: number): void {
     this.interventionService.setEstimatedCost(id, estimatedCost).subscribe({
